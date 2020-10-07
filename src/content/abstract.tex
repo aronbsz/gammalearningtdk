@@ -1,0 +1,46 @@
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+\selecthungarian
+
+%----------------------------------------------------------------------------
+% Abstract in Hungarian
+%----------------------------------------------------------------------------
+\chapter*{Kivonat}\addcontentsline{toc}{chapter}{Kivonat}
+
+A modell alapú technológiák növelik az IT rendszerek tervezésének hatékonyságát azáltal, hogy lehetővé teszik a verifikáció, kódgenerálás és rendszeranalízis automatizálását egy formális modellen keresztül. Az informatikai rendszerek viselkedésének leírására nyílik egyszerűen lehetőségünk az úgynevezett állapot alapú modellezés segítségével, ahol - köszönhetően a formális módszerek fejlődésének az utóbbi években - a modellek széleskörűen és hatékonyan alkalmazhatóak a rendszer tulajdonságainak vizsgálatára. Ilyen modellek létrehozásának egy lehetséges módja az aktív automatatanuló algoritmusok alkalmazása.
+
+Egy rendszer formális modelljének előállítása több okból is kihívást jelenthet. Egyrészt, a modellezést végző mérnöknek nehéz az elképzelt rendszer minden tulajdonságát észben tartania részben a rendszer komplexitása, részben a lehetséges rejtett implikációk és ellentmondások miatt. Másfelől léteznek teljesen automatizált megoldások, mint például az aktív automatatanulás, ahol a modell építését végző algoritmust két komponens karakterizálja: egy tanító - amely ismeri a tanulni kívánt rendszer teljes viselkedését - továbbá egy tanuló - mely a tanítóhoz intézett kérdések alapján szintetizálja a modellt. Azonban gyakorlati határt jelent ezen megoldásoknál a rendszer következtetett viselkedésének validációja. Munkánkban egy olyan, részben automatizált megoldást javaslunk, mely az automatatanulást interaktív környezetben használja fel a modellezés elősegítése érdekében.
+
+Ezen dolgozat célja, hogy támogassa az informatikai rendszertervezést az alapoktól fölfelé InterAktív automatatanulás segítségével. Ez a technika kihasználja a tervező mérnökök gyakori közreműködését - akik az algoritmus tanító komponensének felelnek meg - ugyanakkor automatizált technikákat is alkalmaz, ezzel orvosolva az automatizált ekvivalencia lekérdezések jelentős nehézségeit. Az ilyen módon előálló részben automatizált koncepció lehetővé teszi a mérnökök számára, hogy a rendszer elvárt viselkedésére koncentrálhassanak a viselkedési követelmények deklaratív megadásán és az algoritmus által javasolt modellek kiértékelésén keresztül.
+
+Ebben a dolgozatban bemutatunk egy adaptív, állapot alapú modellező keretrendszert, melybe megterveztük és integráltuk az interaktív algoritmust. Az ez által előállt keretrendszer egyesíti a manuális és automatizált megoldások előnyeit. Ezen felül kiterjesztettük a keretrendszert, hogy képes legyen különböző formalizmusok kezelésére és összeegyeztetésére is, elősegítve a modellvezérelt tervezést támogató interaktív automatatanuló algoritmusok fejlesztését és elemzését kiterjesztett alkalmazási területen.
+
+
+\vfill
+\selectenglish
+
+
+%----------------------------------------------------------------------------
+% Abstract in English
+%----------------------------------------------------------------------------
+\chapter*{Abstract}\addcontentsline{toc}{chapter}{Abstract}
+
+Model-based technologies improve the efficiency of designing and developing IT systems by making it possible to automate verification, code generation and system analysis based on a formal model. A simple way of describing the behavior of systems is state-based modeling, which - due to the advancements of formal analysis techniques in recent years - can be widely and effectively utilized when analyzing systems. A possible way of synthesizing such models is to apply active automata learning algorithms.
+
+Acquiring a correct formal model of a system can be challenging. On one hand, it is difficult for the designing engineer to keep every property of the envisioned system in mind at a given time, partly because of the complexity of the system, and because of possible hidden implications and contradictions. On the other hand, there are fully automated solutions, for instance, active automata learning, where the model construction is characterised by a teacher component - which is familiar with the extensive behavior of the system under learning - and a learner component - which synthesises the model via queries to the teacher component. However, such solutions have practical boundaries when validating the inferred behavior of the system. We propose a semi-automated solution, that applies automata learning to provide an interactive environment for model development.
+
+The objective of this work is to support the design of systems and components from the ground up through InterActive automata learning. It utilizes the frequent input of designing engineers - who themselves are regarded as the teaching component of the algorithm - along with automated techniques, resolving the infeasibility of automated equivalence validation. The resulting semi-automated concept allows the engineer to focus on the expected behavior of the system, specifying its behavioral requirements in a declarative way and evaluating the model proposed by the algorithm.
+
+This thesis presents an adaptive state-based modeling framework, into which we designed and integrated the interactive algorithm. The thus created framework combines the advantages of manual and automated solutions. Additionally, we extended the framework to handle and reconcile different formalisms, allowing the analysis and development of interactive automata learning algorithms to support model-driven development with an extended scope.
+
+
+
+\vfill
+\cleardoublepage
+
+\selectthesislanguage
+
+\newcounter{romanPage}
+\setcounter{romanPage}{\value{page}}
+\stepcounter{romanPage}

@@ -10,37 +10,55 @@ In this chapter, the various aspects of the proposed approach are detailed. In S
 	\fbox{
 		\includegraphics[width=150mm, keepaspectratio]{figures/methodology_interactiontypes.png}
 	}
-	\caption{Possibilities of the Engineer} %TODO title, extend 
+	\caption{Possibilities of the Engineer} %TODO title 
 	\label{fig_methodology_interactiontypes}
 \end{figure}
 
-Our methodology is heavily based on the interaction of the user with the system, especially its \textit{Oracle} component. The different types of interaciton are summarized on Figure \ref{fig_methodology_interactiontypes} and elaborated on in Subsection \ref{subs_reqtypes}. These interactions take place in a predefined order, illustrated on Figure [TODO] and have a predefined syntax with the corresponding semantics. Their common feature is the declarative way of describing the system components, which allows the engineer to focus solely on the expected behavior and acquire a minimal model exhibiting the specified functionality.
+Our methodology is heavily based on the interaction of the user with the system, especially its \textit{Oracle} component. The different types of interaciton are summarized on Figure \ref{fig_methodology_interactiontypes} and elaborated on in Subsection \ref{subs_reqtypes}. These interactions take place in a predefined order - illustrated on Figure \ref{fig_methodology_workflow} - and have a predefined syntax with the corresponding semantics. Their common feature is the declarative way of describing the system components, which allows the engineer to focus solely on the expected behavior and acquire a minimal model exhibiting the specified functionality.
 
-[TODO WORKFLOW KÉP IDE] %TODO
+\begin{figure}[!ht] 
+	\centering
+	\fbox{
+		\includegraphics[width=150mm, keepaspectratio]{figures/methodology_workflow.png}
+	}
+	\caption{The Proposed Workflow} %TODO title 
+	\label{fig_methodology_workflow}
+\end{figure}
+%TODO fork a komponenseknek
 
 %---------------------------------------------------------------
-\subsection{Component Definition} \label{subs_compdef}
+\subsection{Component and Interface Definition} \label{subs_compdef}
 %---------------------------------------------------------------
-%TODO megadhat több komponenst, névvel, ezek a megfelelő viselkedéseket fogják tanúsítani. I/O ábécét megadjuk előre, komponensek kapcsolatát a nevekből inferáljuk. Mindegyiket TELJESEN KÜLÖN tanuljuk.
+%TODO megadhat több komponenst, névvel, ezek a megfelelő viselkedéseket fogják tanúsítani. I/O ábécét megadjuk előre, komponensek kapcsolatát a nevekből inferáljuk. Mindegyiket TELJESEN KÜLÖN tanuljuk (fork). Ezért egyelőre semmit sem garantálunk ilyen téren.
 
 %---------------------------------------------------------------
 \subsection{Requirement Types} \label{subs_reqtypes}
 %---------------------------------------------------------------
-%TODO kifejteni ami a use-case diagramon van egyesével.
-%LTL-nél kifejteni a szintaxist, LTS szemanitikát
-%Szekvencia???
+%TODO kifejteni minden típust egyesével (5).
+% Trace-based vagy program logic (def ref background)
+% Mi a szintaxis (LTL: syntactic constructs, operátor precedencia, szemandtika - hivatkozások a megfelelő cikkre)
+% Mi a szemantika (LTL->LTS alapú def ref background)
+%---------------------------------------------------------------
+\subsection{Conflicting Requirements} \label{subs_conf}
+%---------------------------------------------------------------
+%TODO konfliktusban álló követelményeket mikor tud kivenni
+% Diszjunktság nehéz kérdés (ref Backgr), csak akkor dobjuk fel, ha valami bemenetre gond van
+% Akkor kiveheti az egyiket
+% Konzisztenciát többé-kevésbé figyeljük
+
 %---------------------------------------------------------------
 \subsection{Equivalence Query} \label{subs_eq}
 %---------------------------------------------------------------
-%TODO megjeleníti az EQt, ha nem tetszik, adjunk ellenpéldát.
-%Ha tetszik, elfogadjuk és továbblép a kövi komponensre vagy szerializál
+%TODO megjeleníti az EQt, mi van ekkor
+% Ha tetszik, elfogadjuk és továbblép a workflowban
+% Ha nem tetszik, adunk egy ellenpélda-input-sorozatot
+% TULAJDONSÁGAI?
 %---------------------------------------------------------------
-\subsection{Output} \label{subs_resultingmodel}
+\subsection{The Resulting Model} \label{subs_resultingmodel}
 %---------------------------------------------------------------
-%TODO valid Gammát kapunk, ezt:
-%kiegészíthetjük
-%generálhatunk belőle akármit
-
+%TODO ha minden kész, valid Gammát kapunk, ezt:
+% kiegészíthetjük
+% generálhatunk belőle akármit, amit a gamma tud (ref backgr)
 
 %----------------------------------------------------------------------------
 \section{Overview of the Architecture} \label{sec_architecture}

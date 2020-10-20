@@ -33,29 +33,31 @@ The individual steps in both the offline and the online phases have a predefined
 \subsection{Component and Interface Definition} \label{subs_compdef}
 %---------------------------------------------------------------
 %megadhat több komponenst, névvel, ezek a megfelelő viselkedéseket fogják tanúsítani. I/O ábécét megadjuk előre, komponensek kapcsolatát a nevekből inferáljuk. Mindegyiket TELJESEN KÜLÖN tanuljuk (fork). Ezért egyelőre semmit sem garantálunk ilyen téren, de előnyei is vannak.
-The first step of the workflow is the declaration of the system components. This happens in the offline phase, as the determination of the system components, their exact boundaries and interfaces is out of the scope of this work. Nonetheless, the engineer must provide the names of the system components, along with their input- and output alphabets, before the workflow can proceed to the next step.
+The first step of the workflow is the declaration of the system components. This happens in the offline phase, as the determination of the system components, their exact boundaries and interfaces is out of the scope of this work. Nonetheless, the engineer must provide the names of the system components, along with their interfaces - in other words their input- and output alphabets - before the workflow can proceed to the next step.
 
-Users are encouraged to specify input and output characters qualified with port names in the format 'Port.character', as this supplies the subsequent steps with essential information about the connections of the individual system components.
+Users are encouraged to specify input and output characters qualified with interface names in the format 'Port.character', as this supplies the subsequent steps with essential information about the connections of the individual system components.
 
 The components are handled as independent systems in every other aspect. This results - among others - in the arbitrary ordering of the online behavior-learning phases, and the behavioral faults being limited to their components of origin (although this does not limit the propagation of errors through messages resulting from incorrect behavior).
-%TODO
-The syntax of component and interface definitions is quite simple, as illustrated in [TODO add example]
+The syntax of component and interface definitions is quite simple, as illustrated in Listing \ref{lst_compdef}.
+
+\bigskip
+\begin{lstlisting} [language=tex,caption=Example of a component declaration along with its interfaces,label=lst_compdef]
+	TODO EXAMPLE
+\end{lstlisting} %TODO
 
 %---------------------------------------------------------------
 \subsection{Requirement Types} \label{subs_reqtypes}
 %---------------------------------------------------------------
-% Mi a szintaxis (LTL: syntactic constructs, operátor precedencia, szemandtika - hivatkozások a megfelelő cikkre)
-% Mi a szemantika (LTL->LTS alapú def ref background)
-During the workflow, the engineers can provide the requirements in both the online and the offline phases. 
+During the workflow, the engineers can provide requirements in both the online and the offline phases. 
 
 In the offline phase, this means that they add requirements they have formulated in advance. This is useful for more general requirements, with the scope of the whole component, conveniently formulated by program logic expressions, or long and complex traces.
 
-In the online phase, adding requirements means answering the questions formulated by the algorithm, about a yet unknown behavior at a specific place in the currently examined trace. This too can be answered through program logic - e.g. when the engineer realizes a general property during the model construction - but also through traces and through giving the corresponding output directly.
+In the online phase, adding requirements means answering the questions formulated by the algorithm about a yet unspecified behavior at a specific place in the trace currently being examined. This too can be answered through program logic - e.g. when the engineer realizes a general property during the model construction - but also through traces and through giving the corresponding output directly.
 
 \textbf{Corresponding Output}
 % TODO ref background: trace(-based)
 
-This is the simplest way of specifying the behavior of the system, also containing the least information among the different model types. To put simply, this means giving the output for a given input sequence, without any additional information. This supposedly answers the question of the <system> at \textit{one} given point, and that is the end of its scope.
+This is the simplest way of specifying the behavior of the system, also containing the least amount of information among the different model types. To put simply, this means giving the output for a given input sequence, without any additional information. This supposedly answers the question of the <system> at \textit{one} given point, and that is the end of its scope.
 
 Examples of corresponding output specification can be seen in Listing \ref{lst_iopair}.
 
@@ -73,7 +75,7 @@ Online:
 
 \textbf{Valid Trace}
 
-Valid traces are a more complex form of specifying the corresponding output: it gives the corresponding output for any prefix of the contained input sequence. This might be useful, as usually the whole output sequence is taken into consideration when determining the output for some inputs. Thus, the <system> can get \textit{multiple} answers concerning the behavior in question.
+Valid traces are a more complex form of specifying the corresponding output: it gives the corresponding output for any prefix of the contained input sequence. This might be useful, as usually the whole output sequence is taken into consideration when determining the output for some inputs. Thus, the <system> can get \textit{multiple} answers concerning the behaviors in question.
 
 An example can be seen in Listing \ref{lst_validtrace}.
 
@@ -99,13 +101,11 @@ It is important to note, that the specification and integration of sequence diag
 
 \textbf{Trace to Exclude}
 
-Invalid traces are similar to valid traces, with the difference that the contained behavior must not appear in the resulting model. 
+Invalid traces are similar to valid traces, with the difference that the contained behavior must not appear in the resulting model. They are most useful for small output alphabets, or when the range of possible behaviors is otherwise contained - e.g. through program logic expressions or several other excluded traces.
 
-They are most useful for small output alphabets, or when the range of possible behaviors is otherwise contained - e.g. through program logic expressions or several other excluded traces.
+They can also be used to formulate requirements even when the determination of the correct behavior does not directly follow from them: when specifying the behavior in question, the <system> will signal any conflicting requirements for the examined input sequences and require the user to remove one - thus facilitating the enforcement of these requirements too.
 
-They can also be used to formulate requirements even when the determination of the correct behavior does not directly follow from these models: the <system> will signal conflicting requirements for the examined input sequences and require the user to remove one.
-
-An example can be seen in Listing \ref{lst_invalidtrace}.
+An example for invalid traces can be seen in Listing \ref{lst_invalidtrace}.
 
 \bigskip
 \begin{lstlisting} [language=tex,caption=Example of a trace to exclude,label=lst_invalidtrace]
@@ -138,39 +138,58 @@ Assuming the output alphabet also contains red, yellow and green, it is equivale
 >F(interrupt&!toggle -> X(G(toggle&!interrupt) -> G(blinkingYellow&!red&!yellow&!green)))
 \end{lstlisting}
 
-It is important to note, that the specification of our LTL variant is not yet complete: for the compactness of requirement specifications it would make sense to integrate additional well-known boolean operators - like XOR (exclusive-or) - and temportal connectives - like WB (weak-before) and R (release) - into the language. 
+It is important to note, that the specification of our LTL variant is not yet complete: for the compactness of requirement specifications it would make sense to integrate additional well-known boolean operators - like XOR (exclusive-or) - and temportal connectives - such as WB (weak-before) and R (release) - into the language. 
 
 %---------------------------------------------------------------
 \subsection{Conflicting Requirements} \label{subs_conf}
 %---------------------------------------------------------------
-%TODO konfliktusban álló követelményeket mikor tud kivenni
-% Diszjunktság nehéz kérdés (ref Backgr), csak akkor dobjuk fel, ha valami bemenetre gond van
-% Akkor kiveheti az egyiket
-% Konzisztenciát többé-kevésbé figyeljük
 The requirements the designing engineer provides the <system> with may easily be conflicting, especially in case of LTL expressions and invalid traces - that describe possibly infinite sets of behaviors. For this reason, it is essential for the system to provide some kind of conflict handling within the practical boundaries of the available resources. 
 
-The whole problem can be traced back to determining if two or more omega-regular languages are disjoint, which is a difficult and resource intensive task for reasons discussed in [TODO ref backgr]. Consequently, the <system> only guarantees to handle the conflict, when it appears for other reasons too. In that case, the user is asked to remove one of the conflicting models, before the analysis of the behavior can proceed.
+The whole problem is a difficult and resource intensive task for reasons discussed later. Consequently, the <system> only guarantees to handle the conflict, when it appears for other reasons too. In that case, the user is asked to remove one of the conflicting models, before the analysis of the behavior can proceed.
 
 As conflicts only become apparent during the online phase of the workflow, the conflict handling is only present there. However, conflicts that were added to <the system> earlier are also discovered and resolved in that phase. An example of a requirement conflict handling can be seen in Listing \ref{lst_conflicthandling}.
 
 \bigskip
 \begin{lstlisting} [language=tex,caption=Example of a requirement conflict handling,label=lst_conflicthandling]
 	TODO EXAMPLE
-\end{lstlisting}
+\end{lstlisting}%TODO
 
 %---------------------------------------------------------------
-\subsection{Equivalence Query} \label{subs_eq}
+\subsection{Checking the Correctness of the Synthesized Model} \label{subs_eq}
 %---------------------------------------------------------------
-%TODO megjeleníti az EQt, mi van ekkor
-% Ha tetszik, elfogadjuk és továbblép a workflowban
-% Ha nem tetszik, adunk egy ellenpélda-input-sorozatot
-% TULAJDONSÁGAI?
+During the online phase, whenever <the system> assumes that it has gathered enough information to construct a model for the given component, the engineer if offered with a possible model representing the current state of the model synthesis - the equivalent of an equivalence query in automaton learning algorithms. This model can either be approved, or a counterexample is required from the user, where the model does not meet the - not yet specified - requirements.
+
+%TODO az EQ modell tulajdonságai?
+
+If the model is accepted, the workflow can attempt to proceed to the next step - the serialization of the model. If a counterexample is provided, the online phase resumes and the system design continues until the next possible model is reached.
+
+Example of models offered in equivalence queries can be seen on Figure \ref{fig_methodology_eqex}.
+
+\begin{figure}[!ht] 
+	\centering
+	\fbox{
+		\includegraphics[height=50mm, keepaspectratio]{figures/methodology_eqex1.png}
+	}
+	\fbox{
+		\includegraphics[height=50mm, keepaspectratio]{figures/methodology_eqex2.png}
+	}
+	\caption{Examples of \textit{equivalence queries}} %TODO title 
+	\label{fig_methodology_eqex}
+\end{figure}
+
 %---------------------------------------------------------------
-\subsection{The Resulting Model} \label{subs_resultingmodel}
+\subsection{The Resulting System Model} \label{subs_resultingmodel}
 %---------------------------------------------------------------
 %TODO ha minden kész, valid Gammát kapunk, ezt:
 % kiegészíthetjük
 % generálhatunk belőle akármit, amit a gamma tud (ref backgr)
+When each of the component models declared during the first step of the workflow are completed, the resulting system model can be serialized and handed over to the engineer for further extensions or to use it for any of its possible applications. This serialization can happen in various formalisms.
+
+%TODO ref 
+One such possible formalism is the serialization to a Gamma statechart, introduced in [TODO ref backgr]. Gamma statecharts are high-level state-based models, to which every functionality offered by the Gamma Statechart Composition Framework can be applied. Our framework offers full-scale Gamma serialization: when choosing this formalism, a whole project will be created, along with interface definitions, component definitions - for each of the previously declared components, with the synthesized behavior - and a composite system definition, connecting the components based on the names of their interfaces.
+
+%TODO ref
+Another possibility is the serialization to the Mealy machine formalism of the framework - as presented when checking the correctness of the model. This results in a lower-level set of independent model, with a completely different set of applications.
 
 %----------------------------------------------------------------------------
 \section{Overview of the Architecture} \label{sec_architecture}

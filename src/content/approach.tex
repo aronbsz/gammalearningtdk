@@ -57,7 +57,7 @@ In the online phase, adding requirements means answering the questions formulate
 
 This is the simplest way of specifying the behavior of the system, also containing the least information among the different model types. To put simply, this means giving the output for a given input sequence, without any additional information. This supposedly answers the question of the <system> at \textit{one} given point, and that is the end of its scope.
 
-Examples of corresponding output specification can be seen on Listing \ref{lst_iopair}.
+Examples of corresponding output specification can be seen in Listing \ref{lst_iopair}.
 
 \bigskip
 \begin{lstlisting} [language=tex,caption=Examples of corresponding output specification,label=lst_iopair]
@@ -75,7 +75,7 @@ Online:
 
 Valid traces are a more complex form of specifying the corresponding output: it gives the corresponding output for any prefix of the contained input sequence. This might be useful, as usually the whole output sequence is taken into consideration when determining the output for some inputs. Thus, the <system> can get \textit{multiple} answers concerning the behavior in question.
 
-An example can be seen on Listing \ref{lst_validtrace}.
+An example can be seen in Listing \ref{lst_validtrace}.
 
 \bigskip
 \begin{lstlisting} [language=tex,caption=Example of a valid trace,label=lst_validtrace]
@@ -105,7 +105,7 @@ They are most useful for small output alphabets, or when the range of possible b
 
 They can also be used to formulate requirements even when the determination of the correct behavior does not directly follow from these models: the <system> will signal conflicting requirements for the examined input sequences and require the user to remove one.
 
-An example can be seen on Listing \ref{lst_invalidtrace}.
+An example can be seen in Listing \ref{lst_invalidtrace}.
 
 \bigskip
 \begin{lstlisting} [language=tex,caption=Example of a trace to exclude,label=lst_invalidtrace]
@@ -119,29 +119,23 @@ Both offline and online:
 %TODO ref backgr LTL
 %TODO ref backgr LTS
 
-LTL expressions are a highly complex type of program logic-based requirement specification: they can be used to formulate propositional logic expressions with temporal connectives over \textit{paths} of a \textit{base model}, as described in [TODO backgr]. For our application, we introduce our own LTL expression language with its own syntax and semantics - although attempting to keep it similar to other generally known variants, especially that of SPOT [TODO ref].
-%In our case, the LTS interpretation of the system under learning will serve as the base model, and the expression has to be valid over all paths from the initial state.  
-%TODO has to be valid or has to be able to be valid???
-The syntax of the LTL expressions is as follows:
-\bigskip
-\begin{lstlisting} [language=tex,caption=LTL expression syntax,label=lst_ltlsyntax]
-LTLExpression ::= ...
-... ::= ...
-\end{lstlisting}
+LTL expressions are a highly complex type of program logic-based requirement specification: they can be used to formulate propositional logic expressions with temporal connectives over \textit{paths} of a \textit{base model}, as described in [TODO ref backgr]. 
 
-The base model will be ... [TODO backgr LTS]
-In our interpretation, the LTL expressions must hold for all paths from the initial state.
+For our application, we introduce our own LTL expression language with its own syntax and semantics - although attempting to keep it similar to other generally known variants, especially that of SPOT [TODO cite]. The full syntax of the LTL expressions - also determining the operator precedence - can be seen in Listing \ref{lst_ltlfullsyntax}.
 
-The semantics of the supported temporal connectives are similar to those described in [TODO ref] %TODO ref backgr
+The base model of the LTL expressions is the LTS [TODO ref backgr] interpretation of the component under learning. This means, that the set of atomic propositions that can be used in these expressions are the possible labels of the transitions, which are the elements of the input and the output alphabets of the component. The model synthesis takes place assuming event semantics - exactly one input and one output event happening at any given time. For this reason, we also introduced these semantics to the LTL expressions: the conjunction of exactly one input and one output character must hold at any given point in time for it to be considered correct - and every other character must be negated at the same point. This also entails, that given another character not explicitly negated at that point, it is assumed to be automatically negated, and in the case that no proposition is declared explicitly to hold, it is assumed that either one of the non-explicitly negated characters hold. 
 
-An example for a valid LTL expression can be seen on Listing \ref{lst_ltlex}.
+The semantics of the supported temporal connectives, and other aspects of the LTL semantics in general, are similar to those described in [TODO ref backgr] %TODO
+
+Examples for a valid LTL expressions can be seen in Listing \ref{lst_ltlex}.
 
 \bigskip
-\begin{lstlisting} [language=tex,caption=Example of an LTL expression,label=lst_ltlex]
-Both offline and online:
->F(Control.interrupt -> X(G(Control.toggle) -> G(TrafficDisplay.blinkingYellow)))
+\begin{lstlisting} [language=tex,caption=Examples of LTL expressions,label=lst_ltlex]
+Assuming Control.interrupt and toggle are from the input alphabet and blinkingYellow is from the output alphabet, both offline and online:
+>F(interrupt -> X(G(toggle) -> G(blinkingYellow)))
 
-(assuming Control.interrupt and Control.toggle are from the input alphabet and TrafficDisplay.blinkingYellow is from the output alphabet)
+Assuming the output alphabet also contains red, yellow and green, it is equivalent to:
+>F(interrupt&!toggle -> X(G(toggle&!interrupt) -> G(blinkingYellow&!red&!yellow&!green)))
 \end{lstlisting}
 
 It is important to note, that the specification of our LTL variant is not yet complete: for the compactness of requirement specifications it would make sense to integrate additional well-known boolean operators - like XOR (exclusive-or) - and temportal connectives - like WB (weak-before) and R (release) - into the language. 

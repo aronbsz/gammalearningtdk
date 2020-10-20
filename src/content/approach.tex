@@ -147,6 +147,16 @@ It is important to note, that the specification of our LTL variant is not yet co
 % Diszjunktság nehéz kérdés (ref Backgr), csak akkor dobjuk fel, ha valami bemenetre gond van
 % Akkor kiveheti az egyiket
 % Konzisztenciát többé-kevésbé figyeljük
+The requirements the designing engineer provides the <system> with may easily be conflicting, especially in case of LTL expressions and invalid traces - that describe possibly infinite sets of behaviors. For this reason, it is essential for the system to provide some kind of conflict handling within the practical boundaries of the available resources. 
+
+The whole problem can be traced back to determining if two or more omega-regular languages are disjoint, which is a difficult and resource intensive task for reasons discussed in [TODO ref backgr]. Consequently, the <system> only guarantees to handle the conflict, when it appears for other reasons too. In that case, the user is asked to remove one of the conflicting models, before the analysis of the behavior can proceed.
+
+As conflicts only become apparent during the online phase of the workflow, the conflict handling is only present there. However, conflicts that were added to <the system> earlier are also discovered and resolved in that phase. An example of a requirement conflict handling can be seen in Listing \ref{lst_conflicthandling}.
+
+\bigskip
+\begin{lstlisting} [language=tex,caption=Example of a requirement conflict handling,label=lst_conflicthandling]
+	TODO EXAMPLE
+\end{lstlisting}
 
 %---------------------------------------------------------------
 \subsection{Equivalence Query} \label{subs_eq}

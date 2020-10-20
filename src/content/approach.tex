@@ -57,15 +57,33 @@ In the online phase, adding requirements means answering the questions formulate
 
 This is the simplest way of specifying the behavior of the system, also containing the least information among the different model types. To put simply, this means giving the output for a given input sequence, without any additional information. This supposedly answers the question of the <system> at \textit{one} given point, and that is the end of its scope.
 
-%TODO
-An example can be seen on [TODO insert example]
+Examples of corresponding output specification can be seen on Listing \ref{lst_iopair}.
+
+\bigskip
+\begin{lstlisting} [language=tex,caption=Examples of corresponding output specification,label=lst_iopair]
+Offline: 
+>input1 input2 input3 output
+
+Online: 
+>Output for [input1 input2 input3]:
+>output3
+
+(assuming input1/2/3 are from the input alphabet and output3 is from the output alphabet)
+\end{lstlisting}
 
 \textbf{Valid Trace}
 
-Valid traces are the more complex form of giving the corresponding output: it gives the corresponding output for any prefix of the contained input sequence. This might be useful, as usually the whole output sequence is taken into consideration when determining the output for some inputs. Thus, the <system> can get \textit{multiple} answers concerning the behavior in question.
+Valid traces are a more complex form of specifying the corresponding output: it gives the corresponding output for any prefix of the contained input sequence. This might be useful, as usually the whole output sequence is taken into consideration when determining the output for some inputs. Thus, the <system> can get \textit{multiple} answers concerning the behavior in question.
 
-%TODO
-An example can be seen on [TODO insert example]
+An example can be seen on Listing \ref{lst_validtrace}.
+
+\bigskip
+\begin{lstlisting} [language=tex,caption=Example of a valid trace,label=lst_validtrace]
+Both offline and online:
+>input1/output1 input2/output2 input3/output3
+
+(assuming input1/2/3 are from the input alphabet and output1/2/3 are from the output alphabet) 
+\end{lstlisting}
 
 \textbf{Sequence Diagram}
 %TODO ref backgr UML
@@ -87,8 +105,15 @@ They are most useful for small output alphabets, or when the range of possible b
 
 They can also be used to formulate requirements even when the determination of the correct behavior does not directly follow from these models: the <system> will signal conflicting requirements for the examined input sequences and require the user to remove one.
 
-%TODO
-An example can be seen on [TODO insert example]
+An example can be seen on Listing \ref{lst_invalidtrace}.
+
+\bigskip
+\begin{lstlisting} [language=tex,caption=Example of a trace to exclude,label=lst_invalidtrace]
+Both offline and online:
+>input4/output4 input5/output5
+
+(assuming input4/5 are from the input alphabet and output4/5 are from the output alphabet) 
+\end{lstlisting}
 
 \textbf{LTL Expression}
 %TODO ref backgr LTL
@@ -98,16 +123,26 @@ LTL expressions are a highly complex type of program logic-based requirement spe
 %In our case, the LTS interpretation of the system under learning will serve as the base model, and the expression has to be valid over all paths from the initial state.  
 %TODO has to be valid or has to be able to be valid???
 The syntax of the LTL expressions is as follows:
-...
-...
+\bigskip
+\begin{lstlisting} [language=tex,caption=LTL expression syntax,label=lst_ltlsyntax]
+LTLExpression ::= ...
+... ::= ...
+\end{lstlisting}
 
 The base model will be ... [TODO backgr LTS]
 In our interpretation, the LTL expressions must hold for all paths from the initial state.
 
 The semantics of the supported temporal connectives are similar to those described in [TODO ref] %TODO ref backgr
 
-%TODO
-An example for a valid LTL expression can be seen on [TODO insert example]
+An example for a valid LTL expression can be seen on Listing \ref{lst_ltlex}.
+
+\bigskip
+\begin{lstlisting} [language=tex,caption=Example of an LTL expression,label=lst_ltlex]
+Both offline and online:
+>F(Control.interrupt -> X(G(Control.toggle) -> G(TrafficDisplay.blinkingYellow)))
+
+(assuming Control.interrupt and Control.toggle are from the input alphabet and TrafficDisplay.blinkingYellow is from the output alphabet)
+\end{lstlisting}
 
 It is important to note, that the specification of our LTL variant is not yet complete: for the compactness of requirement specifications it would make sense to integrate additional well-known boolean operators - like XOR (exclusive-or) - and temportal connectives - like WB (weak-before) and R (release) - into the language. 
 

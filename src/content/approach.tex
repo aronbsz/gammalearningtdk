@@ -32,13 +32,13 @@ The individual steps in both the offline and the online phases have a predefined
 %---------------------------------------------------------------
 \subsection{Component and Interface Definition} \label{subs_compdef}
 %---------------------------------------------------------------
-%TODO megadhat több komponenst, névvel, ezek a megfelelő viselkedéseket fogják tanúsítani. I/O ábécét megadjuk előre, komponensek kapcsolatát a nevekből inferáljuk. Mindegyiket TELJESEN KÜLÖN tanuljuk (fork). Ezért egyelőre semmit sem garantálunk ilyen téren, de előnyei is vannak.
+%megadhat több komponenst, névvel, ezek a megfelelő viselkedéseket fogják tanúsítani. I/O ábécét megadjuk előre, komponensek kapcsolatát a nevekből inferáljuk. Mindegyiket TELJESEN KÜLÖN tanuljuk (fork). Ezért egyelőre semmit sem garantálunk ilyen téren, de előnyei is vannak.
 The first step of the workflow is the declaration of the system components. This happens in the offline phase, as the determination of the system components, their exact boundaries and interfaces is out of the scope of this work. Nonetheless, the engineer must provide the names of the system components, along with their input- and output alphabets, before the workflow can proceed to the next step.
 
 Users are encouraged to specify input and output characters qualified with port names in the format 'Port.character', as this supplies the subsequent steps with essential information about the connections of the individual system components.
 
 The components are handled as independent systems in every other aspect. This results - among others - in the arbitrary ordering of the online behavior-learning phases, and the behavioral faults being limited to their components of origin (although this does not limit the propagation of errors through messages resulting from incorrect behavior).
-
+%TODO
 The syntax of component and interface definitions is quite simple, as illustrated in [TODO add example]
 
 %---------------------------------------------------------------
@@ -57,12 +57,14 @@ In the online phase, adding requirements means answering the questions formulate
 
 This is the simplest way of specifying the behavior of the system, also containing the least information among the different model types. To put simply, this means giving the output for a given input sequence, without any additional information. This supposedly answers the question of the <system> at \textit{one} given point, and that is the end of its scope.
 
+%TODO
 An example can be seen on [TODO insert example]
 
 \textbf{Valid Trace}
 
 Valid traces are the more complex form of giving the corresponding output: it gives the corresponding output for any prefix of the contained input sequence. This might be useful, as usually the whole output sequence is taken into consideration when determining the output for some inputs. Thus, the <system> can get \textit{multiple} answers concerning the behavior in question.
 
+%TODO
 An example can be seen on [TODO insert example]
 
 \textbf{Sequence Diagram}
@@ -72,6 +74,7 @@ UML-like sequence diagrams are an even more complex form of trace-based models, 
 
 Sequence diagrams can also be used to model infinite behavior, which results in containing plenty of information, which in turn results in possibly answering \textit{several} questions formulated by the <system>.
 
+%TODO
 An example for the application of sequence diagrams can be seen on [TODO insert example]
 
 It is important to note, that the specification and integration of sequence diagrams into this framework is not yet complete. 
@@ -84,6 +87,7 @@ They are most useful for small output alphabets, or when the range of possible b
 
 They can also be used to formulate requirements even when the determination of the correct behavior does not directly follow from these models: the <system> will signal conflicting requirements for the examined input sequences and require the user to remove one.
 
+%TODO
 An example can be seen on [TODO insert example]
 
 \textbf{LTL Expression}
@@ -102,6 +106,7 @@ In our interpretation, the LTL expressions must hold for all paths from the init
 
 The semantics of the supported temporal connectives are similar to those described in [TODO ref] %TODO ref backgr
 
+%TODO
 An example for a valid LTL expression can be seen on [TODO insert example]
 
 It is important to note, that the specification of our LTL variant is not yet complete: for the compactness of requirement specifications it would make sense to integrate additional well-known boolean operators - like XOR (exclusive-or) - and temportal connectives - like WB (weak-before) and R (release) - into the language. 

@@ -1,7 +1,7 @@
 %----------------------------------------------------------------------------
 \chapter{Overview of the Approach}
 %----------------------------------------------------------------------------
-In this chapter, the various aspects of the proposed approach are detailed. In Section \ref{sec_methodology}, the application of this methodology from the users' point of view: how are they supposed to interact with the interactive automata learning framework and how can they utilize it to design reactive systems in a declarative way. Then, in Section \ref{sec_architecture}, the applied software architecture, software components, algorithms and data structures are presented in the following order: first, the components concerned with the automata learning algorithm, then those responsible for its interaction with the oracle, then the possible interactions of the oracle with the engineer.
+In this chapter, the various aspects of the proposed approach are detailed. In Section \ref{sec_methodology}, the application of this methodology from the users' point of view: how are they supposed to interact with the interactive automata learning framework - also called \textit{Interactive Learning Entity} or \textit{ILE} - and how can they utilize it to design reactive systems in a declarative way. Then, in Section \ref{sec_architecture}, the applied software architecture, software components, algorithms and data structures are presented in the following order: first, the components concerned with the automata learning algorithm, then those responsible for its interaction with the oracle component, then the possible interactions of the oracle with the engineer.
 %----------------------------------------------------------------------------
 \section{Overview of the Methodology} \label{sec_methodology}
 %----------------------------------------------------------------------------
@@ -14,7 +14,7 @@ In this chapter, the various aspects of the proposed approach are detailed. In S
 	\label{fig_methodology_interactiontypes}
 \end{figure}
 
-Our methodology is heavily based on the interaction of the user with the system, especially its \textit{Oracle} component. The different types of interaciton are summarized on Figure \ref{fig_methodology_interactiontypes} and elaborated on in Subsection \ref{subs_reqtypes}. These interactions take place in a predefined order - the \textit{proposed workflow}, illustrated on Figure \ref{fig_methodology_workflow}. This workflow consists of two phases: first, an \textit{offline} one, and then an \textit{online} one. During the offline phase, the system offers little assistance, the designing engineer must determine the required details by other means. The interactive system design happens during the online phase. 
+Our methodology is heavily based on the interaction of the user with the ILE, especially its \textit{oracle} component. The different types of interacitons are summarized on Figure \ref{fig_methodology_interactiontypes} and are elaborated on in Subsection \ref{subs_reqtypes}. These interactions take place in a predefined order - the \textit{proposed workflow}, illustrated on Figure \ref{fig_methodology_workflow}. This workflow consists of two phases: first, an \textit{offline} one, and then an \textit{online} one. During the offline phase, the ILE offers little assistance, the designing engineer must determine the required details by other means. The interactive system design happens during the online phase. 
 
 The individual steps in both the offline and the online phases have a predefined syntax with the corresponding, precisely defined semantics. Their common feature is the declarative way of describing the system components, which allows the engineer to focus solely on the expected behavior and acquire a minimal model exhibiting the specified functionality. The following subsections explain these steps in detail.
 
@@ -35,15 +35,21 @@ The individual steps in both the offline and the online phases have a predefined
 %megadhat több komponenst, névvel, ezek a megfelelő viselkedéseket fogják tanúsítani. I/O ábécét megadjuk előre, komponensek kapcsolatát a nevekből inferáljuk. Mindegyiket TELJESEN KÜLÖN tanuljuk (fork). Ezért egyelőre semmit sem garantálunk ilyen téren, de előnyei is vannak.
 The first step of the workflow is the declaration of the system components. This happens in the offline phase, as the determination of the system components, their exact boundaries and interfaces is out of the scope of this work. Nonetheless, the engineer must provide the names of the system components, along with their interfaces - in other words their input- and output alphabets - before the workflow can proceed to the next step.
 
-Users are encouraged to specify input and output characters qualified with interface names in the format 'Port.character', as this supplies the subsequent steps with essential information about the connections of the individual system components.
+Users are encouraged to specify input and output characters qualified with interface names in the format 'Port.character', as this supplies the subsequent steps with essential information about the connections of the individual system components. For the sake of simplicity, this format is not necessarily used in the following examples.
 
 The components are handled as independent systems in every other aspect. This results - among others - in the arbitrary ordering of the online behavior-learning phases, and the behavioral faults being limited to their components of origin (although this does not limit the propagation of errors through messages resulting from incorrect behavior).
-The syntax of component and interface definitions is quite simple, as illustrated in Listing \ref{lst_compdef}.
+The syntax of component and interface declarations is quite simple, as illustrated in Listing \ref{lst_compdef}.
 
 \bigskip
 \begin{lstlisting} [language=tex,caption=Example of a component declaration along with its interfaces,label=lst_compdef]
-	TODO EXAMPLE
-\end{lstlisting} %TODO
+Components:
+>component1 component2 component3
+Input alphabet of component1:
+>Input1.toggle Input2.interrupt
+Output alphabet of component1: 
+>Output1.red Output1.green Output1.blue
+...
+\end{lstlisting}
 
 %---------------------------------------------------------------
 \subsection{Requirement Types} \label{subs_reqtypes}
@@ -57,7 +63,7 @@ In the online phase, adding requirements means answering the questions formulate
 \textbf{Corresponding Output}
 % TODO ref background: trace(-based)
 
-This is the simplest way of specifying the behavior of the system, also containing the least amount of information among the different model types. To put simply, this means giving the output for a given input sequence, without any additional information. This supposedly answers the question of the <system> at \textit{one} given point, and that is the end of its scope.
+This is the simplest way of specifying the behavior of the system, also containing the least amount of information among the different model types. To put simply, this means giving the output for a given input sequence, without any additional information. This supposedly answers the question of the ILE at \textit{one} given point, and that is the end of its scope.
 
 Examples of corresponding output specification can be seen in Listing \ref{lst_iopair}.
 
@@ -75,7 +81,7 @@ Online:
 
 \textbf{Valid Trace}
 
-Valid traces are a more complex form of specifying the corresponding output: it gives the corresponding output for any prefix of the contained input sequence. This might be useful, as usually the whole output sequence is taken into consideration when determining the output for some inputs. Thus, the <system> can get \textit{multiple} answers concerning the behaviors in question.
+Valid traces are a more complex form of specifying the corresponding output: it gives the corresponding output for any prefix of the contained input sequence. This might be useful, as usually the whole output sequence is taken into consideration when determining the output for some inputs. Thus, the ILE can obtain \textit{multiple} answers concerning the behaviors in question.
 
 An example can be seen in Listing \ref{lst_validtrace}.
 
@@ -92,7 +98,7 @@ Both offline and online:
 
 UML-like sequence diagrams are an even more complex form of trace-based models, as they can contain several traces - due to them having \textit{alt} and \textit{opt} fragments for branching the behavior. They also have - among others - \textit{ref} fragments for referencing behaviors specified elsewhere.
 
-Sequence diagrams can also be used to model infinite behavior, which results in containing plenty of information, which in turn results in possibly answering \textit{several} questions formulated by the <system>.
+Sequence diagrams can also be used to model infinite behavior, which results in containing plenty of information, which in turn results in possibly answering \textit{several} questions formulated by the ILE.
 
 %TODO
 An example for the application of sequence diagrams can be seen on [TODO insert example]
@@ -103,7 +109,7 @@ It is important to note, that the specification and integration of sequence diag
 
 Invalid traces are similar to valid traces, with the difference that the contained behavior must not appear in the resulting model. They are most useful for small output alphabets, or when the range of possible behaviors is otherwise contained - e.g. through program logic expressions or several other excluded traces.
 
-They can also be used to formulate requirements even when the determination of the correct behavior does not directly follow from them: when specifying the behavior in question, the <system> will signal any conflicting requirements for the examined input sequences and require the user to remove one - thus facilitating the enforcement of these requirements too.
+They can also be used to formulate requirements even when the determination of the correct behavior does not directly follow from them: when specifying the behavior in question, the ILE will signal any conflicting requirements for the examined input sequences and require the user to remove one - thus facilitating the enforcement of these requirements too.
 
 An example for invalid traces can be seen in Listing \ref{lst_invalidtrace}.
 
@@ -143,11 +149,11 @@ It is important to note, that the specification of our LTL variant is not yet co
 %---------------------------------------------------------------
 \subsection{Conflicting Requirements} \label{subs_conf}
 %---------------------------------------------------------------
-The requirements the designing engineer provides the <system> with may easily be conflicting, especially in case of LTL expressions and invalid traces - that describe possibly infinite sets of behaviors. For this reason, it is essential for the system to provide some kind of conflict handling within the practical boundaries of the available resources. 
+The requirements the designing engineer provides the ILE with may easily be conflicting, especially in case of LTL expressions and invalid traces - that describe possibly infinite sets of behaviors. For this reason, it is essential for the system to provide some kind of conflict handling within the practical boundaries of the available resources. 
 
-The whole problem is a difficult and resource intensive task for reasons discussed later. Consequently, the <system> only guarantees to handle the conflict, when it appears for other reasons too. In that case, the user is asked to remove one of the conflicting models, before the analysis of the behavior can proceed.
+The whole problem is a difficult and resource intensive task for reasons discussed later. Consequently, the ILE only guarantees to handle the conflict, when it appears for other reasons too. In that case, the user is asked to remove one of the conflicting models, before the analysis of the behavior can proceed.
 
-As conflicts only become apparent during the online phase of the workflow, the conflict handling is only present there. However, conflicts that were added to <the system> earlier are also discovered and resolved in that phase. An example of a requirement conflict handling can be seen in Listing \ref{lst_conflicthandling}.
+As conflicts only become apparent during the online phase of the workflow, the conflict handling is only present there. However, conflicts that were introduced earlier are also discovered and resolved in that phase. An example of a requirement conflict handling can be seen in Listing \ref{lst_conflicthandling}.
 
 \bigskip
 \begin{lstlisting} [language=tex,caption=Example of a requirement conflict handling,label=lst_conflicthandling]
@@ -157,7 +163,7 @@ As conflicts only become apparent during the online phase of the workflow, the c
 %---------------------------------------------------------------
 \subsection{Checking the Correctness of the Synthesized Model} \label{subs_eq}
 %---------------------------------------------------------------
-During the online phase, whenever <the system> assumes that it has gathered enough information to construct a model for the given component, the engineer if offered with a possible model representing the current state of the model synthesis - the equivalent of an equivalence query in automaton learning algorithms. This model can either be approved, or a counterexample is required from the user, where the model does not meet the - not yet specified - requirements.
+During the online phase, whenever ILE assumes that it has gathered enough information to construct a model for the given component, the engineer if offered with a possible model representing the current state of the model synthesis - the equivalent of an equivalence query in automaton learning algorithms. This model can either be approved, or a counterexample is required from the user, where the model does not meet the - not yet specified - requirements.
 
 %TODO az EQ modell tulajdonságai?
 

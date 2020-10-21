@@ -1,7 +1,7 @@
 %----------------------------------------------------------------------------
 \chapter{Overview of the Approach}
 %----------------------------------------------------------------------------
-In this chapter, the various aspects of the proposed approach are detailed. In Section \ref{sec_methodology}, the application of this methodology from the users' point of view: how are they supposed to interact with the interactive automata learning framework - also called \textit{Interactive Learning Entity} or \textit{ILE} - and how can they utilize it to design reactive systems in a declarative way. Then, in Section \ref{sec_architecture}, the applied software architecture, software components, algorithms and data structures are presented in the following order: first, the components concerned with the automata learning algorithm, then those responsible for its interaction with the oracle component, then the possible interactions of the oracle with the engineer.
+In this chapter, the various aspects of the proposed approach are detailed. In Section \ref{sec_methodology}, the application of this methodology from the users' point of view: how are they meant to interact with the interactive automata learning framework - also called \textit{Interactive Learning Entity} or \textit{ILE} - and how they can utilize it to design reactive systems in a declarative way. Then, in Section \ref{sec_architecture}, the applied software architecture, software components, algorithms and data structures are presented in the following order: first, the components concerned with the automata learning algorithm, then those responsible for its interaction with the oracle component, then the possible interactions of the oracle with the engineer.
 %----------------------------------------------------------------------------
 \section{Overview of the Methodology} \label{sec_methodology}
 %----------------------------------------------------------------------------
@@ -14,7 +14,7 @@ In this chapter, the various aspects of the proposed approach are detailed. In S
 	\label{fig_methodology_interactiontypes}
 \end{figure}
 
-Our methodology is heavily based on the interaction of the user with the ILE, especially its \textit{oracle} component. The different types of interacitons are summarized on Figure \ref{fig_methodology_interactiontypes} and are elaborated on in Subsection \ref{subs_reqtypes}. These interactions take place in a predefined order - the \textit{proposed workflow}, illustrated on Figure \ref{fig_methodology_workflow}. This workflow consists of two phases: first, an \textit{offline} one, and then an \textit{online} one. During the offline phase, the ILE offers little assistance, the designing engineer must determine the required details by other means. The interactive system design happens during the online phase. 
+Our methodology is heavily based on the interaction of the user with the ILE. The different types of interacitons are summarized on Figure \ref{fig_methodology_interactiontypes} and are elaborated on in Subsection \ref{subs_reqtypes}. These interactions take place in a predefined order - the \textit{proposed workflow}, illustrated on Figure \ref{fig_methodology_workflow}. This workflow consists of two phases: first, an \textit{offline} one, and then an \textit{online} one. During the offline phase, the ILE offers little assistance, the designing engineer must determine the required details by other means. The interactive system design happens during the online phase. 
 
 The individual steps in both the offline and the online phases have a predefined syntax with the corresponding, precisely defined semantics. Their common feature is the declarative way of describing the system components, which allows the engineer to focus solely on the expected behavior and acquire a minimal model exhibiting the specified functionality. The following subsections explain these steps in detail.
 
@@ -32,8 +32,7 @@ The individual steps in both the offline and the online phases have a predefined
 %---------------------------------------------------------------
 \subsection{Component and Interface Definition} \label{subs_compdef}
 %---------------------------------------------------------------
-%megadhat több komponenst, névvel, ezek a megfelelő viselkedéseket fogják tanúsítani. I/O ábécét megadjuk előre, komponensek kapcsolatát a nevekből inferáljuk. Mindegyiket TELJESEN KÜLÖN tanuljuk (fork). Ezért egyelőre semmit sem garantálunk ilyen téren, de előnyei is vannak.
-The first step of the workflow is the declaration of the system components. This happens in the offline phase, as the determination of the system components, their exact boundaries and interfaces is out of the scope of this work. Nonetheless, the engineer must provide the names of the system components, along with their interfaces - in other words their input- and output alphabets - before the workflow can proceed to the next step.
+The first step of the workflow is the declaration of the system components. This happens in the offline phase, as the determination of the system components, their exact boundaries and interfaces is out of the scope of this work. Nonetheless, he engineer must provide the names of the system components, along with their interfaces - in other words their input- and output alphabets - before the workflow can proceed to the next step.
 
 Users are encouraged to specify input and output characters qualified with interface names in the format 'Port.character', as this supplies the subsequent steps with essential information about the connections of the individual system components. For the sake of simplicity, this format is not necessarily used in the following examples.
 
@@ -96,7 +95,7 @@ Both offline and online:
 \textbf{Sequence Diagram}
 %TODO ref backgr UML
 
-UML-like sequence diagrams are an even more complex form of trace-based models, as they can contain several traces - due to them having \textit{alt} and \textit{opt} fragments for branching the behavior. They also have - among others - \textit{ref} fragments for referencing behaviors specified elsewhere.
+UML-like sequence diagrams - the ones introduced in [TODO ref backgr] - are an even more complex form of trace-based models, as they can contain several traces, due to them having various combined fragments for branching the behavior - like \textit{alt} and \textit{opt} - and for referencing behaviors specified elsewhere - like \textit{ref}.
 
 Sequence diagrams can also be used to model infinite behavior, which results in containing plenty of information, which in turn results in possibly answering \textit{several} questions formulated by the ILE.
 
@@ -109,7 +108,7 @@ It is important to note, that the specification and integration of sequence diag
 
 Invalid traces are similar to valid traces, with the difference that the contained behavior must not appear in the resulting model. They are most useful for small output alphabets, or when the range of possible behaviors is otherwise contained - e.g. through program logic expressions or several other excluded traces.
 
-They can also be used to formulate requirements even when the determination of the correct behavior does not directly follow from them: when specifying the behavior in question, the ILE will signal any conflicting requirements for the examined input sequences and require the user to remove one - thus facilitating the enforcement of these requirements too.
+They can also be used to formulate requirements when the determination of the correct behavior does not directly follow from them: when specifying the behavior in question, the ILE will signal any conflicting requirements for the examined input sequences and require the user to remove one - thus facilitating the enforcement of these requirements too.
 
 An example for invalid traces can be seen in Listing \ref{lst_invalidtrace}.
 
@@ -151,7 +150,7 @@ It is important to note, that the specification of our LTL variant is not yet co
 %---------------------------------------------------------------
 The requirements the designing engineer provides the ILE with may easily be conflicting, especially in case of LTL expressions and invalid traces - that describe possibly infinite sets of behaviors. For this reason, it is essential for the system to provide some kind of conflict handling within the practical boundaries of the available resources. 
 
-The whole problem is a difficult and resource intensive task for reasons discussed later. Consequently, the ILE only guarantees to handle the conflict, when it appears for other reasons too. In that case, the user is asked to remove one of the conflicting models, before the analysis of the behavior can proceed.
+This problem is a difficult and resource intensive task for algorithmic reasons elaborated later. Consequently, the ILE only guarantees to handle the conflict, when it also interferes with the model synthesis, in which case, the user is asked to remove one of the conflicting models, before the analysis of the behavior can proceed.
 
 As conflicts only become apparent during the online phase of the workflow, the conflict handling is only present there. However, conflicts that were introduced earlier are also discovered and resolved in that phase. An example of a requirement conflict handling can be seen in Listing \ref{lst_conflicthandling}.
 
@@ -165,11 +164,11 @@ As conflicts only become apparent during the online phase of the workflow, the c
 %---------------------------------------------------------------
 During the online phase, whenever ILE assumes that it has gathered enough information to construct a model for the given component, the engineer if offered with a possible model representing the current state of the model synthesis - the equivalent of an equivalence query in automaton learning algorithms. This model can either be approved, or a counterexample is required from the user, where the model does not meet the - not yet specified - requirements.
 
-%TODO az EQ modell tulajdonságai?
+The proposed equivalence model is a deterministic automaton, which, based on the information provided by the user, can be incomplete in multiple ways. The behavior of the proposed model can differ from the learned systems because of lacking information, in which case the user (acting as the equivalence oracle of the learning) needs to provide the separating behavior. Another reason for incompleteness is newly discovered states, the behavior of which is unknown based on their input signatures. This case prompts the user to evaluate the validity of state separation and is required to provide the lacking information. If, for some reason the hypothesized behavior is contradicting that of the imagined system (by the users oversight in providing requirements), the actual, conflicting requirement can be provided to guide the learning algorithm through the process described in Subsection \ref{subs_conf}.
 
 If the model is accepted, the workflow can attempt to proceed to the next step - the serialization of the model. If a counterexample is provided, the online phase resumes and the system design continues until the next possible model is reached.
 
-Example of models offered in equivalence queries can be seen on Figure \ref{fig_methodology_eqex}.
+Examples of models offered in equivalence queries can be seen on Figure \ref{fig_methodology_eqex}.
 
 \begin{figure}[!ht] 
 	\centering
@@ -179,7 +178,7 @@ Example of models offered in equivalence queries can be seen on Figure \ref{fig_
 	\fbox{
 		\includegraphics[height=50mm, keepaspectratio]{figures/methodology_eqex2.png}
 	}
-	\caption{Examples of \textit{equivalence queries}} %TODO title 
+	\caption{Equivalence query for an incomplete model (\textit{left}) and the final model (\textit{right})}
 	\label{fig_methodology_eqex}
 \end{figure}
 
@@ -195,7 +194,7 @@ When each of the component models declared during the first step of the workflow
 One such possible formalism is the serialization to a Gamma statechart, introduced in [TODO ref backgr]. Gamma statecharts are high-level state-based models, to which every functionality offered by the Gamma Statechart Composition Framework can be applied. Our framework offers full-scale Gamma serialization: when choosing this formalism, a whole project will be created, along with interface definitions, component definitions - for each of the previously declared components, with the synthesized behavior - and a composite system definition, connecting the components based on the names of their interfaces.
 
 %TODO ref
-Another possibility is the serialization to the Mealy machine formalism of the framework - as presented when checking the correctness of the model. This results in a lower-level set of independent model, with a completely different set of applications.
+Another possibility is the serialization to the Mealy machine formalism of the framework - as presented when checking the correctness of the model. This results in a lower-level set of independent models, with a completely different set of applications.
 
 %----------------------------------------------------------------------------
 \section{Overview of the Architecture} \label{sec_architecture}

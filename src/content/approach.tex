@@ -10,11 +10,11 @@ In this chapter, the various aspects of the proposed approach are detailed. In S
 	\fbox{
 		\includegraphics[width=150mm, keepaspectratio]{figures/methodology_interactiontypes.png}
 	}
-	\caption{Possibilities of the Engineer} %TODO title 
+	\caption{Interaction types between the engineer and the ILE}
 	\label{fig_methodology_interactiontypes}
 \end{figure}
 
-Our methodology is heavily based on the interaction of the user with the ILE. The different types of interacitons are summarized on Figure \ref{fig_methodology_interactiontypes} and are elaborated on in Subsection \ref{subs_reqtypes}. These interactions take place in a predefined order - the \textit{proposed workflow}, illustrated on Figure \ref{fig_methodology_workflow}. This workflow consists of two phases: first, an \textit{offline} one, and then an \textit{online} one. During the offline phase, the ILE offers little assistance, the designing engineer must determine the required details by other means. The interactive system design happens during the online phase. 
+Our methodology is heavily based on the interaction of the user with the ILE. The different types of interacitons are summarized on Figure \ref{fig_methodology_interactiontypes} and are elaborated on in Subsection \ref{subs_reqtypes}. These interactions take place in a predefined order - the \textit{proposed workflow}, illustrated on Figure \ref{fig_methodology_workflow}. This workflow consists of two phases: first, an \textit{offline} one, and then an \textit{online} one, and ends with the serialization of the models. During the offline phase, the ILE offers little assistance, the designing engineer must determine the required details by other means. The interactive system design happens during the online phase. 
 
 The individual steps in both the offline and the online phases have a predefined syntax with the corresponding, precisely defined semantics. Their common feature is the declarative way of describing the system components, which allows the engineer to focus solely on the expected behavior and acquire a minimal model exhibiting the specified functionality. The following subsections explain these steps in detail.
 
@@ -23,11 +23,10 @@ The individual steps in both the offline and the online phases have a predefined
 	\fbox{
 		\includegraphics[width=150mm, keepaspectratio]{figures/methodology_workflow.png}
 	}
-	\caption{The Proposed Workflow} %TODO title 
+	\caption{The Proposed Workflow}
 	\label{fig_methodology_workflow}
 \end{figure}
 %TODO fork a komponenseknek
-%TODO bekeretezni az online és az offline részeket, meg feliratozni
 
 %---------------------------------------------------------------
 \subsection{Component and Interface Definition} \label{subs_compdef}
@@ -54,6 +53,15 @@ Output alphabet of component1:
 \subsection{Requirement Types} \label{subs_reqtypes}
 %---------------------------------------------------------------
 During the workflow, the engineers can provide requirements in both the online and the offline phases. 
+
+\begin{figure}[!ht] 
+	\centering
+	\fbox{
+		\includegraphics[width=150mm, keepaspectratio]{figures/methodology_requirementtypes.png}
+	}
+	\caption{The supported requirement types}
+	\label{fig_requirementtypes}
+\end{figure}
 
 In the offline phase, this means that they add requirements they have formulated in advance. This is useful for more general requirements, with the scope of the whole component, conveniently formulated by program logic expressions, or long and complex traces.
 
@@ -152,12 +160,25 @@ The requirements the designing engineer provides the ILE with may easily be conf
 
 This problem is a difficult and resource intensive task for algorithmic reasons elaborated later. Consequently, the ILE only guarantees to handle the conflict, when it also interferes with the model synthesis, in which case, the user is asked to remove one of the conflicting models, before the analysis of the behavior can proceed.
 
+\begin{figure}[!ht] 
+	\centering
+	%\fbox{
+		\includegraphics[width=130mm, keepaspectratio]{figures/methodology_providerequirementsworkflow.png}
+	%}
+	\caption{The process of adding a requirement}
+	\label{fig_providerequirementsworkflow}
+\end{figure}
+
+
 As conflicts only become apparent during the online phase of the workflow, the conflict handling is only present there. However, conflicts that were introduced earlier are also discovered and resolved in that phase. An example of a requirement conflict handling can be seen in Listing \ref{lst_conflicthandling}.
 
 \bigskip
+\begin{minipage}{\linewidth}
 \begin{lstlisting} [language=tex,caption=Example of a requirement conflict handling,label=lst_conflicthandling]
 	TODO EXAMPLE
+	TODO EXAMPLE
 \end{lstlisting}%TODO
+\end{minipage}
 
 %---------------------------------------------------------------
 \subsection{Checking the Correctness of the Synthesized Model} \label{subs_eq}
@@ -193,9 +214,13 @@ One such possible formalism is the serialization to a Gamma statechart, introduc
 %TODO ref
 Another possibility is the serialization to the Mealy machine formalism of the framework - as presented when checking the correctness of the model. This results in a lower-level set of independent models, with a completely different set of applications.
 
+%TODO interface definitions vs component diagram
+[TODO figure comes here: [comps\&interfaces | resulting structure]]
+\clearpage
 %----------------------------------------------------------------------------
 \section{Overview of the Architecture} \label{sec_architecture}
 %----------------------------------------------------------------------------
+
 \begin{figure}[!ht] 
 	\centering
 	\fbox{
@@ -204,3 +229,41 @@ Another possibility is the serialization to the Mealy machine formalism of the f
 	\caption{High-level architecture of the components of the ILE} 
 	\label{fig_architcture_ileoverview}
 \end{figure}
+
+%---------------------------------------------------------------
+\subsection{Automata Learning in the Framework} \label{subs_automatalearningintheframework}
+%---------------------------------------------------------------
+(teacher <-> learner)
+
+%---------------------------------------------------------------
+\subsection{The Underlying Algorithm} \label{subs_dhcintheframework}
+%---------------------------------------------------------------
+(dhc variant)
+
+%---------------------------------------------------------------
+\subsection{Automata Minimization} \label{subs_minimizationintheframework}
+%---------------------------------------------------------------
+(per round vs per learning)
+
+%---------------------------------------------------------------
+\subsection{Caching} \label{subs_cachingintheframework}
+%---------------------------------------------------------------
+(memoizing learnable)
+
+%---------------------------------------------------------------
+\subsection{Command Handling} \label{subs_commandhandling}
+%---------------------------------------------------------------
+(valami jobb cím: a könnyen felfedezhető részek nyilvántartása)
+
+%---------------------------------------------------------------
+\subsection{The Interactive Oracle} \label{subs_oracle}
+%---------------------------------------------------------------
+(hogyan foglalja össze a partial modeleket)
+%---------------------------------------------------------------
+\subsection{Trace-Based Models} \label{subs_traceintheframework}
+%---------------------------------------------------------------
+(mit működnek)
+%---------------------------------------------------------------
+\subsection{LTL Models} \label{subs_ltlintheframework}
+%---------------------------------------------------------------
+(hogyan lesznek használhatóak és hogyan működnek)

@@ -236,32 +236,41 @@ The architecture of the ILE consists of two main components: the automata learni
 \subsection{Automata Learning in the Framework} \label{subs_automatalearningintheframework}
 %---------------------------------------------------------------
 (learner <-> teacher)
-(the teacher delegates the questions to the interactive learnable, which in turn delegates to the user ...)
-
+%TODO (the teacher delegates the questions to the interactive learnable, which in turn delegates to the user ...)
 %---------------------------------------------------------------
 \subsection{The Underlying Algorithm} \label{subs_dhcintheframework}
 %---------------------------------------------------------------
 (dhc variant)
-
+%TODO
 %---------------------------------------------------------------
 \subsection{Automata Minimization} \label{subs_minimizationintheframework}
 %---------------------------------------------------------------
 (per round vs per learning)
-
+%TODO
 %---------------------------------------------------------------
 \subsection{Caching} \label{subs_cachingintheframework}
 %---------------------------------------------------------------
 (memoizing learnable)
-
+%TODO: az oracle kérdezése költséges, így minél kevesebbszer akarjuk kérdezni
 %---------------------------------------------------------------
-\subsection{Command Handling} \label{subs_commandhandling}
+\subsection{The Cost of Exploration (Command Handling)} \label{subs_commandhandling}
 %---------------------------------------------------------------
-(valami jobb cím: a könnyen felfedezhető részek nyilvántartása, controlling the design space exploration, design space optimization, knowing what is unknown, reducing the cost of exploration, controlling design space partitions, abstract space partitioning, concept class)
+(egyéb cím ötletek: a könnyen felfedezhető részek nyilvántartása, controlling the design space exploration, design space optimization, knowing what is unknown, reducing the cost of exploration, controlling design space partitions, abstract space partitioning, concept class)
+%TODO: a költség az, hogy hányszor kérdezzük a usert, ezt akarjuk csökkenteni. Így nyilvántartjuk, hogy merre tudunk még információt kinyerni a már meglévő modellekből, csak azután megyünk a felhasználóhoz.
+\begin{figure}[!ht] 
+	\centering
+	%\fbox{
+	\includegraphics[width=100mm, keepaspectratio]{figures/architecture_commandhandling.png}
+	%}
+	\caption{Types of behavior during the learning process} 
+	\label{fig_architcture_commandhandling}
+\end{figure}
 
 %---------------------------------------------------------------
 \subsection{Interactive Learnable} \label{subs_oracle}
 %---------------------------------------------------------------
 (hogyan foglalja össze a partial modeleket)
+%TODO 
 \begin{figure}[!ht] 
 	\centering
 	%\fbox{
@@ -274,8 +283,10 @@ The architecture of the ILE consists of two main components: the automata learni
 %---------------------------------------------------------------
 \subsection{Trace-Based Models} \label{subs_traceintheframework}
 %---------------------------------------------------------------
-(mit működnek)
+%TODO 
+(hogyan működnek)
 %---------------------------------------------------------------
 \subsection{LTL Models} \label{subs_ltlintheframework}
 %---------------------------------------------------------------
+%TODO 
 (hogyan lesznek használhatóak és hogyan működnek)

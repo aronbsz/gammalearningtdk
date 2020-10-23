@@ -319,9 +319,9 @@ In our interpretation, a Büchi automaton has information about a given finite i
 	\fbox{
 		\includegraphics[width=150mm, keepaspectratio]{figures/architecture_buchiexample.PNG}
 	}
-	\caption{A Büchi automaton for the LTL expression F(interrupt -> X(G(toggle) -> G(blinkingYellow))) with event semantics} 
+	\caption{A Büchi automaton for the LTL expression F(interrupt -> X(G(toggle) -> G(blinkingYellow))) with event semantics using Owl [TODO REF]} 
 	\label{fig_architecture_buchiexample}
-\end{figure}
+\end{figure} %TODO
 
 There may be other interpretations of Büchi automata in this context. For instance, it would be enough for an input sequence to reach a state from which an accepting state is reachable. This would provide an answer in more cases, than our interpretation, but also introduce faulty behavior, the handling of which should first be ensured in the workflow. Also, it would be possible to track impossible outputs when no accepting state can be reached.
 

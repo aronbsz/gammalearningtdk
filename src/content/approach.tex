@@ -236,13 +236,16 @@ The architecture of the ILE consists of two main components: the automata learni
 \subsection{Automata Learning in the Framework} \label{subs_automatalearningintheframework}
 %---------------------------------------------------------------
 As discussed in [TODO: ref to background], active automaton learning algorithms work through a teacher and a learner component. While traditionally, the queries asked through the teacher are automated - by known or derived information and equivalence algorithms - in order to achieve an interactive algorithm a new approach was needed. Figure \ref{fig_architcture_ileoverview} shows an Adaptive Learner delegating its queries through the teacher  component to an interactive oracle, which delegates the relevant questions to the user. While the abstract approach presented in Figure \ref{fig_architcture_ileoverview} does enable interactive learning (by delegating every single query to the user), in practical use cases this proves to be infeasible simply because of the amount of queries needed to learn a model. In order to overcome this boundary, optimizations were made to automate a subset of queries, and a new active automaton learning approach was designed to heuristically control the design space.
-%TODO (the teacher delegates the questions to the interactive learnable, which in turn delegates to the user ...)
 
 %---------------------------------------------------------------
-\subsection{Interactive Learnable} \label{subs_oracle}
+\subsection{The Oracle} \label{subs_oracle}
 %---------------------------------------------------------------
-(hogyan foglalja össze a partial modeleket)
-%TODO 
+The oracle is responsible for interacting with the user, managing the provided requirements and extracting information based on the queries posed by the learning algorithm. It consists of two main components: the parser and the interactive learnable.
+
+\textbf{The parser} is responsible for handling the input of the user and transforming it to a formalism interpretable by the interactive learnable. This is required for reasons like enabling event semantics in requirements, separating the input formalism from that of the possible dependencies, and enabling feedback on the input of the user. This can be realized through the conventional approach: creating a language for the requirements, generating a parser which creates a DOM from the input and provides feedback, and defining model transformations to the desired formalisms.
+
+\textbf{The interactive learnable} stores the requirements it receives from the parser in the form of \textit{partial models} and answers the queries of the learning algorithm based on them, as illustrated on Figure \ref{fig_architcture_interactivelearnable}.
+
 \begin{figure}[!ht] 
 	\centering
 	%\fbox{
@@ -252,16 +255,27 @@ As discussed in [TODO: ref to background], active automaton learning algorithms 
 	\label{fig_architcture_interactivelearnable}
 \end{figure}
 
+Partial models have two responsibilities: providing the set of possible outputs to the given input sequences based on the information conatined within them, and telling whether they also contain information about the proximity of the input sequence. The intersection of these possible outputs will provide the output based on the given requirements, and also make conflicting requirements obvious without additional overhead. In the current approach, the inconclusive outputs are delegated to the user, creating the loop on Figure \ref{fig_providerequirementsworkflow}.
+
+Telling whether partial models contain additional information in any given 'direction' enables the interactive learnable to track the easly explorable parts of the design space, thus facilitating significant optimization opportunities for the entire workflow.
+
+Preserving the requirments in separate partial models has several advantages. First of all, it makes the traceability between the user input and the membership query possible, which is essential, as the user may not understand notifications or questions about information derived from his input. Also, translating each requirement to a common formalism and merging these models might be possible, but the addition and removal of models - which is a frequent operation in the workflow - would be severely ineffective. In addition, in this manner the exploration of the individual models may be adjusted to their own internal logic.
+
+Currently, there are two main types of partial models - corresponding to the two main types of requirements: trace-based moodels, which store valid or invalid scenarios for an execution of a model, and LTL models, containing high-level behavioral properties which must be fulfilled by the resulting model. The following two subsections elaborate on these models. 
+
 %---------------------------------------------------------------
 \subsection{Trace-Based Models} \label{subs_traceintheframework}
 %---------------------------------------------------------------
-%TODO 
-(hogyan működnek)
+
+These models correspond to trace-based requirements and store a finite or infinite sequence of input-output pairs. The corresponding requirement types include: corresponding outputs to input sequences, valid and invalid traces and sequence diagrams. 
+
+The common property of these models is that they can be represented via conventional incomplete finite automata. The automata contain information about a given input sequence if they reach an accepting state at the end of the word. They contain more information, if other accepting states are reachable from that point.
+
 %---------------------------------------------------------------
 \subsection{LTL Models} \label{subs_ltlintheframework}
 %---------------------------------------------------------------
-%TODO 
-(hogyan lesznek használhatóak és hogyan működnek)
+
+These models correspond to LTL requirements, a kind of program logic based requirements....
 
 %---------------------------------------------------------------
 \subsection{The Underlying Algorithm} \label{subs_dhcintheframework}

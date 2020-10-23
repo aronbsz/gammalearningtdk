@@ -239,6 +239,31 @@ As discussed in [TODO: ref to background], active automaton learning algorithms 
 %TODO (the teacher delegates the questions to the interactive learnable, which in turn delegates to the user ...)
 
 %---------------------------------------------------------------
+\subsection{Interactive Learnable} \label{subs_oracle}
+%---------------------------------------------------------------
+(hogyan foglalja össze a partial modeleket)
+%TODO 
+\begin{figure}[!ht] 
+	\centering
+	%\fbox{
+	\includegraphics[width=150mm, keepaspectratio]{figures/architecture_interactivelearnable.png}
+	%}
+	\caption{Architecture of the interactive learnable component} 
+	\label{fig_architcture_interactivelearnable}
+\end{figure}
+
+%---------------------------------------------------------------
+\subsection{Trace-Based Models} \label{subs_traceintheframework}
+%---------------------------------------------------------------
+%TODO 
+(hogyan működnek)
+%---------------------------------------------------------------
+\subsection{LTL Models} \label{subs_ltlintheframework}
+%---------------------------------------------------------------
+%TODO 
+(hogyan lesznek használhatóak és hogyan működnek)
+
+%---------------------------------------------------------------
 \subsection{The Underlying Algorithm} \label{subs_dhcintheframework}
 %---------------------------------------------------------------
 In order to modify and optimize the learning, we built upon and designed a variant of the Direct Hypothesis Construction algorithm. The DHC algorithm learns through rounds of hypothesis creation, in which every round starts from the ground-up. This approach has the benefit of allowing the system under learning to behaviorally change through the run of the algorithm, and - in the case of interactive learning - allows the designing engineer(s) to add, remove and modify requirements as they please.
@@ -275,27 +300,3 @@ To solve the above issue, we introduce the concept of adaptive active automaton 
 (per round vs per learning)
 %TODO
 
-%---------------------------------------------------------------
-\subsection{Interactive Learnable} \label{subs_oracle}
-%---------------------------------------------------------------
-(hogyan foglalja össze a partial modeleket)
-%TODO 
-\begin{figure}[!ht] 
-	\centering
-	%\fbox{
-		\includegraphics[width=150mm, keepaspectratio]{figures/architecture_interactivelearnable.png}
-	%}
-	\caption{Architecture of the interactive learnable component} 
-	\label{fig_architcture_interactivelearnable}
-\end{figure}
-
-%---------------------------------------------------------------
-\subsection{Trace-Based Models} \label{subs_traceintheframework}
-%---------------------------------------------------------------
-%TODO 
-(hogyan működnek)
-%---------------------------------------------------------------
-\subsection{LTL Models} \label{subs_ltlintheframework}
-%---------------------------------------------------------------
-%TODO 
-(hogyan lesznek használhatóak és hogyan működnek)

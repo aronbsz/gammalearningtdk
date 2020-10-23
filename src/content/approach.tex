@@ -221,7 +221,7 @@ Another possibility is the serialization to the Mealy machine formalism of the f
 \section{Overview of the Architecture} \label{sec_architecture}
 %----------------------------------------------------------------------------
 
-The architecture of the ILE consists of two main components: the automata learning algorithm - which is responsible for the model synthesis procedure, thus the course of the learning - and the interactive oracle - investigating the membership of the given input sequences in the languages of the models given by the user on one side and interacting with the user on the other. This architecture is depicted on Figure \ref{fig_architcture_ileoverview}. The following subsections elaborate on the connections and details of these components. 
+The architecture of the ILE consists of two main components: the automata learning algorithm - which is responsible for the model synthesis procedure, thus the course of the learning - and the interactive oracle - investigating the membership of the given input sequences in the languages of the models given by the user on one side and interacting with the user on the other. This architecture is depicted on Figure \ref{fig_architcture_ileoverview}. The following subsections elaborate on the connections and details of these components. %TODO subsection ordering
 
 \begin{figure}[!ht] 
 	\centering
@@ -235,14 +235,14 @@ The architecture of the ILE consists of two main components: the automata learni
 %---------------------------------------------------------------
 \subsection{Automata Learning in the Framework} \label{subs_automatalearningintheframework}
 %---------------------------------------------------------------
-As discussed in [TODO: ref to background], active automaton learning algorithms work through a teacher and a learner component. While traditionally, the queries asked through the teacher are automated - by known or derived information and equivalence algorithms - in order to achieve an interactive algorithm a new approach was needed. Figure \ref{fig_architcture_ileoverview} shows an Adaptive Learner delegating its queries through the teacher  component to an interactive oracle, which delegates the relevant questions to the user. While the abstract approach presented in Figure \ref{fig_architcture_ileoverview} does enable interactive learning (by delegating every single query to the user), in practical use cases this proves to be infeasible simply because of the amount of queries needed to learn a model. In order to overcome this boundary, optimizations were made to automate a subset of queries, and a new active automaton learning approach was designed to heuristically control the design space.
+As discussed in [TODO: ref to background], active automaton learning algorithms work through a teacher and a learner component. While traditionally, the queries asked through the teacher are automated - by known or derived information and equivalence algorithms - in order to achieve an interactive algorithm a new approach was needed. Figure \ref{fig_architcture_ileoverview} shows an Adaptive Learner delegating its queries through the teacher  component to an interactive oracle, which delegates the relevant questions to the user. While the abstract approach presented in Figure \ref{fig_architcture_ileoverview} does enable interactive learning, but implementing it using traditional approaches (by delegating every single query to the user), proves to be infeasible in practical use cases simply because of the amount of queries needed to learn a model. In order to overcome this boundary, optimizations were made to automate a subset of queries, and a new active automaton learning approach was designed to heuristically control the design space.
 
 %---------------------------------------------------------------
 \subsection{The Oracle} \label{subs_oracle}
 %---------------------------------------------------------------
 The oracle is responsible for interacting with the user, managing the provided requirements and extracting information based on the queries posed by the learning algorithm. It consists of two main components: the parser and the interactive learnable.
 
-\textbf{The parser} is responsible for handling the input of the user and transforming it to a formalism interpretable by the interactive learnable. This is required for reasons like enabling event semantics in requirements, separating the input formalism from that of the possible dependencies, and enabling feedback on the input of the user. This can be realized through the conventional approach: creating a language for the requirements, generating a parser which creates a DOM from the input and provides feedback, and defining model transformations to the desired formalisms.
+\textbf{The parser} is responsible for handling the input of the user and transforming it to a formalism interpretable by the interactive learnable. This is required for reasons such as enabling event semantics in requirements, separating the input formalism from that of the possible dependencies, and enabling feedback on the input of the user. This can be realized through the conventional architecture of compilers: creating a language for the requirements, generating a parser which creates an abstract syntax tree, then a DOM from the input and provides feedback, and defining model transformations to the desired formalisms.
 
 \textbf{The interactive learnable} stores the requirements it receives from the parser in the form of \textit{partial models} and answers the queries of the learning algorithm based on them, as illustrated on Figure \ref{fig_architcture_interactivelearnable}.
 
@@ -255,11 +255,11 @@ The oracle is responsible for interacting with the user, managing the provided r
 	\label{fig_architcture_interactivelearnable}
 \end{figure}
 
-Partial models have two responsibilities: providing the set of possible outputs to the given input sequences based on the information conatined within them, and telling whether they also contain information about the proximity of the input sequence. The intersection of these possible outputs will provide the output based on the given requirements, and also make conflicting requirements obvious without additional overhead. In the current approach, the inconclusive outputs are delegated to the user, creating the loop on Figure \ref{fig_providerequirementsworkflow}.
+Partial models have two responsibilities: providing the set of possible outputs to the given input sequences based on the information contained within them, and telling whether they also contain information about the proximity of the input sequence. The intersection of these possible outputs provides the output based on the given requirements, and also reveals conflicting requirements without additional overhead. In the current approach, the inconclusive outputs are delegated to the user, creating the loop on Figure \ref{fig_providerequirementsworkflow}.
 
 Telling whether partial models contain additional information in any given 'direction' enables the interactive learnable to track the easly explorable parts of the design space, thus facilitating significant optimization opportunities for the entire workflow.
 
-Preserving the requirments in separate partial models has several advantages. First of all, it makes the traceability between the user input and the membership query possible, which is essential, as the user may not understand notifications or questions about information derived from his input. Also, translating each requirement to a common formalism and merging these models might be possible, but the addition and removal of models - which is a frequent operation in the workflow - would be severely ineffective. In addition, in this manner the exploration of the individual models may be adjusted to their own internal logic.
+Preserving the requirments in separate partial models has several advantages. First of all, it makes the traceability between the user input and the learning algorithm possible, which is essential, as the user may not understand notifications or questions about information derived from their input. Also, translating each requirement to a common formalism and merging these models might be possible, but the addition and removal of models - which is a frequent operation in the workflow - would be severely ineffective. In addition, in this manner the exploration of the individual models may be adjusted to their own internal logic.
 
 Currently, there are two main types of partial models - corresponding to the two main types of requirements: trace-based moodels, which store valid or invalid scenarios for an execution of a model, and LTL models, containing high-level behavioral properties which must be fulfilled by the resulting model. The following two subsections elaborate on these models. 
 
@@ -267,25 +267,42 @@ Currently, there are two main types of partial models - corresponding to the two
 \subsection{Trace-Based Models} \label{subs_traceintheframework}
 %---------------------------------------------------------------
 
-These models correspond to trace-based requirements and store a finite or infinite sequence of input-output pairs. The corresponding requirement types include: corresponding outputs to input sequences, valid and invalid traces and sequence diagrams. 
+Trace-based models correspond to trace-based requirements and store a arbitrarily long finite sequence of input-output pairs. The corresponding requirement types include: corresponding outputs to input sequences, valid and invalid traces and sequence diagrams. 
 
-The common property of these models is that they can be represented via conventional incomplete finite automata. The automata contain information about a given input sequence if they reach an accepting state at the end of the word. They contain more information, if other accepting states are reachable from that point.
+The common property of these models is that they can be represented via conventional incomplete finite automata. The automata contain information about a given input sequence if they reach an accepting state at the end of the word. They contain more information when other accepting states are reachable from that point.
+
+TODO: egy az egyben megfelel a requirement types subsection megfelelő részeinek.
+
+TODO: fa struktúrájú automatával hatékony tárolni, a 'pumpált' szavaknál looppal kiegészítve. LPT?
 
 %---------------------------------------------------------------
 \subsection{LTL Models} \label{subs_ltlintheframework}
 %---------------------------------------------------------------
 
-These models correspond to LTL requirements, a kind of program logic based requirements....
+These models correspond to LTL requirements, a kind of program logic based requirements that describe the behavior for infinite input/output sequences.
+
+TODO: Büchi automatára transzformáljuk
+
+TODO: végrehajtjuk
+
+TODO: az lehet output, amikor.. Az nem lehet output, amikor...
+
+TODO: lehetséges másik értelmezés
 
 %---------------------------------------------------------------
 \subsection{The Underlying Algorithm} \label{subs_dhcintheframework}
 %---------------------------------------------------------------
-In order to modify and optimize the learning, we built upon and designed a variant of the Direct Hypothesis Construction algorithm. The DHC algorithm learns through rounds of hypothesis creation, in which every round starts from the ground-up. This approach has the benefit of allowing the system under learning to behaviorally change through the run of the algorithm, and - in the case of interactive learning - allows the designing engineer(s) to add, remove and modify requirements as they please.
+%TODO
+TODO átvezető
+
+In order to modify and optimize the learning, we built upon and designed a variant of the Direct Hypothesis Construction algorithm. The DHC algorithm learns through rounds of hypothesis creation, in which every round starts from the ground-up. This approach has the benefit of allowing the system under learning to behaviorally change through the run of the algorithm, and - in the case of interactive learning - allows the designing engineer(s) to add, remove and modify requirements during the online phase of the workflow.
 
 %---------------------------------------------------------------
 \subsection{Caching} \label{subs_cachingintheframework}
 %---------------------------------------------------------------
-Caching the previous answers to queries can be a straightforward way of reducing the number of questions the user has to answer, specifically in the case of the DHC algorithm, where each learning round makes every single query that the previous did. Thus we propose a caching layer between the oracle and the learning algorithm, as seen in Figure [TODO], which controls which questions are forwarded to the oracle, and conversely, which can be automatically answered.
+Caching the previous answers to queries can be a straightforward way of reducing the number of questions to answer, specifically in the case of the DHC algorithm, where each learning round makes every single query that the previous did. Thus we introduced a caching layer between the oracle and the learning algorithm, as seen in Figure [TODO], which controls which questions are forwarded to the oracle, and conversely, which can be automatically answered.
+
+TODO: conflicting requirements
 
 [TODO: ÁBRA]
 %TODO: az oracle kérdezése költséges, így minél kevesebbszer akarjuk kérdezni
@@ -295,9 +312,9 @@ Caching the previous answers to queries can be a straightforward way of reducing
 (egyéb cím ötletek: a könnyen felfedezhető részek nyilvántartása, controlling the design space exploration, design space optimization, knowing what is unknown, reducing the cost of exploration, controlling design space partitions, abstract space partitioning, concept class)
 %TODO: a költség az, hogy hányszor kérdezzük a usert, ezt akarjuk csökkenteni. Így nyilvántartjuk, hogy merre tudunk még információt kinyerni a már meglévő modellekből, csak azután megyünk a felhasználóhoz.
 
-Active learning algorithms, and specifically in this case, the Direct Hypothesis Construction algorithm assume that the information they require are readily available, and thus follow a "greedy" approach of querying. While this is appropriate for automated solutions, greedily exploring the design space can result in several magnitudes larger amount of new, previously unexplored queries. The result of this is longer learning rounds (with more membership queries) exploring a larger amount of the behavior, and conversely less equivalence queries. To allow the designing engineer to more frequently validate the hypothesized model, and the control of which unexplored behavior should be explored, a less greedy approach would be necessary.
+Active learning algorithms, and specifically in this case, the Direct Hypothesis Construction algorithm assume that the information they require are readily available, and thus follow a "greedy" approach of querying. While this is appropriate for automated solutions, greedily exploring the design space can result in several magnitudes larger amount of new, previously unexplored queries, which do not necessarily provide new information. The result of this is longer learning rounds (with more membership queries) exploring a larger amount of the behavior, and conversely less equivalence queries. To allow the designing engineer to more frequently validate the hypothesized model, and the control of which unexplored behavior should be explored, a less greedy approach would be necessary.
 
-To solve the above issue, we introduce the concept of adaptive active automaton learning, which uses behavioral types - as illustrated in Figure \ref{fig_architcture_commandhandling} - as a heuristic to adaptively decide if and where a greedy approach should be taken. Already explored behaviors (e.g. previously queried, cached) as well as easily explorable ones (e.g. which can be inferred from some already provided requirement)  can be answered in an automated way, allowing greediness. On the other hand, completely unknown behaviors should be explored in a more reserved manner, controlled by the user - not the automaton learning algorithm.
+To solve the above issue, we introduce the concept of adaptive active automata learning, which uses behavioral types - as illustrated in Figure \ref{fig_architcture_commandhandling} - as a heuristic to adaptively decide if and where a greedy approach should be taken. Already explored behaviors (e.g. previously queried, cached) as well as easily explorable ones (e.g. which can be inferred from some already provided requirement)  can be answered in an automated way, allowing greediness. On the other hand, completely unknown behaviors should be explored in a more reserved manner, controlled by the user - not the automaton learning algorithm.
 
 \begin{figure}[!ht] 
 	\centering

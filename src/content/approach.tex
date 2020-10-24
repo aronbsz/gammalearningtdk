@@ -331,14 +331,6 @@ There may be other interpretations of Büchi automata in this context. For insta
 %---------------------------------------------------------------
 \subsection{The Learning Algorithm} \label{subs_dhcintheframework}
 %---------------------------------------------------------------
-\begin{figure}[!ht] 
-	\centering
-	%\fbox{
-		\includegraphics[width=75mm, keepaspectratio]{figures/architecture_learningalgo.png}
-	%}
-	\caption{Architecture of the Learning Algorithm} 
-	\label{fig_architcture_learningalgo}
-\end{figure}
 
 There are a variety of approaches to active automaton learning, all of which differ in the number of queries and the logical order in which they are asked. To fully utilize the proposed interactive learning, an automaton learning algorithm was necessary, which:
 
@@ -347,16 +339,38 @@ There are a variety of approaches to active automaton learning, all of which dif
 	\item easily extends and is open for modification, such that the adaptive consideration of explorable and inferable behaviors - enabled through the proposed interactive learnable - can be utilized.
 \end{itemize}
 
-To support the above requirements, we built upon and designed a variant of the Direct Hypothesis Construction algorithm. The DHC algorithm learns through rounds of hypothesis creation, in which every round starts from the ground-up. This approach has the benefit of allowing the system under learning to behaviorally change through the run of the algorithm, and - in the case of interactive learning - allows the designing engineer(s) to add, remove and modify requirements during the online phase of the workflow. The Direct Hypothesis Construction algorithm is also a straightforward and easily modifiable algorithm, making the adaption to specific heuristics simple to design and implement.
+To support the above requirements, we built upon and designed a variant of the Direct Hypothesis Construction algorithm. The DHC algorithm learns through rounds of hypothesis creation, in which every round starts from the ground-up. This approach has the benefit of allowing the system under learning to behaviorally change through the run of the algorithm, and - in the case of interactive learning - allows the designing engineer(s) to add, remove and modify requirements during the online phase of the workflow. The Direct Hypothesis Construction algorithm is also a straightforward and easily modifiable algorithm, making the adaption to specific heuristics simple to design and implement. In order to make adaption possible, the teacher component of automaton learning needs to handle not only the output of a query, but also the adaption 'command', heuristic. This enables an adaptive learning algorithm, which, form its teacher component receives both the desired output and the learning heuristic to utilize - keeping an identical, but extended automaton learning architecture illustrated in \ref{fig_architcture_learningalgo}.
 
+\begin{figure}[!ht] 
+	\centering
+	%\fbox{
+	\includegraphics[width=75mm, keepaspectratio]{figures/architecture_learningalgo.png}
+	%}
+	\caption{Architecture of the Learning Algorithm} 
+	\label{fig_architcture_learningalgo}
+\end{figure}
 %---------------------------------------------------------------
 \subsection{Caching} \label{subs_cachingintheframework}
 %---------------------------------------------------------------
-Caching the previous answers to queries can be a straightforward way of reducing the number of questions to answer, specifically in the case of the DHC algorithm, where each learning round makes every single query that the previous did. Thus we introduced a caching layer between the oracle and the learning algorithm, as seen in Figure [TODO], which controls which questions are forwarded to the oracle, and conversely, which can be automatically answered.
+Caching the previous answers to queries can be a straightforward way of reducing the number of questions to answer, specifically in the case of the DHC algorithm, where each learning round makes every single query that the previous did. Thus we introduced a caching layer between the oracle and the learning algorithm, as seen in Figure \ref{fig_architcture_ileoverview}, which controls which questions are forwarded to the oracle, and conversely, which can be automatically answered.
 
-In case of the user providing conflicting requirements, as proposed in Subsection \ref{subs_conf}, the user needs to remove one or more requirements, some of which might already have corresponding entries in the cache. Since query responses inferred through some models (such as LTL expressions) are not backwards traceable, there might not be a way to specify exactly which cached entries became outdated. In order to solve this issue, while still enabling the user to provide conflicting requirements, the cache needs to be reset every time such a case arises. Since the oracle stores the requirements, this does not necessitate extra questions to the user and in most cases can happen in the background through communication of the cache and the oracle, as illustrated on Figure [TODO].
-
-[TODO: ÁBRA] [TODO: reset cache abra]
+In case of the user providing conflicting requirements, as proposed in Subsection \ref{subs_conf}, the user needs to remove one or more requirements, some of which might already have corresponding entries in the cache. Since query responses inferred through some models (such as LTL expressions) are not backwards traceable, there might not be a way to specify exactly which cached entries became outdated. In order to solve this issue, while still enabling the user to provide conflicting requirements, the cache needs to be reset every time such a case arises, as illustrated on Figure \ref{fig_architcture_ileoverview_cache}. Since the oracle stores the requirements, this does not necessitate extra questions to the user and in most cases can happen in the background through communication of the cache and the oracle.
+\begin{figure}[!ht] 
+	\centering
+	\fbox{
+		\includegraphics[width=150mm, keepaspectratio]{figures/architecture_ileoverview.png}
+	}
+	\caption{High-level architecture of the components of the caching ILE} 
+	\label{fig_architcture_ileoverview}
+\end{figure}
+\begin{figure}[!ht] 
+	\centering
+	\fbox{
+		\includegraphics[width=150mm,keepaspectratio]{figures/architecture_informaloverview_cache.png}
+	}
+	\caption{Overview of cache reset logic} 
+	\label{fig_architcture_ileoverview_cache}
+\end{figure}
 
 %---------------------------------------------------------------
 \subsection{The Cost of Exploration (Command Handling)} \label{subs_commandhandling}
@@ -366,7 +380,7 @@ As seen in the previously presented subsections, one of the most important cost 
 
 Active learning algorithms, and specifically in this case, the Direct Hypothesis Construction algorithm assume that the information they require are readily available, and thus follow a "greedy" approach of querying. While this is appropriate for automated solutions, greedily exploring the design space can result in several magnitudes larger amount of new, previously unexplored queries, which do not necessarily provide new information. The result of this is longer learning rounds (with more membership queries) exploring a larger amount of the behavior, and conversely less equivalence queries. To allow the designing engineer to more frequently validate the hypothesized model, and the control of which unexplored behavior should be explored, a less greedy approach would be necessary.
 
-To solve the above issue, we introduce the concept of adaptive active automata learning, which uses behavioral types - as illustrated in Figure \ref{fig_architcture_commandhandling} - as a heuristic to adaptively decide if and where a greedy approach should be taken. Already explored behaviors (e.g. previously queried, cached) as well as behaviors contained in the model can be answered in an automated way, allowing greediness. On the other hand, not modeled behaviors should be explored in a more reserved manner, controlled by the user - not the automaton learning algorithm.
+To solve the above issue, we introduce the concept of adaptive active automata learning, which uses behavioral types - as illustrated in Figure \ref{fig_architcture_commandhandling} - as a heuristic to adaptively decide if and where a greedy approach should be taken. Already explored behaviors (e.g. previously queried, cached) as well as behaviors contained in the model can be answered in an automated way, allowing greediness. On the other hand, not modeled behaviors should be explored in a more reserved manner, controlled by the user - not the automaton learning algorithm. The thus created overview of the framework can be seen in Figure \ref{fig_architcture_informaloverview_complete}
 
 \begin{figure}[!ht] 
 	\centering
@@ -375,14 +389,16 @@ To solve the above issue, we introduce the concept of adaptive active automata l
 	}
 	\caption{Types of behavior during the learning process} 
 	\label{fig_architcture_commandhandling}
-\end{figure} %TODO
-
+\end{figure} 
 
 \begin{figure}[!ht] 
 	\centering
 	\fbox{
-		\includegraphics[width=150mm, keepaspectratio]{figures/architecture_ileoverview.png}
+		\includegraphics[width=150mm, keepaspectratio]{figures/architecture_informaloverview_complete.png}
 	}
-	\caption{High-level architecture of the components of the ILE} 
-	\label{fig_architcture_ileoverview}
+	\caption{Architectural overview}} 
+	\label{fig_architcture_informaloverview_complete}
 \end{figure}
+
+
+

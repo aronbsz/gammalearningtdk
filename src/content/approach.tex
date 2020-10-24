@@ -339,12 +339,10 @@ Caching the previous answers to queries can be a straightforward way of reducing
 In case of the user providing conflicting requirements, as proposed in Subsection \ref{subs_conf}, the user needs to remove one or more requirements, some of which might already have corresponding entries in the cache. Since query responses inferred through some models (such as LTL expressions) are not backwards traceable, there might not be a way to specify exactly which cached entries became outdated. In order to solve this issue, while still enabling the user to provide conflicting requirements, the cache needs to be reset every time such a case arises. Since the oracle stores the requirements, this does not necessitate extra questions to the user and in most cases can happen in the background through communication of the cache and the oracle, as illustrated on Figure [TODO].
 
 [TODO: ÁBRA] [TODO: reset cache abra]
-%TODO: az oracle kérdezése költséges, így minél kevesebbszer akarjuk kérdezni
+
 %---------------------------------------------------------------
 \subsection{The Cost of Exploration (Command Handling)} \label{subs_commandhandling}
 %---------------------------------------------------------------
-(egyéb cím ötletek: a könnyen felfedezhető részek nyilvántartása, controlling the design space exploration, design space optimization, knowing what is unknown, reducing the cost of exploration, controlling design space partitions, abstract space partitioning, concept class)
-%TODO: a költség az, hogy hányszor kérdezzük a usert, ezt akarjuk csökkenteni. Így nyilvántartjuk, hogy merre tudunk még információt kinyerni a már meglévő modellekből, csak azután megyünk a felhasználóhoz.
 
 As seen in the previously presented subsections, one of the most important cost metrics of the presented interactive learning architecture is the number of questions that reach the user. In order to minimize this, we propose a heuristic by which a decision can be made regarding which queries provide valuable information - based on the current requirements - and which might not. Since active automaton learning algorithms aren't designed to utilize such an \textit{adaptive learning}, a new approach was necessary. 
 

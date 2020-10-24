@@ -9,9 +9,23 @@
 %TODO: random bevezeto szoveg
 
 %----------------------------------------------------------------------------
-\subsection{Eclipse Modeling Framework} \label{subsec_emf}
+\subsection{Eclipse Environment} \label{subsec_emf}
 %----------------------------------------------------------------------------
-%TODO: copy EMF valamelyikunk szakdogajabol
+Eclipse is a popular, open-source integrated development environment (IDE). It is mainly used for Java-related application development, but also supports several other programming languages. It consists of a base workspace and an extensible plug-in system. Using this plug-in system, the develpment environment is easily customizable for different purposes, such as programming in different programming lanugages, modeling (using the Gamma Framework or Yakindu), or testing.
+
+\textbf{Eclipse Modeling Framework}
+
+The Eclipse Modeling Framework is an Eclipse-based modeling framework and code generation facility. It defines its own structured data model -- called Ecore -- for describing models and providing runtime support for the models. Models are defined using the XML Metadata Interchange (XMI) format, which is supported by various Eclipse plugins developed specifically for this purpose, as EMF is fully integrated into the Eclipse platform. It provides an environment to numerous technologies, including server solutions, persistence frameworks, UI and transformation frameworks.
+
+%----------------------------------------------------------------------------
+\subsection{Xtext Framework} \label{subsec_xtext}
+%----------------------------------------------------------------------------
+Xtext is an open-source framework for developing (mostly) domain-specific languages (DSLs). It has its own syntax for the definition of textual languages, resembling a context-free grammar extended with mappings to the in-memory representations. Unlike standard parser generators, it generates not only a parser, but also the abstract syntax tree (AST) of the grammar, and also support several other features, such as validation rules and editing support. This is because Xtext is based on the EMF project -- the metamodels of the defined languages are Ecore models --, and it is integrated into the Eclipse environment.
+
+\textbf{Xtend}
+
+Xtend is a general-purpose, high-level programming language based on Java. It is statically typed, object-oriented and uses the type system of Java. Xtend programs are compiled to Java code, thus allowing seamless integration with existing Java libraries. It provides numerous convenient extensions to Java, such as dispatch methods, type inference, operator overloading and extension methods.
+
 
 %----------------------------------------------------------------------------
 \subsection{Sirius} \label{subsec_sirius}
@@ -19,7 +33,7 @@
 %TODO: sirius + szekvencia
 
 %----------------------------------------------------------------------------
-\subsection{OWL} \label{subsec_owl}
+\subsection{Owl} \label{subsec_owl}
 %----------------------------------------------------------------------------
 %TODO: OWL
 

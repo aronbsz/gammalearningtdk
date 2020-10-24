@@ -222,7 +222,7 @@ Another possibility is the serialization to the Mealy machine formalism of the f
 \section{Overview of the Architecture} \label{sec_architecture}
 %----------------------------------------------------------------------------
 
-The architecture of the ILE consists of two main components: the automata learning algorithm - which is responsible for the model synthesis procedure, thus the course of the learning - and the interactive oracle - investigating the membership of the given input sequences in the languages of the models given by the user on one side and interacting with the user on the other. A functional overview of this architecture is depicted on Figure \ref{fig_architcture_informaloverview}. 
+The architecture of the ILE consists of two main components: the learning algorithm - which is responsible for the model synthesis procedure, thus the course of the learning - and the interactive oracle - investigating the membership of the given input sequences in the languages of the models given by the user on one side and interacting with the user on the other. A functional overview of this architecture is depicted on Figure \ref{fig_architcture_informaloverview}.
 
 \begin{figure}[!ht] 
 	\centering
@@ -233,7 +233,7 @@ The architecture of the ILE consists of two main components: the automata learni
 	\label{fig_architcture_informaloverview}
 \end{figure}
 
-The high-level structure of the components of this architecture can be seen on Figure \ref{fig_architcture_ileoverview}. The following subsections elaborate on the connections and details of these components.
+ In the case of the learning algorithm, active automata learning algorithms were chosen as a design direction. Active automata learning enables complete separation of the learner algorithm and the system under learning through a teacher component - enabling the system under learning to be made from multiple, separate requirement-models provided by the user. Since active automata learning works through queries, it allows arbitrary layers of logic the query can go through - allowing the proposed oracle-based interactive learning. The high-level structure of the components of this architecture can be seen on Figure \ref{fig_architcture_ileoverview}. The following subsections elaborate on the connections and details of these components.
 
 \begin{figure}[!ht] 
 	\centering

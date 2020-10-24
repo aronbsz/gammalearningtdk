@@ -222,7 +222,7 @@ Another possibility is the serialization to the Mealy machine formalism of the f
 \section{Overview of the Architecture} \label{sec_architecture}
 %----------------------------------------------------------------------------
 
-The architecture of the ILE consists of two main components: the learning algorithm - which is responsible for the model synthesis procedure, thus the course of the learning - and the interactive oracle - investigating the membership of the given input sequences in the languages of the models given by the user on one side and interacting with the user on the other. A functional overview of this architecture is depicted on Figure \ref{fig_architcture_informaloverview}.
+The architecture of the ILE consists of two main components: the learning algorithm - which is responsible for the model synthesis procedure, thus the course of the learning - and the interactive oracle - investigating the membership of the given input sequences in the languages of the models given by the user on one side and interacting with the user on the other. A functional overview of this architecture is depicted on Figure \ref{fig_architcture_informaloverview}. The following subsections elaborate on the connections and details of these components.
 
 \begin{figure}[!ht] 
 	\centering
@@ -233,16 +233,7 @@ The architecture of the ILE consists of two main components: the learning algori
 	\label{fig_architcture_informaloverview}
 \end{figure}
 
- In the case of the learning algorithm, active automata learning algorithms were chosen as a design direction. Active automata learning enables complete separation of the learner algorithm and the system under learning through a teacher component - enabling the system under learning to be made from multiple, separate requirement-models provided by the user. Since active automata learning works through queries, it allows arbitrary layers of logic the query can go through - allowing the proposed oracle-based interactive learning. The high-level structure of the components of this architecture can be seen on Figure \ref{fig_architcture_ileoverview}. The following subsections elaborate on the connections and details of these components.
-
-\begin{figure}[!ht] 
-	\centering
-	\fbox{
-		\includegraphics[width=150mm, keepaspectratio]{figures/architecture_ileoverview.png}
-	}
-	\caption{High-level architecture of the components of the ILE} 
-	\label{fig_architcture_ileoverview}
-\end{figure}
+ In the case of the learning algorithm, active automata learning algorithms were chosen as a design direction. Active automata learning enables complete separation of the learner algorithm and the system under learning through a teacher component - enabling the system under learning to be made from multiple, separate requirement-models provided by the user. Since active automata learning works through queries, it allows arbitrary layers of logic the query can go through - allowing the proposed oracle-based interactive learning. 
 
 %---------------------------------------------------------------
 \subsection{Automata Learning in the Framework} \label{subs_automatalearningintheframework}
@@ -252,6 +243,18 @@ As discussed in [TODO: ref to background], active automaton learning algorithms 
 %---------------------------------------------------------------
 \subsection{The Oracle} \label{subs_oracle}
 %---------------------------------------------------------------
+
+The architecture of the oracle component can be seen on Figure \ref{fig_architcture_oracle}.
+
+\begin{figure}[!ht] 
+	\centering
+	%\fbox{
+		\includegraphics[width=75mm, keepaspectratio]{figures/architecture_oracle.png}
+	%}
+	\caption{Architecture of the Oracle} 
+	\label{fig_architcture_oracle}
+\end{figure}
+
 The oracle is responsible for interacting with the user, managing the provided requirements and extracting information based on the queries posed by the learning algorithm. It consists of two main components: the parser and the interactive learnable.
 
 \textbf{The parser} is responsible for handling the input of the user and transforming it to a formalism interpretable by the interactive learnable. This is required for reasons such as enabling event semantics in requirements, separating the input formalism from that of the possible dependencies, and enabling feedback on the input of the user. This can be realized through the conventional architecture of compilers: creating a language for the requirements, generating a parser which creates an abstract syntax tree, then a DOM from the input and provides feedback, and defining model transformations to the desired formalisms.
@@ -260,9 +263,9 @@ The oracle is responsible for interacting with the user, managing the provided r
 
 \begin{figure}[!ht] 
 	\centering
-	\fbox{
-	\includegraphics[width=150mm, keepaspectratio]{figures/architecture_interactivelearnable.png}
-	}
+	%\fbox{
+	\includegraphics[width=100mm, keepaspectratio]{figures/architecture_interactivelearnable.png}
+	%}
 	\caption{Architecture of the interactive learnable component} 
 	\label{fig_architcture_interactivelearnable}
 \end{figure}
@@ -276,10 +279,10 @@ Preserving the requirments in separate partial models has several advantages. Fi
 Currently, there are two main types of partial models - corresponding to the two main types of requirements: trace-based moodels, which store valid or invalid scenarios for an execution of a model, and LTL models, containing high-level behavioral properties which must be fulfilled by the resulting model. The following two subsections elaborate on these models. 
 
 %---------------------------------------------------------------
-\subsection{Trace-Based Models} \label{subs_traceintheframework}
+%\subsection{Trace-Based Models} \label{subs_traceintheframework}
 %---------------------------------------------------------------
 
-Trace-based models correspond to trace-based requirements and store a arbitrarily long finite sequence of input-output pairs. The corresponding requirement types include: corresponding outputs to input sequences, valid and invalid traces and sequence diagrams. 
+\textbf{Trace-based models} correspond to trace-based requirements and store a arbitrarily long finite sequence of input-output pairs. The corresponding requirement types include: corresponding outputs to input sequences, valid and invalid traces and sequence diagrams. 
 
 The common property of these models is that they can be represented via conventional incomplete finite automata. The automata contain information about a given input sequence if they reach an accepting state at the end of the word. They contain more information when other accepting states are reachable from that point.
 
@@ -303,12 +306,12 @@ For instance, in case of IOPairModels (corresponding output-type requirements), 
 \end{figure}
 
 %---------------------------------------------------------------
-\subsection{LTL Models} \label{subs_ltlintheframework}
+%\subsection{LTL Models} \label{subs_ltlintheframework}
 %---------------------------------------------------------------
 
-LTL models correspond to LTL requirements, a kind of program logic based requirements that describe the behavior for infinite input/output sequences.%: $\omega$-regular languages.
+\textbf{LTL models} correspond to LTL requirements, a kind of program logic based requirements that describe the behavior for infinite input/output sequences.%: $\omega$-regular languages.
 
-They correspond to nondeterministic $\omega$-automata. As the acceptance condition of Büchi-automata [TODO ref backgr] is closest to that of finite automata, we chose them for the target of the mapping of the corresponding requirements. It should be noted, that any of the automata classes recognizing the $\omega$-regular languages could have been chosen.
+They correspond to nondeterministic $\omega$-automata. As the acceptance condition of Büchi-automata [TODO ref backgr] is closest to that of finite automata, we chose them for the target of the mapping of the corresponding requirements. It should be noted, that any of the automata classes recognizing the $\omega$-regular languages could have been chosen with an appropriate interpretation.
 
 As Büchi automata accept only infinitely long words over the given input alphabet, the process of the determination of the possible outputs - the condition of a character being marked a possible output - was adopted accordingly.
 
@@ -326,9 +329,17 @@ In our interpretation, a Büchi automaton has information about a given finite i
 There may be other interpretations of Büchi automata in this context. For instance, it would be enough for an input sequence to reach a state from which an accepting state is reachable. This would provide an answer in more cases, than our interpretation, but also introduce faulty behavior, the handling of which should first be ensured in the workflow. Also, it would be possible to track impossible outputs when no accepting state can be reached.
 
 %---------------------------------------------------------------
-\subsection{The Underlying Algorithm} \label{subs_dhcintheframework}
+\subsection{The Learning Algorithm} \label{subs_dhcintheframework}
 %---------------------------------------------------------------
-%TODO
+\begin{figure}[!ht] 
+	\centering
+	%\fbox{
+		\includegraphics[width=75mm, keepaspectratio]{figures/architecture_learningalgo.png}
+	%}
+	\caption{Architecture of the Learning Algorithm} 
+	\label{fig_architcture_learningalgo}
+\end{figure}
+
 There are a variety of approaches to active automaton learning, all of which differ in the number of queries and the logical order in which they are asked. To fully utilize the proposed interactive learning, an automaton learning algorithm was necessary, which:
 
 \begin{itemize}
@@ -355,7 +366,7 @@ As seen in the previously presented subsections, one of the most important cost 
 
 Active learning algorithms, and specifically in this case, the Direct Hypothesis Construction algorithm assume that the information they require are readily available, and thus follow a "greedy" approach of querying. While this is appropriate for automated solutions, greedily exploring the design space can result in several magnitudes larger amount of new, previously unexplored queries, which do not necessarily provide new information. The result of this is longer learning rounds (with more membership queries) exploring a larger amount of the behavior, and conversely less equivalence queries. To allow the designing engineer to more frequently validate the hypothesized model, and the control of which unexplored behavior should be explored, a less greedy approach would be necessary.
 
-To solve the above issue, we introduce the concept of adaptive active automata learning, which uses behavioral types - as illustrated in Figure \ref{fig_architcture_commandhandling} - as a heuristic to adaptively decide if and where a greedy approach should be taken. Already explored behaviors (e.g. previously queried, cached) as well as easily explorable ones (e.g. which can be inferred from some already provided requirement)  can be answered in an automated way, allowing greediness. On the other hand, completely unknown behaviors should be explored in a more reserved manner, controlled by the user - not the automaton learning algorithm.
+To solve the above issue, we introduce the concept of adaptive active automata learning, which uses behavioral types - as illustrated in Figure \ref{fig_architcture_commandhandling} - as a heuristic to adaptively decide if and where a greedy approach should be taken. Already explored behaviors (e.g. previously queried, cached) as well as behaviors contained in the model can be answered in an automated way, allowing greediness. On the other hand, not modeled behaviors should be explored in a more reserved manner, controlled by the user - not the automaton learning algorithm.
 
 \begin{figure}[!ht] 
 	\centering
@@ -365,3 +376,13 @@ To solve the above issue, we introduce the concept of adaptive active automata l
 	\caption{Types of behavior during the learning process} 
 	\label{fig_architcture_commandhandling}
 \end{figure} %TODO
+
+
+\begin{figure}[!ht] 
+	\centering
+	\fbox{
+		\includegraphics[width=150mm, keepaspectratio]{figures/architecture_ileoverview.png}
+	}
+	\caption{High-level architecture of the components of the ILE} 
+	\label{fig_architcture_ileoverview}
+\end{figure}

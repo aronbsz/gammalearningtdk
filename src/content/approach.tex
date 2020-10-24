@@ -352,17 +352,10 @@ To support the above requirements, we built upon and designed a variant of the D
 %---------------------------------------------------------------
 \subsection{Caching} \label{subs_cachingintheframework}
 %---------------------------------------------------------------
-Caching the previous answers to queries can be a straightforward way of reducing the number of questions to answer, specifically in the case of the DHC algorithm, where each learning round makes every single query that the previous did. Thus we introduced a caching layer between the oracle and the learning algorithm, as seen in Figure \ref{fig_architcture_ileoverview}, which controls which questions are forwarded to the oracle, and conversely, which can be automatically answered.
+Caching the previous answers to queries can be a straightforward way of reducing the number of questions to answer, specifically in the case of the DHC algorithm, where each learning round makes every single query that the previous did. Thus we introduced a caching layer between the oracle and the learning algorithm,, which controls which questions are forwarded to the oracle, and conversely, which can be automatically answered.
 
 In case of the user providing conflicting requirements, as proposed in Subsection \ref{subs_conf}, the user needs to remove one or more requirements, some of which might already have corresponding entries in the cache. Since query responses inferred through some models (such as LTL expressions) are not backwards traceable, there might not be a way to specify exactly which cached entries became outdated. In order to solve this issue, while still enabling the user to provide conflicting requirements, the cache needs to be reset every time such a case arises, as illustrated on Figure \ref{fig_architcture_ileoverview_cache}. Since the oracle stores the requirements, this does not necessitate extra questions to the user and in most cases can happen in the background through communication of the cache and the oracle.
-\begin{figure}[!ht] 
-	\centering
-	\fbox{
-		\includegraphics[width=150mm, keepaspectratio]{figures/architecture_ileoverview.png}
-	}
-	\caption{High-level architecture of the components of the caching ILE} 
-	\label{fig_architcture_ileoverview}
-\end{figure}
+
 \begin{figure}[!ht] 
 	\centering
 	\fbox{

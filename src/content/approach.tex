@@ -290,20 +290,20 @@ Each of the trace-based requirement types are be mapped to a specific kind of pa
 
 For instance, in case of IOPairModels (corresponding output-type requirements), it is enough to check if the accepting state can be reached and they surely contain no additional information. However, sequence diagrams can contain branching and loops in the behavior, thus require more complex algorithms.
 
-\begin{figure}[!ht] 
-	\centering
-	\fbox{
-		\includegraphics[width=40mm, keepaspectratio]{figures/architecture_iopairautomaton.png}
-	}
-	\fbox{
-		\includegraphics[width=40mm, keepaspectratio]{figures/architecture_traceautomaton.png}
-	}
-	\fbox{
-		\includegraphics[width=40mm, keepaspectratio]{figures/architecture_sequenceautomaton.png}
-	}
-	\caption{Characteristic automaton types of the different requirements: corresponding output (\textit{left}), valid trace (\textit{middle}) and sequence diagram (\textit{right})} 
-	\label{fig_architcture_traceautomata}
-\end{figure}
+%\begin{figure}[!ht] 
+%	\centering
+%	\fbox{
+%		\includegraphics[width=40mm, keepaspectratio]{figures/architecture_iopairautomaton.png}
+%	}
+%	\fbox{
+%		\includegraphics[width=40mm, keepaspectratio]{figures/architecture_traceautomaton.png}
+%	}
+%	\fbox{
+%		\includegraphics[width=40mm, keepaspectratio]{figures/architecture_sequenceautomaton.png}
+%	}
+%	\caption{Characteristic automaton types of the different requirements: corresponding output (\textit{left}), valid trace (\textit{middle}) and sequence diagram (\textit{right})} 
+%	\label{fig_architcture_traceautomata}
+%\end{figure}
 
 %---------------------------------------------------------------
 %\subsection{LTL Models} \label{subs_ltlintheframework}
@@ -317,16 +317,27 @@ As Büchi automata accept only infinitely long words over the given input alphab
 
 In our interpretation, a Büchi automaton has information about a given finite input sequence, if at the end of the input the automaton reaches an accepting state. Then the possible outputs are the elements of the output alphabet on the last edge taken. As the automaton is nondeterministic (and cannot be determinized), there may be multiple accepting states, thus multiple edges, and even one edge might contain multiple possible outputs. In this case the conjunction of the possible outputs on the corresponding edges is the possible output of the automaton.  
 
+There may be other interpretations of Büchi automata in this context. For instance, it would be enough for an input sequence to reach a state from which an accepting state is reachable. This would provide an answer in more cases, than our interpretation, but also introduce faulty behavior, the handling of which should first be ensured in the workflow. Also, it would be possible to track impossible outputs when no accepting state can be reached.
+
+A summarizing example of the different automaton types can be seen on figure \ref{fig_architecture_buchiexample}.
+
 \begin{figure}[!ht] 
 	\centering
 	\fbox{
-		\includegraphics[width=150mm, keepaspectratio]{figures/architecture_buchiexample.PNG}
+		\includegraphics[width=60mm, keepaspectratio]{figures/architecture_iopairautomaton.png}
 	}
-	\caption{A Büchi automaton for the LTL expression F(interrupt -> X(G(toggle) -> G(blinkingYellow))) with event semantics using Owl [TODO REF]} 
+	\fbox{
+		\includegraphics[width=60mm, keepaspectratio]{figures/architecture_traceautomaton.png}
+	}
+	\fbox{
+		\includegraphics[width=60mm, keepaspectratio]{figures/architecture_sequenceautomaton.png}
+	}
+	\fbox{
+		\includegraphics[width=60mm, keepaspectratio]{figures/architecture_buchiexample.PNG}
+	}
+	\caption{Examples for attempting to model the requirement 'after toggle/red, for toggle the output is green' through I/O pair automaton (\textit{upper left}), valid trace automaton (\textit{upper right}), sequence diagram automaton (\textit{lower left}) and a Büchi automaton (\textit{lower right}).} 
 	\label{fig_architecture_buchiexample}
-\end{figure} %TODO
-
-There may be other interpretations of Büchi automata in this context. For instance, it would be enough for an input sequence to reach a state from which an accepting state is reachable. This would provide an answer in more cases, than our interpretation, but also introduce faulty behavior, the handling of which should first be ensured in the workflow. Also, it would be possible to track impossible outputs when no accepting state can be reached.
+\end{figure}
 
 %---------------------------------------------------------------
 \subsection{The Learning Algorithm} \label{subs_dhcintheframework}

@@ -329,7 +329,14 @@ There may be other interpretations of Büchi automata in this context. For insta
 \subsection{The Underlying Algorithm} \label{subs_dhcintheframework}
 %---------------------------------------------------------------
 %TODO
-To support interactive learning through the presented models, an appropriate active automaton learning algorithm was necessary. In order to modify and optimize the learning, we built upon and designed a variant of the Direct Hypothesis Construction algorithm. The DHC algorithm learns through rounds of hypothesis creation, in which every round starts from the ground-up. This approach has the benefit of allowing the system under learning to behaviorally change through the run of the algorithm, and - in the case of interactive learning - allows the designing engineer(s) to add, remove and modify requirements during the online phase of the workflow.
+There are a variety of approaches to active automaton learning, all of which differ in the number of queries and the logical order in which they are asked. To fully utilize the proposed interactive learning, an automaton learning algorithm was necessary, which:
+
+\begin{itemize}
+	\item allows the addition, removal and modification of requirements (and thus the learned behavior), and
+	\item easily extends and is open for modification, such that the adaptive consideration of explorable and inferable behaviors - enabled through the proposed interactive learnable - can be utilized.
+\end{itemize}
+
+To support the above requirements, we built upon and designed a variant of the Direct Hypothesis Construction algorithm. The DHC algorithm learns through rounds of hypothesis creation, in which every round starts from the ground-up. This approach has the benefit of allowing the system under learning to behaviorally change through the run of the algorithm, and - in the case of interactive learning - allows the designing engineer(s) to add, remove and modify requirements during the online phase of the workflow. The Direct Hypothesis Construction algorithm is also a straightforward and easily modifiable algorithm, making the adaption to specific heuristics simple to design and implement.
 
 %---------------------------------------------------------------
 \subsection{Caching} \label{subs_cachingintheframework}

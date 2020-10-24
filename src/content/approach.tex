@@ -329,24 +329,24 @@ There may be other interpretations of Büchi automata in this context. For insta
 \subsection{The Underlying Algorithm} \label{subs_dhcintheframework}
 %---------------------------------------------------------------
 %TODO
-TODO átvezető
-
-In order to modify and optimize the learning, we built upon and designed a variant of the Direct Hypothesis Construction algorithm. The DHC algorithm learns through rounds of hypothesis creation, in which every round starts from the ground-up. This approach has the benefit of allowing the system under learning to behaviorally change through the run of the algorithm, and - in the case of interactive learning - allows the designing engineer(s) to add, remove and modify requirements during the online phase of the workflow.
+To support interactive learning through the presented models, an appropriate active automaton learning algorithm was necessary. In order to modify and optimize the learning, we built upon and designed a variant of the Direct Hypothesis Construction algorithm. The DHC algorithm learns through rounds of hypothesis creation, in which every round starts from the ground-up. This approach has the benefit of allowing the system under learning to behaviorally change through the run of the algorithm, and - in the case of interactive learning - allows the designing engineer(s) to add, remove and modify requirements during the online phase of the workflow.
 
 %---------------------------------------------------------------
 \subsection{Caching} \label{subs_cachingintheframework}
 %---------------------------------------------------------------
 Caching the previous answers to queries can be a straightforward way of reducing the number of questions to answer, specifically in the case of the DHC algorithm, where each learning round makes every single query that the previous did. Thus we introduced a caching layer between the oracle and the learning algorithm, as seen in Figure [TODO], which controls which questions are forwarded to the oracle, and conversely, which can be automatically answered.
 
-TODO: conflicting requirements
+In case of the user providing conflicting requirements, as proposed in Subsection \ref{subs_conf}, the user needs to remove one or more requirements, some of which might already have corresponding entries in the cache. Since query responses inferred through some models (such as LTL expressions) are not backwards traceable, there might not be a way to specify exactly which cached entries became outdated. In order to solve this issue, while still enabling the user to provide conflicting requirements, the cache needs to be reset every time such a case arises. Since the oracle stores the requirements, this does not necessitate extra questions to the user and in most cases can happen in the background through communication of the cache and the oracle, as illustrated on Figure [TODO].
 
-[TODO: ÁBRA]
+[TODO: ÁBRA] [TODO: reset cache abra]
 %TODO: az oracle kérdezése költséges, így minél kevesebbszer akarjuk kérdezni
 %---------------------------------------------------------------
 \subsection{The Cost of Exploration (Command Handling)} \label{subs_commandhandling}
 %---------------------------------------------------------------
 (egyéb cím ötletek: a könnyen felfedezhető részek nyilvántartása, controlling the design space exploration, design space optimization, knowing what is unknown, reducing the cost of exploration, controlling design space partitions, abstract space partitioning, concept class)
 %TODO: a költség az, hogy hányszor kérdezzük a usert, ezt akarjuk csökkenteni. Így nyilvántartjuk, hogy merre tudunk még információt kinyerni a már meglévő modellekből, csak azután megyünk a felhasználóhoz.
+
+As seen in the previously presented subsections, one of the most important cost metrics of the presented interactive learning architecture is the number of questions that reach the user. In order to minimize this, we propose a heuristic by which a decision can be made regarding which queries provide valuable information - based on the current requirements - and which might not. Since active automaton learning algorithms aren't designed to utilize such an \textit{adaptive learning}, a new approach was necessary. 
 
 Active learning algorithms, and specifically in this case, the Direct Hypothesis Construction algorithm assume that the information they require are readily available, and thus follow a "greedy" approach of querying. While this is appropriate for automated solutions, greedily exploring the design space can result in several magnitudes larger amount of new, previously unexplored queries, which do not necessarily provide new information. The result of this is longer learning rounds (with more membership queries) exploring a larger amount of the behavior, and conversely less equivalence queries. To allow the designing engineer to more frequently validate the hypothesized model, and the control of which unexplored behavior should be explored, a less greedy approach would be necessary.
 
@@ -360,10 +360,3 @@ To solve the above issue, we introduce the concept of adaptive active automata l
 	\caption{Types of behavior during the learning process} 
 	\label{fig_architcture_commandhandling}
 \end{figure} %TODO
-
-%---------------------------------------------------------------
-\subsection{Automata Minimization} \label{subs_minimizationintheframework}
-%---------------------------------------------------------------
-(per round vs per learning)
-%TODO
-

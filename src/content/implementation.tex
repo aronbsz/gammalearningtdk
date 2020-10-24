@@ -26,19 +26,20 @@ Xtext is an open-source framework for developing (mostly) domain-specific langua
 
 Xtend is a general-purpose, high-level programming language based on Java. It is statically typed, object-oriented and uses the type system of Java. Xtend programs are compiled to Java code, thus allowing seamless integration with existing Java libraries. It provides numerous convenient extensions to Java, such as dispatch methods, type inference, operator overloading and extension methods.
 
-
 %----------------------------------------------------------------------------
 \subsection{Sirius} \label{subsec_sirius}
 %----------------------------------------------------------------------------
-Sirius is an open-source project for developing graphical modeling languages. It is integrated into the Eclipse environment, enabing the specification of viewpoints for EMF models, thus the creation of graphical views. In a Sirius workbench (editor), the elements of the viewpoint specification models are mapped to individual EMF model elements, thus allowing their graphical interpretation and editing.
+Sirius is an open-source project for developing graphical modeling languages. It is integrated into the Eclipse environment, enabing the specification of viewpoints for EMF models, thus the creation of graphical views. In a Sirius workbench (editor), the elements of the viewpoint specification models are mapped to individual EMF model elements, thus allowing their graphical interpretation and editing. The whole viewpoint definition procedure is declarative, using OCL \cite{OCLStandard} (or Acceleo Query Language, AQL) expressions for the traversal of the diagram elements when needed.
 
-Sirius supports various representation types. Traditional Sirius diagrams consist mainly of nodes and edges between nodes, fit for the creation of structural models. It also supports table and tree representations, and also \textit{sequence diagrams} for modeling behavior.
+Sirius supports various representation types. Traditional Sirius diagrams consist mainly of nodes and edges between nodes, suitable for models in which the position of the diagram elements carries no meaning - like several structural modeling languages. It also supports table and tree representations, and also \textit{sequence diagrams} for modeling behavior - in which the position on the diagram is also part of the semantics.
 
 %----------------------------------------------------------------------------
 \subsection{Owl} \label{subsec_owl}
 %----------------------------------------------------------------------------
 
-Owl \cite{Owl} is a tool collection for $\omega$-words, $\omega$-automata and linear temporal logic. It supports - among others - the parsing and manipulation of LTL formula, parsing and serialization of $\omega$-automata from the HOA format \cite{HOAFormat}, the translation of LTL formula to $\omega$-automata with arbitrary acceptance condition and the transformation of $\omega$-automata between various acceptance conditions.It also contains several algorithms for the manipulation, product, SCC decomposition and emptyness checks of $\omega$-automata.
+Owl \cite{Owl} is a tool collection for $\omega$-words, $\omega$-automata and linear temporal logic. It provides several algorithms for automata and LTL, supporting - among others - LTL expression parsing and simplification, reading and writing $\omega$-automata using the HOA format \cite{HOAFormat}, translation of LTL formula to $\omega$-automata with several possible acceptance conditions, and operations over $\omega$-automata, such as product, SCC decomposition emptiness checks and acceptance-condition transformations.
+
+Through providing these algorithms, the library supports easy development and fast prototyping in the area of LTL and automata, thus also enabling rapid concept validation.
 
 %----------------------------------------------------------------------------
 \subsection{Automata Learning Framework} \label{subsec_automatonlearning}

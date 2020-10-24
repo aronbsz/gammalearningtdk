@@ -16,15 +16,35 @@ This section demonstrates the capabilities and boundaries of the framework. It p
 \subsection{Introduction} \label{subs_casestudyintro}
 %---------------------------------------------------------------
 
-The problem to solve is modeling a pedestrian crossing with a standard traffic light and a pedestrian light. The traffic light is looping through the red-green-yellow-red sequence. As an extra, there is an interrupted mode that may be triggered by the police, which results in blinking yellow light. The pedestrian light loops through the red-green cycle, and turns black when an interrupt arrives. A subsequent interrupt turns the lights back on, also considering that the sytem must always be in a safe state.
+The problem to solve is modeling a pedestrian crossing with a standard traffic light and a pedestrian light as illustrated on Figre [TODO]. As the traffic lights and the pedestrian lights on the opposite sides of the crossing behave identically, we are going to model only one instance of each device. 
 
-[TODO figure ('pictures') about the different states of the system]
+The traffic light is looping through the red-green-yellow-red sequence. As an extra, there is an interrupted mode that may be triggered by the police, which results in blinking yellow light. The pedestrian light loops through the red-green-red sequence, and turns black when an interrupt arrives. A subsequent interrupt turns the lights back on, also considering that the sytem must always be in a safe state - i.e. the lights must not allow passage for both the pedestrians and the road vehicles at the same time.
+
+The possible states of the imagined system are presented on Figure \ref{fig_casestudy_systemstates}.
+
+\begin{figure}[!ht] 
+	\centering
+	\fbox{
+		\includegraphics[width=30mm, keepaspectratio]{figures/casestudy_state1.png}
+	}
+	\fbox{
+		\includegraphics[width=30mm, keepaspectratio]{figures/casestudy_state2.png}
+	}
+	\fbox{
+		\includegraphics[width=30mm, keepaspectratio]{figures/casestudy_state3.png}
+	}
+	\fbox{
+		\includegraphics[width=30mm, keepaspectratio]{figures/casestudy_state4.png}
+	}
+	\caption{Possible states of the system: normal operation (\textit{three from the left}) and the interrupted state \textit{(right)}} 
+	\label{fig_casestudy_systemstates}
+\end{figure}
 
 %---------------------------------------------------------------
 \subsection{Component Design} \label{subs_casestudycomps}
 %---------------------------------------------------------------
 
-The previous subsection mentioned two components of the composite system: a traffic light and a pedestrian light. There is also a requirement which requires the components to synchronize their behavior, justificating the existence of a third, controller component. 
+The previous subsection mentioned two components of the composite system: a traffic light and a pedestrian light. To realize the safe state of the system, the components must synchronize their behavior, justificating the existence of a third, controller component. 
 
 \textbf{The traffic light component} has two inputs on its input interface - toggle and interrupt - and four outputs on its display interface - red, green, yellow and blinking yellow - as it appeared in the problem description.
 
@@ -32,12 +52,19 @@ The previous subsection mentioned two components of the composite system: a traf
 
 \textbf{The controller component} controls the rhythm of the change of states and also interrupts the other components when the police interrupt arrives. Thus, it has an input interface for the police interrupt and two output interfaces - matching the inputs of the other components.
 
-The described components and their connections are illustrated on Figure [TODO]
+The described components and their connections are illustrated on Figure \ref{fig_casestudy_blockdiagram}.
 
-[TODO component diagram]
+\begin{figure}[!ht] 
+	\centering
+	%\fbox{
+		\includegraphics[width=130mm, keepaspectratio]{figures/casestudy_blockdiagram.png}
+	%}
+	\caption{Components of the modeled system and their connections} 
+	\label{fig_casestudy_blockdiagram}
+\end{figure}
 
 %---------------------------------------------------------------
-\subsection{Learning a Component} \label{subs_casestudy}
+\subsection{Synthesizing a Component Using the Framework} \label{subs_casestudysynth}
 %---------------------------------------------------------------
 
 %---------------------------------------------------------------

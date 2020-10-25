@@ -11,7 +11,7 @@ This chapter presents the applicability of the designed framework, evaluates its
 %----------------------------------------------------------------------------
 \section{Case Study: Pedestrian Crossing} \label{sec_casestudy}
 %----------------------------------------------------------------------------
-This section demonstrates the capabilities and boundaries of the framework. It presents a problem commonly modeled using state-based models, which is complex enough to demonstrate all aspects of the designed Interactive Learning Entity, but also simple enough to solve - thus verify - only using some background knowledge and common sense. [TODO ref gamma tutorial?]
+This section demonstrates the capabilities and limitations of the framework. It presents a problem commonly modeled using state-based models, which is complex enough to demonstrate all aspects of the designed Interactive Learning Entity, but also simple enough to solve - thus verify - only using some background knowledge and common sense. [TODO ref gamma tutorial?]
 
 %---------------------------------------------------------------
 \subsection{Introduction} \label{subs_casestudyintro}
@@ -68,18 +68,35 @@ The described components and their connections are illustrated on Figure \ref{fi
 
 Based on the specification, we expect the traffic light and the pedestrian light components to behave identically to the components illustrated on Figure [TODO]. Naturally, we do not expect the same structure - a statechart with state hierarchy and entry/exit actions - as the current framework is not capable of synthesizing statechart-specific elements. 
 
-[TODO TrafficLight Statechart \& also PedestrianLight here!]
+\begin{figure}[!ht] 
+	\centering
+	\fbox{
+	\includegraphics[width=130mm, keepaspectratio]{figures/casestudy_trafficlightexpected.png}
+	}
+	\fbox{
+		\includegraphics[width=130mm, keepaspectratio]{figures/casestudy_pedestrianlightexpected.png}
+	}
+	\caption{The expected behavior of the traffic light and the pedestrian light components} 
+	\label{fig_casestudy_expecteds}
+\end{figure}
 
 The controller component will be similar with one additional problem. It is not possible to synthesize timeouts to control the rhythm of the toggle signals. For that, we introduce an event not qualified by an interface, which the user can substitute for arbitrary internal logic - e.g. the corresponding timeouts. Thus, we expect a component similar to that on Figure [TODO].
 
-[TODO Controller Statechart!]
+\begin{figure}[!ht] 
+	\centering
+	\fbox{
+		\includegraphics[width=130mm, keepaspectratio]{figures/casestudy_controllerexpected.png}
+	}
+	\caption{The expected behavior of the traffic light and the pedestrian light components} 
+	\label{fig_casestudy_expectedcontroller}
+\end{figure}
 
 
 %---------------------------------------------------------------
 \subsection{Synthesizing the Components} \label{subs_casestudysynth}
 %---------------------------------------------------------------
 
-As the components are relatively simple, the algorithm will reach the desired behavior after examining only short traces, resulting in relatively few questions to the user. However, to illustrate the usage of non-trivial requirements formulated in advance, let us define a few LTL expressions, invalid and valid traces for the traffic light component (with the interface qualifications left out for simplicity):
+As the components are relatively simple, the algorithm will reach the desired behavior after examining only short traces, resulting in relatively few questions to the user. However, to illustrate the usage of non-trivial requirements formulated in advance, let us define a few LTL expressions, invalid and valid traces for the traffic light component (with the interface qualifications omitted for simplicity):
 
 \begin{itemize}
 	\item LTL: FG(interrupt -> blinkingYellow | red) meaning that as a result of an interrupt, only blinking yellow or red can be on the output. 
@@ -90,6 +107,13 @@ As the components are relatively simple, the algorithm will reach the desired be
 \end{itemize}
 
 After adding these requirements during the offline phase (qualified with the corresponding interfaces, presented in Listing \ref{lst_exampleofflinefull}), the synthesis of the component can proceed to the online, interactive phase. A possible learning process can be seen in Listing \ref{lst_examplelearning}. In Listing \ref{lst_examplelearningfull} there is a version of this example with logging turned on, so we can infer more about the state of the learning.
+
+\begin{itemize}
+	\item[$\triangleleft$] Provide the output for sequence [TrafficControl.interrupt]
+	\item[$\triangleright$] IOPair: TrafficDisplay.blinkingYellow
+	\item[$\triangleleft$] Provide the output for sequence [TrafficControl.interrupt]
+	\item[$\triangleright$] IOPair: TrafficDisplay.blinkingYellow
+\end{itemize}
 
 \bigskip
 \begin{lstlisting} [language=tex,caption=A possible run of the learning process,label=lst_examplelearning]
@@ -134,7 +158,7 @@ After adding these requirements during the offline phase (qualified with the cor
 The rest of the components can be synthesized in a similar fashion. 
 
 %---------------------------------------------------------------
-\subsection{The Resulting Models} \label{subs_casestudyresults}
+\subsection{The Learnt Models} \label{subs_casestudyresults}
 %---------------------------------------------------------------
 
 

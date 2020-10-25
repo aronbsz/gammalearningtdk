@@ -43,13 +43,13 @@ The traffic light is looping through the red-green-yellow-red sequence. As an ex
 \subsection{Component Design} \label{subs_casestudycomps}
 %---------------------------------------------------------------
 
-The previous subsection mentioned two components of the composite system: a traffic light and a pedestrian light. To realize the safe state of the system, the components must synchronize their behavior, justificating the existence of a third, controller component. 
+The previous subsection mentioned two components of the composite system: a traffic light and a pedestrian light. To realize the safe state of the system, the components must synchronize their behavior, justificating the existence of a third, controller component. The traffic and pedestrian light components should have one input and one output port -- they  are relatively simple -- and the controller should have an input port for the police and two output ports for the components.
 
-\textbf{The traffic light component} has two inputs on its input interface - toggle and interrupt - and four outputs on its display interface - red, green, yellow and blinking yellow - as it appeared in the problem description.
+\textbf{The traffic light component} has two possible inputs on its input port (TrafficControl) - toggle and interrupt - and four outputs on its output port (TrafficDisplay) - red, green, yellow and blinking yellow - as it appeared in the problem description.
 
-\textbf{The pedestrian light component} has the same two inputs on its input interface - toggle and interrupt - and three outputs on its display interface - red, green, and black - as it appeared in the problem description.
+\textbf{The pedestrian light component} has the same two inputs on its input port (PedestrianControl) - toggle and interrupt - and three outputs on its output port (PedestrianDisplay) - red, green, and black - as it appeared in the problem description.
 
-\textbf{The controller component} controls the rhythm of the change of states and also interrupts the other components when the police interrupt arrives. Thus, it has an input interface for the police interrupt and two output interfaces - matching the inputs of the other components.
+\textbf{The controller component} controls the rhythm of the change of states and also interrupts the other components when the police interrupt arrives. TIt has an input port ('\textit{Police}') for the police interrupt and two output ports ('\textit{TrafficControl}' and '\textit{PedestrianControl}') - matching the input ports of the other components.
 
 The described components and their connections are illustrated on Figure \ref{fig_casestudy_blockdiagram}.
 
@@ -62,34 +62,9 @@ The described components and their connections are illustrated on Figure \ref{fi
 	\label{fig_casestudy_blockdiagram}
 \end{figure}
 
-[TODO interface definitions here]
-
 \textbf{The Expected Behavior of the Components} 
 
-Based on the specification, we expect the traffic light and the pedestrian light components to behave identically to the components illustrated on Figure [TODO]. Naturally, we do not expect the same structure - a statechart with state hierarchy and entry/exit actions - as the current framework is not capable of synthesizing statechart-specific elements. 
-
-\begin{figure}[!ht] 
-	\centering
-	\fbox{
-	\includegraphics[width=130mm, keepaspectratio]{figures/casestudy_trafficlightexpected.png}
-	}
-	\fbox{
-		\includegraphics[width=130mm, keepaspectratio]{figures/casestudy_pedestrianlightexpected.png}
-	}
-	\caption{The expected behavior of the traffic light and the pedestrian light components} 
-	\label{fig_casestudy_expecteds}
-\end{figure}
-
-The controller component will be similar with one additional problem. It is not possible to synthesize timeouts to control the rhythm of the toggle signals. For that, we introduce an event not qualified by an interface, which the user can substitute for arbitrary internal logic - e.g. the corresponding timeouts. Thus, we expect a component similar to that on Figure [TODO].
-
-\begin{figure}[!ht] 
-	\centering
-	\fbox{
-		\includegraphics[width=130mm, keepaspectratio]{figures/casestudy_controllerexpected.png}
-	}
-	\caption{The expected behavior of the traffic light and the pedestrian light components} 
-	\label{fig_casestudy_expectedcontroller}
-\end{figure}
+TODO define requirements that fit the 'expected' statecharts below kinda formally.
 
 
 %---------------------------------------------------------------
@@ -106,54 +81,35 @@ As the components are relatively simple, the algorithm will reach the desired be
 	\item Invalid Trace: interrupt/yellow interrupt/yellow - to enforce the safe state when returning from interrupter 
 \end{itemize}
 
-After adding these requirements during the offline phase (qualified with the corresponding interfaces, presented in Listing \ref{lst_exampleofflinefull}), the synthesis of the component can proceed to the online, interactive phase. A possible learning process can be seen in Listing \ref{lst_examplelearning}. In Listing \ref{lst_examplelearningfull} there is a version of this example with logging turned on, so we can infer more about the state of the learning.
-
-\begin{itemize}
-	\item[$\triangleleft$] Provide the output for sequence [TrafficControl.interrupt]
-	\item[$\triangleright$] IOPair: TrafficDisplay.blinkingYellow
-	\item[$\triangleleft$] Provide the output for sequence [TrafficControl.interrupt]
-	\item[$\triangleright$] IOPair: TrafficDisplay.blinkingYellow
-\end{itemize}
+After adding these requirements during the offline phase (qualified with the corresponding interfaces, presented in Listing \ref{lst_exampleofflinefull}), the synthesis of the component can proceed to the online, interactive phase. A possible run of the learning process can be seen below -- $\circ$ symbolizing the ILE, $\triangleright$ symbolizing the user (interface qualifications omitted for simplicity). 
 
 \bigskip
-\begin{lstlisting} [language=tex,caption=A possible run of the learning process,label=lst_examplelearning]
-	Unknown output for input sequence: [trafficControl_interrupt]
-	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
-	>I
-	Please provide the expected output:
-	>TrafficDisplay.blinkingYellow
-	Unknown output for input sequence: [trafficControl_interrupt, trafficControl_interrupt]
-	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
-	>V
-	Please provide a valid trace:
-	>TrafficControl.interrupt/trafficDisplay.blinkingYellow TrafficControl.interrupt/TrafficDisplay.red TrafficControl.interrupt/TrafficDisplay.blinkingYellow TrafficControl.interrupt/TrafficDisplay.red
-	Unknown output for input sequence: [trafficControl_toggle, trafficControl_interrupt]
-	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
-	>I
-	Please provide the expected output:
-	>TrafficDisplay.blinkingYellow
-	Unknown output for input sequence: [trafficControl_toggle, trafficControl_interrupt, trafficControl_interrupt]
-	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
-	>I
-	Please provide the expected output:
-	>TrafficDisplay.red
-	Unknown output for input sequence: [trafficControl_toggle, trafficControl_toggle, trafficControl_interrupt]
-	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
-	>I
-	Please provide the expected output:
-	>TrafficDisplay.blinkingYellow
-	Unknown output for input sequence: [trafficControl_toggle, trafficControl_toggle, trafficControl_interrupt, trafficControl_interrupt]
-	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
-	>I
-	Please provide the expected output:
-	>TrafficDisplay.red
-	Unknown output for input sequence: [trafficControl_toggle, trafficControl_toggle, trafficControl_toggle, trafficControl_interrupt]
-	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
-	>I
-	Please provide the expected output:
-	>TrafficDisplay.blinkingYellow
-	Equivalence Query. Please provide a counterexample if exists.
-\end{lstlisting}
+\fbox{
+\parbox{\textwidth}{
+\begin{itemize}
+	\item[$\circ$] Provide the output for sequence [interrupt]
+	\item[$\triangleright$] IOPair: blinkingYellow
+	\item[$\circ$] Provide the output for sequence [interrupt interrupt]
+	\item[$\triangleright$] Valid Trace: interrupt/blinkingYellow interrupt/red
+	interrupt/blinkingYellow
+	interrupt/red
+	\item[$\circ$] Provide the output for sequence [toggle interrupt]
+	\item[$\triangleright$] IOPair: blinkingYellow
+	\item[$\circ$] Provide the output for sequence [toggle interrupt interrupt]
+	\item[$\triangleright$] IOPair: red
+	\item[$\circ$] Provide the output for sequence [toggle toggle interrupt]
+	\item[$\triangleright$] IOPair: blinkingYellow
+	\item[$\circ$] Provide the output for sequence [toggle toggle interrupt interrupt]
+	\item[$\triangleright$] IOPair: red
+	\item[$\circ$] Provide the output for sequence [toggle toggle toggle interrupt]
+	\item[$\triangleright$] IOPair: blinkingYellow
+	\item[$\circ$] Equivalence Query (illustrated on Figure [TODO insert])
+	\item[$\triangleright$] Approved
+\end{itemize}
+}
+}
+
+The same learning process can be seen on Listing \ref{lst_examplelearning} in the Appendix, which presents the inputs and outputs as it appears on the command line interface.
 
 The rest of the components can be synthesized in a similar fashion. 
 
@@ -161,6 +117,36 @@ The rest of the components can be synthesized in a similar fashion.
 \subsection{The Learnt Models} \label{subs_casestudyresults}
 %---------------------------------------------------------------
 
+Az várt komponensek és a kapott komponensek összehasonlítását láthatjuk a következő képen [TODO]....
+
+\begin{figure}[!ht] 
+	\centering
+	\fbox{
+		\includegraphics[width=130mm, keepaspectratio]{figures/casestudy_trafficlightexpected.png}
+	}
+	\fbox{
+		\includegraphics[width=130mm, keepaspectratio]{figures/casestudy_pedestrianlightexpected.png}
+	}
+	\caption{The expected behavior of the traffic light and the pedestrian light components} 
+	\label{fig_casestudy_expecteds}
+\end{figure}
+
+\begin{figure}[!ht] 
+	\centering
+	\fbox{
+		\includegraphics[width=130mm, keepaspectratio]{figures/casestudy_controllerexpected.png}
+	}
+	\caption{The expected behavior of the traffic light and the pedestrian light components} 
+	\label{fig_casestudy_expectedcontroller}
+\end{figure}
+
+A képeken az látszik, hogy nem pont ugyanazt kaptuk, de a viselkedés megegyezik, mivel nem tudunk hierarchiát yadda yadda....
+
+A Controller timeoutját a következőképp modelleztük... Időzítést sem tudunk, azonban a usernek lehetősége van kiegészíteni....
+
+Ezek után használhatja a Gamma mindenét a modellekre, etc etc....
+
+[ESETLEG: a teljes rendszert is tanuljuk?]
 
 %----------------------------------------------------------------------------
 \section{Future Work} \label{sec_futurework}

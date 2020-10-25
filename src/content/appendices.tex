@@ -45,103 +45,41 @@
 \clearpage\section{Pedestrian Crossing}
 %----------------------------------------------------------------------------
 \bigskip
-\begin{lstlisting} [language=tex,caption=Adding requirements to the traffic light offline with logging,label=lst_exampleofflinefull]
-	Please provide the input alphabet for component TrafficLight (space-separated):
-	>TrafficControl.interrupt TrafficControl.toggle
-	Please provide the output alphabet for component TrafficLight (space-separated):
-	>TrafficDisplay.red TrafficDisplay.yellow TrafficDisplay.green TrafficDisplay.blinkingYellow
-	Please provide any requirements formulated in advance (type END when finished):
-	Would you like to specify the requirement through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
-	>N
-	Please provide an invalid trace:
-	>TrafficControl.interrupt/TrafficDisplay.green TrafficControl.interrupt/TrafficDisplay.green
-	Would you like to specify the requirement through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
-	>N
-	Please provide an invalid trace:
-	>TrafficControl.interrupt/TrafficDisplay.yellow TrafficControl.interrupt/TrafficDisplay.yellow
-	Would you like to specify the requirement through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
-	>L
-	Please provide an LTL expression:
-	>F(G(TrafficControl.interrupt -> TrafficDisplay.blinkingYellow | TrafficDisplay.red))
-	INFO: Re-serialized:
-	INFO: F(G((trafficControl_interrupt&!trafficControl_toggle->((trafficDisplay_blinkingYellow&!trafficDisplay_red&!trafficDisplay_yellow&!trafficDisplay_green)|(trafficDisplay_red&!trafficDisplay_yellow&!trafficDisplay_green&!trafficDisplay_blinkingYellow)))))
-	Would you like to specify the requirement through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
-	>L
-	Please provide an LTL expression:
-	>F(TrafficControl.interrupt -> X(G(TrafficControl.toggle) -> G(TrafficDisplay.blinkingYellow)))
-	INFO: Re-serialized:
-	INFO: F((trafficControl_interrupt&!trafficControl_toggle->X((G(trafficControl_toggle&!trafficControl_interrupt)->G(trafficDisplay_blinkingYellow&!trafficDisplay_red&!trafficDisplay_yellow&!trafficDisplay_green)))))
-	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
-	>V
-	Please provide a valid trace:
-	>TrafficControl.toggle/TrafficDisplay.red TrafficControl.toggle/TrafficDisplay.green TrafficControl.toggle/TrafficDisplay.yellow TrafficControl.toggle/TrafficDisplay.red
-	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
-	>END
-\end{lstlisting}
-\bigskip
-\begin{lstlisting} [language=tex,caption=A possible run of the learning process of the traffic light with logging,label=lst_examplelearningfull]
+\begin{lstlisting} [language=tex,caption=A possible run of the learning process,label=lst_examplelearning]
 	Unknown output for input sequence: [trafficControl_interrupt]
-	INFO: Ambiguous output: [trafficDisplay_blinkingYellow, trafficDisplay_red]
 	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
 	>I
 	Please provide the expected output:
 	>TrafficDisplay.blinkingYellow
-	INFO: out: trafficDisplay_blinkingYellow
-	INFO: out: trafficDisplay_red
-	INFO: comm: OPTIMISTIC
 	Unknown output for input sequence: [trafficControl_interrupt, trafficControl_interrupt]
-	INFO: Ambiguous output: [trafficDisplay_blinkingYellow, trafficDisplay_red]
 	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
 	>V
 	Please provide a valid trace:
 	>TrafficControl.interrupt/trafficDisplay.blinkingYellow TrafficControl.interrupt/TrafficDisplay.red TrafficControl.interrupt/TrafficDisplay.blinkingYellow TrafficControl.interrupt/TrafficDisplay.red
-	INFO: out: trafficDisplay_red
-	INFO: out: trafficDisplay_blinkingYellow
-	INFO: comm: PESSIMISTIC
 	Unknown output for input sequence: [trafficControl_toggle, trafficControl_interrupt]
-	INFO: Ambiguous output: [trafficDisplay_blinkingYellow, trafficDisplay_red]
 	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
 	>I
 	Please provide the expected output:
 	>TrafficDisplay.blinkingYellow
-	INFO: out: trafficDisplay_blinkingYellow
-	INFO: out: trafficDisplay_green
-	INFO: comm: OPTIMISTIC
 	Unknown output for input sequence: [trafficControl_toggle, trafficControl_interrupt, trafficControl_interrupt]
-	INFO: Ambiguous output: [trafficDisplay_blinkingYellow, trafficDisplay_red]
 	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
 	>I
 	Please provide the expected output:
 	>TrafficDisplay.red
-	INFO: out: trafficDisplay_red
-	INFO: out: trafficDisplay_blinkingYellow
 	Unknown output for input sequence: [trafficControl_toggle, trafficControl_toggle, trafficControl_interrupt]
-	INFO: Ambiguous output: [trafficDisplay_blinkingYellow, trafficDisplay_red]
 	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
 	>I
 	Please provide the expected output:
 	>TrafficDisplay.blinkingYellow
-	INFO: out: trafficDisplay_blinkingYellow
-	INFO: out: trafficDisplay_yellow
-	INFO: comm: OPTIMISTIC
 	Unknown output for input sequence: [trafficControl_toggle, trafficControl_toggle, trafficControl_interrupt, trafficControl_interrupt]
-	INFO: Ambiguous output: [trafficDisplay_blinkingYellow, trafficDisplay_red]
 	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
 	>I
 	Please provide the expected output:
 	>TrafficDisplay.red
-	INFO: out: trafficDisplay_red
-	INFO: out: trafficDisplay_blinkingYellow
 	Unknown output for input sequence: [trafficControl_toggle, trafficControl_toggle, trafficControl_toggle, trafficControl_interrupt]
-	INFO: Ambiguous output: [trafficDisplay_blinkingYellow, trafficDisplay_red]
 	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
 	>I
 	Please provide the expected output:
 	>TrafficDisplay.blinkingYellow
-	INFO: out: trafficDisplay_blinkingYellow
-	INFO: out: trafficDisplay_red
 	Equivalence Query. Please provide a counterexample if exists.
-	INFO: python
-	INFO: D:\automatalearning\automatalearning\eqVisualization\eqVisualizer.py
 \end{lstlisting}
-

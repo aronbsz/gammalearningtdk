@@ -1,0 +1,38 @@
+// ONLINE filtered
+
+Unknown output for input sequence: [trafficControl_interrupt]
+Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
+>I
+Please provide the expected output:
+>TrafficDisplay.blinkingYellow
+Unknown output for input sequence: [trafficControl_interrupt, trafficControl_interrupt]
+Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
+>V
+Please provide a valid trace:
+>TrafficControl.interrupt/trafficDisplay.blinkingYellow TrafficControl.interrupt/TrafficDisplay.red TrafficControl.interrupt/TrafficDisplay.blinkingYellow TrafficControl.interrupt/TrafficDisplay.red
+Unknown output for input sequence: [trafficControl_toggle, trafficControl_interrupt]
+Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
+>I
+Please provide the expected output:
+>TrafficDisplay.blinkingYellow
+Unknown output for input sequence: [trafficControl_toggle, trafficControl_interrupt, trafficControl_interrupt]
+Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
+>I
+Please provide the expected output:
+>TrafficDisplay.red
+Unknown output for input sequence: [trafficControl_toggle, trafficControl_toggle, trafficControl_interrupt]
+Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
+>I
+Please provide the expected output:
+>TrafficDisplay.blinkingYellow
+Unknown output for input sequence: [trafficControl_toggle, trafficControl_toggle, trafficControl_interrupt, trafficControl_interrupt]
+Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
+>I
+Please provide the expected output:
+>TrafficDisplay.red
+Unknown output for input sequence: [trafficControl_toggle, trafficControl_toggle, trafficControl_toggle, trafficControl_interrupt]
+Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
+>I
+Please provide the expected output:
+>TrafficDisplay.blinkingYellow
+Equivalence Query. Please provide a counterexample if exists.

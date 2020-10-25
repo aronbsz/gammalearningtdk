@@ -7,6 +7,7 @@ This chapter presents the applicability of the designed framework, evaluates its
 \section{Theoretical Evaluation} \label{sec_theoeval}
 %----------------------------------------------------------------------------
 
+\clearpage
 %----------------------------------------------------------------------------
 \section{Case Study: Pedestrian Crossing} \label{sec_casestudy}
 %----------------------------------------------------------------------------
@@ -16,11 +17,9 @@ This section demonstrates the capabilities and boundaries of the framework. It p
 \subsection{Introduction} \label{subs_casestudyintro}
 %---------------------------------------------------------------
 
-The problem to solve is modeling a pedestrian crossing with a standard traffic light and a pedestrian light as illustrated on Figre [TODO]. As the traffic lights and the pedestrian lights on the opposite sides of the crossing behave identically, we are going to model only one instance of each device. 
+The problem to solve is modeling a pedestrian crossing with a standard traffic light and a pedestrian light as illustrated on Figre \ref{fig_casestudy_systemstates}. As the traffic lights and the pedestrian lights on the opposite sides of the crossing behave identically, we are going to model only one instance of each device. 
 
 The traffic light is looping through the red-green-yellow-red sequence. As an extra, there is an interrupted mode that may be triggered by the police, which results in blinking yellow light. The pedestrian light loops through the red-green-red sequence, and turns black when an interrupt arrives. A subsequent interrupt turns the lights back on, also considering that the sytem must always be in a safe state - i.e. the lights must not allow passage for both the pedestrians and the road vehicles at the same time.
-
-The possible states of the imagined system are presented on Figure \ref{fig_casestudy_systemstates}.
 
 \begin{figure}[!ht] 
 	\centering
@@ -63,9 +62,76 @@ The described components and their connections are illustrated on Figure \ref{fi
 	\label{fig_casestudy_blockdiagram}
 \end{figure}
 
+[TODO interface definitions here]
+
+\textbf{The Expected Behavior of the Components} 
+
+Based on the specification, we expect the traffic light and the pedestrian light components to behave identically to the components illustrated on Figure [TODO]. Naturally, we do not expect the same structure - a statechart with state hierarchy and entry/exit actions - as the current framework is not capable of synthesizing statechart-specific elements. 
+
+[TODO TrafficLight Statechart \& also PedestrianLight here!]
+
+The controller component will be similar with one additional problem. It is not possible to synthesize timeouts to control the rhythm of the toggle signals. For that, we introduce an event not qualified by an interface, which the user can substitute for arbitrary internal logic - e.g. the corresponding timeouts. Thus, we expect a component similar to that on Figure [TODO].
+
+[TODO Controller Statechart!]
+
+
 %---------------------------------------------------------------
-\subsection{Synthesizing a Component Using the Framework} \label{subs_casestudysynth}
+\subsection{Synthesizing the Components} \label{subs_casestudysynth}
 %---------------------------------------------------------------
+
+As the components are relatively simple, the algorithm will reach the desired behavior after examining only short traces, resulting in relatively few questions to the user. However, to illustrate the usage of non-trivial requirements formulated in advance, let us define a few LTL expressions, invalid and valid traces for the traffic light component (with the interface qualifications left out for simplicity):
+
+\begin{itemize}
+	\item LTL: FG(interrupt -> blinkingYellow | red) meaning that as a result of an interrupt, only blinking yellow or red can be on the output. 
+	\item LTL: F(interrupt -> X(G(toggle) -> G(blinkingYellow))) meaning that after an interrupt, if only toggles are the inputs, the outputs are always blinking yellow
+	\item Valid Trace: toggle/red toggle/green toggle/yellow toggle/red - the main sequence loop of the traffic light
+	\item Invalid Trace: interrupt/green interrupt/green - to enforce the safe state when returning from interrupter
+	\item Invalid Trace: interrupt/yellow interrupt/yellow - to enforce the safe state when returning from interrupter 
+\end{itemize}
+
+After adding these requirements during the offline phase (qualified with the corresponding interfaces, presented in Listing \ref{lst_exampleofflinefull}), the synthesis of the component can proceed to the online, interactive phase. A possible learning process can be seen in Listing \ref{lst_examplelearning}. In Listing \ref{lst_examplelearningfull} there is a version of this example with logging turned on, so we can infer more about the state of the learning.
+
+\bigskip
+\begin{lstlisting} [language=tex,caption=A possible run of the learning process,label=lst_examplelearning]
+	Unknown output for input sequence: [trafficControl_interrupt]
+	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
+	>I
+	Please provide the expected output:
+	>TrafficDisplay.blinkingYellow
+	Unknown output for input sequence: [trafficControl_interrupt, trafficControl_interrupt]
+	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
+	>V
+	Please provide a valid trace:
+	>TrafficControl.interrupt/trafficDisplay.blinkingYellow TrafficControl.interrupt/TrafficDisplay.red TrafficControl.interrupt/TrafficDisplay.blinkingYellow TrafficControl.interrupt/TrafficDisplay.red
+	Unknown output for input sequence: [trafficControl_toggle, trafficControl_interrupt]
+	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
+	>I
+	Please provide the expected output:
+	>TrafficDisplay.blinkingYellow
+	Unknown output for input sequence: [trafficControl_toggle, trafficControl_interrupt, trafficControl_interrupt]
+	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
+	>I
+	Please provide the expected output:
+	>TrafficDisplay.red
+	Unknown output for input sequence: [trafficControl_toggle, trafficControl_toggle, trafficControl_interrupt]
+	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
+	>I
+	Please provide the expected output:
+	>TrafficDisplay.blinkingYellow
+	Unknown output for input sequence: [trafficControl_toggle, trafficControl_toggle, trafficControl_interrupt, trafficControl_interrupt]
+	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
+	>I
+	Please provide the expected output:
+	>TrafficDisplay.red
+	Unknown output for input sequence: [trafficControl_toggle, trafficControl_toggle, trafficControl_toggle, trafficControl_interrupt]
+	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
+	>I
+	Please provide the expected output:
+	>TrafficDisplay.blinkingYellow
+	Equivalence Query. Please provide a counterexample if exists.
+\end{lstlisting}
+
+The rest of the components can be synthesized in a similar fashion. 
 
 %---------------------------------------------------------------
 \subsection{The Resulting System} \label{subs_casestudyresults}

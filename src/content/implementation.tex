@@ -47,7 +47,7 @@ Through providing these algorithms, the library supports easy development and fa
 In order to give a foundation to the implementation described in this thesis, a previously created automata learning framework TODO: ref BSC] was extended upon. Since the framework was implemented using the Java programming language, the high-level view seen in Figure \ref{fig_automatalearning_packages} is represented as an UML class diagram of the packages and the relations between them, essentially being an overview of the modularization of the framework. 
 
 
-\skip
+\smallskip
 
 The \textit{Learnable} package contains the input formalisms, and the \textit{Hypothesis} package contains the output formalisms. Both are used by the teacher (\textit{Teacher} package) and the learner (\textit{Algorithm} package). The \textit{Adapter} package is used as an abstraction layer to separate the algorithm and the teacher from the input formalism. Since automaton learning algorithms have no direct access to the system under learning, and generally operate in a black-box way, the adapter package provides flexibility on what inputs can be used. As Figure \ref{fig_automatalearning_packages} illustrates, no such adapter is used on the output layer, since Hypotheses are directly accessed by the learning algorithms, and are constructed during the learning. The relations between the packages (modules) are straightforward.  Composition is used, to indicate, that there is no \textit{Algorithm} (learner) without a \textit{Teacher}, there is no \textit{Teacher} without an \textit{Adapter}, and there is no \textit{Adapter} without an input, a \textit{Learnable}, to adapt. \\
 The advantage of such architecture is that the automaton learning algorithms implemented within can be agnostic to the formalism of the input provided. This results in high re-usability of the core algorithms, while being easily extensible and adaptable to arbitrary systems to infer.  
@@ -61,16 +61,12 @@ The advantage of such architecture is that the automaton learning algorithms imp
 	\label{fig_automatalearning_packages}
 \end{figure}
 
-\skip
-
-
-
-%TODO: korabbi automata learning framework
+\smallskip
 
 %----------------------------------------------------------------------------
 \section{Interactive Learning Framework} \label{sec_interactivelearningframework}
 %----------------------------------------------------------------------------
-%TODO: random bevezeto szoveg
+%TODO: random bevezeto szoveg + fig 4.1 kiterjesztett változata - szagatott részekkel keretezve pl az Oracle
 
 %----------------------------------------------------------------------------
 \subsection{High-Level overview} \label{subsec_highleveloverview}
@@ -80,15 +76,15 @@ The advantage of such architecture is that the automaton learning algorithms imp
 %----------------------------------------------------------------------------
 \subsection{Oracle} \label{subsec_oracleimpl}
 %----------------------------------------------------------------------------
-%TODO: adaptive learnable + UI
+%TODO: interactive learnable -> LTLparser -> LTLEcoreMetaModel etc.
 
 %----------------------------------------------------------------------------
-\subsection{Adaption layers and memoization} \label{subsec_memoization}
+\subsection{Caching} \label{subsec_memoization}
 %----------------------------------------------------------------------------
-%TODO: memoizinglearnable, teacher, etc
+%TODO: memoizinglearnable
 
 %----------------------------------------------------------------------------
-\subsection{Adaptive Direct Hypothesis Construction} \label{subsec_adaptivedhc}
+\subsection{Learning Algorithm} \label{subsec_adaptivedhc}
 %----------------------------------------------------------------------------
-%TODO: DHC
+%TODO: DHC, adaptive teacher
 

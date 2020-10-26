@@ -49,7 +49,7 @@ The previous subsection mentioned two components of the composite system: a traf
 
 \textbf{The pedestrian light component} has the same two inputs on its input port (PedestrianControl) - toggle and interrupt - and three outputs on its output port (PedestrianDisplay) - red, green, and black - as it appeared in the problem description.
 
-\textbf{The controller component} controls the rhythm of the change of states and also interrupts the other components when the police interrupt arrives. TIt has an input port ('\textit{Police}') for the police interrupt and two output ports ('\textit{TrafficControl}' and '\textit{PedestrianControl}') - matching the input ports of the other components.
+\textbf{The controller component} controls the rhythm of the change of states and also interrupts the other components when the police interrupt arrives. It has an input port ('\textit{Police}') for the police interrupt and two output ports ('\textit{TrafficControl}' and '\textit{PedestrianControl}') - matching the input ports of the other components.
 
 The described components and their connections are illustrated on Figure \ref{fig_casestudy_blockdiagram}.
 
@@ -64,87 +64,174 @@ The described components and their connections are illustrated on Figure \ref{fi
 
 \textbf{The Expected Behavior of the Components} 
 
-TODO define requirements that fit the 'expected' statecharts below kinda formally.
+The components have been separated and their interfaces precisely defined, thus, we can proceed to formulating behavior-related requirements. For instance, the traffic light component must conform to the following -- not exhaustive -- list:
 
+\begin{itemize}
+	\item The traffic light must loop through the sequence 'toggle/red toggle/green toggle/yellow toggle/red' during normal operation.
+	\item The traffic light must display blinking yellow signal when a police interrupt arrives during normal operation.
+	\item The traffic light must return to normal operation when a second interrupt arrives.
+	\item The traffic light must display red signal when returning to normal operation.
+	\item The traffic light must always display blinking yellow when interrupted. 
+
+\end{itemize}
+
+A very similar list can be constructed for the pedestrian light component. The controller component is slightly more complicated, as it may toggle or interrupt the other components at the same time, so its alphabet shall contain separate elements for these cases.
 
 %---------------------------------------------------------------
 \subsection{Synthesizing the Components} \label{subs_casestudysynth}
 %---------------------------------------------------------------
 
-As the components are relatively simple, the algorithm will reach the desired behavior after examining only short traces, resulting in relatively few questions to the user. However, to illustrate the usage of non-trivial requirements formulated in advance, let us define a few LTL expressions, invalid and valid traces for the traffic light component (with the interface qualifications omitted for simplicity):
-
-\begin{itemize}
-	\item LTL: FG(interrupt -> blinkingYellow | red) meaning that as a result of an interrupt, only blinking yellow or red can be on the output. 
-	\item LTL: F(interrupt -> X(G(toggle) -> G(blinkingYellow))) meaning that after an interrupt, if only toggles are the inputs, the outputs are always blinking yellow
-	\item Valid Trace: toggle/red toggle/green toggle/yellow toggle/red - the main sequence loop of the traffic light
-	\item Invalid Trace: interrupt/green interrupt/green - to enforce the safe state when returning from interrupter
-	\item Invalid Trace: interrupt/yellow interrupt/yellow - to enforce the safe state when returning from interrupter 
-\end{itemize}
-
-After adding these requirements during the offline phase (qualified with the corresponding interfaces, presented in Listing \ref{lst_exampleofflinefull}), the synthesis of the component can proceed to the online, interactive phase. A possible run of the learning process can be seen below -- $\circ$ symbolizing the ILE, $\triangleright$ symbolizing the user (interface qualifications omitted for simplicity). 
+Now we add the previously formulated requirements to the ILE, in formalisms that it is able to interpret. In the following examples for the interaction of the user with the ILE, '$\circ$' symbolizes the ILE and '$\triangleright$' symbolizes the user (interface qualifications are omitted for shorter and simpler expressions). 
 
 \bigskip
 \fbox{
-\parbox{\textwidth}{
+	\parbox{\textwidth}{
+		\begin{itemize}
+			\setlength\itemsep{0.2em}
+			\item[$\circ$] Provide the requirements for component 'TrafficLight':
+			\item[$\triangleright$] Valid Trace: toggle/red toggle/green toggle/yellow toggle/red
+			\item[$\triangleright$] LTL Expression: F(interrupt -> X(G(toggle) -> G(blinkingYellow)))
+			\item[$\triangleright$] Invalid Trace: interrupt/red interrupt/blinkingYellow
+			\item[$\triangleright$] LTL Expression: F(G(interrupt -> (blinkingYellow | red)))
+			
+			\smallskip
+			... other components ...
+		\end{itemize}
+	}
+}
+
+\bigskip
+After adding these requirements during the offline phase, the synthesis of the components can proceed to the online, interactive phase. A possible run of the learning process can be seen below.
+
+\bigskip
+\fbox{
+	\parbox{\textwidth}{
+		\begin{itemize}
+			\setlength\itemsep{0.2em}
+			\item[$\circ$] Learning component 'TrafficLight'
+			\item[$\circ$] Provide the output for sequence [toggle, interrupt]:
+			\item[$\triangleright$] Corresponding Output: blinkingYellow
+			\item[$\circ$] Provide the output for sequence [toggle, interrupt, interrupt]:
+			\item[$\triangleright$] Corresponding Output: red
+			\item[$\circ$] Provide the output for sequence [toggle, toggle, interrupt]:
+			\item[$\triangleright$] Corresponding Output: blinkingYellow
+			\item[$\circ$] Provide the output for sequence [toggle, toggle, interrupt, interrupt]:
+			\item[$\triangleright$] Corresponding Output: red
+			\item[$\circ$] Provide the output for sequence [toggle, toggle, toggle, interrupt]:
+			\item[$\triangleright$] Corresponding Output: blinkingYellow
+			\item[$\circ$] Equivalence Query (Figure \ref{fig_trafficlightincomplete} in the Appendix)
+			\item[$\triangleright$] Counterexample: interrupt interrupt
+			\item[$\circ$] Provide the output for sequence [interrupt, interrupt, interrupt]:
+			\item[$\triangleright$] Valid Trace: interrupt/blinkingYellow interrupt/red interrupt/blinkingYellow interrupt/red
+			\item[$\circ$] Provide the output for sequence [interrupt, interrupt, toggle]:
+			\item[$\triangleright$] Corresponding Output: green
+			\item[$\circ$] Provide the output for sequence [interrupt, toggle, interrupt]:
+			\item[$\triangleright$] Corresponding Output: red
+			\item[$\circ$] Equivalence Query (Figure \ref{fig_casestudy_trafficlightlearned})
+			\item[$\triangleright$] Approved.
+			
+			\smallskip
+			... other components ...
+		\end{itemize}
+	}
+}
+
+\bigskip
+The same learning process can be seen on Listing \ref{lst_examplelearning} in the Appendix, which presents the inputs and outputs as they appeara on the command line interface.
+
+%---------------------------------------------------------------
+\subsection{The Learned Models} \label{subs_casestudyresults}
+%---------------------------------------------------------------
+
+Now we can examine any differences between the expected and the learned models. Figure \ref{fig_casestudy_trafficlightdiff} presents the expected and the synthesized traffic light models.
+
+\begin{figure}[!ht] 
+	\centering
+	\begin{subfigure}[b]{0.9\textwidth}
+		\centering
+		\fbox{
+			\includegraphics[width=120mm]{figures/casestudy_trafficlightexpected.png}
+		}	
+		\caption{Expected}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.9\textwidth}
+		\centering
+		\fbox{
+			\includegraphics[width=120mm]{figures/casestudy_trafficlightlearned.png}
+		}
+		\caption{Learned}	
+		\label{fig_casestudy_trafficlightlearned}
+	\end{subfigure}
+	\caption{The expected and the learned traffic light components}
+	\label{fig_casestudy_trafficlightdiff}
+\end{figure}
+
+The structure of the models is clearly different, notably:
 \begin{itemize}
-	\item[$\circ$] Provide the output for sequence [interrupt]
-	\item[$\triangleright$] IOPair: blinkingYellow
-	\item[$\circ$] Provide the output for sequence [interrupt interrupt]
-	\item[$\triangleright$] Valid Trace: interrupt/blinkingYellow interrupt/red
-	interrupt/blinkingYellow
-	interrupt/red
-	\item[$\circ$] Provide the output for sequence [toggle interrupt]
-	\item[$\triangleright$] IOPair: blinkingYellow
-	\item[$\circ$] Provide the output for sequence [toggle interrupt interrupt]
-	\item[$\triangleright$] IOPair: red
-	\item[$\circ$] Provide the output for sequence [toggle toggle interrupt]
-	\item[$\triangleright$] IOPair: blinkingYellow
-	\item[$\circ$] Provide the output for sequence [toggle toggle interrupt interrupt]
-	\item[$\triangleright$] IOPair: red
-	\item[$\circ$] Provide the output for sequence [toggle toggle toggle interrupt]
-	\item[$\triangleright$] IOPair: blinkingYellow
-	\item[$\circ$] Equivalence Query (illustrated on Figure [TODO insert])
-	\item[$\triangleright$] Approved
+	\item The expected models contain hierarchical states, while the learned ones are 'flat'.
+	\item The expected models also contain entry and exit actions, while the learned models only contain actions on transitions. 
+	\item The expected models contain meaningful state names, while the learned ones only have generated ones.
 \end{itemize}
-}
-}
 
-The same learning process can be seen on Listing \ref{lst_examplelearning} in the Appendix, which presents the inputs and outputs as it appears on the command line interface.
+However, the models are behaviorally equivalent. Both models meet the requirements stated in Subsection \ref{subs_casestudycomps}, and after careful examination, it is obvious that the only initial states are different -- as no entry actions are used in the learned models -- and the transition starting from the hierarchical state is separated into three different transitions.
 
-The rest of the components can be synthesized in a similar fashion. 
-
-%---------------------------------------------------------------
-\subsection{The Learnt Models} \label{subs_casestudyresults}
-%---------------------------------------------------------------
-
-Az várt komponensek és a kapott komponensek összehasonlítását láthatjuk a következő képen [TODO]....
+The differences between the expected and learned pedestrian light components can be seen on Figure \ref{fig_casestudy_pedestrianlightdiff}. The differences are the similar to those of the traffic light models, as the modeled behavior is also very similar. 
 
 \begin{figure}[!ht] 
 	\centering
-	\fbox{
-		\includegraphics[width=130mm, keepaspectratio]{figures/casestudy_trafficlightexpected.png}
-	}
-	\fbox{
-		\includegraphics[width=130mm, keepaspectratio]{figures/casestudy_pedestrianlightexpected.png}
-	}
-	\caption{The expected behavior of the traffic light and the pedestrian light components} 
-	\label{fig_casestudy_expecteds}
+	\begin{subfigure}[b]{0.9\textwidth}
+		\centering
+		\fbox{
+			\includegraphics[width=120mm]{figures/casestudy_pedestrianlightexpected.png}
+		}	
+		\caption{Expected}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.9\textwidth}
+		\centering
+		\fbox{
+			\includegraphics[width=120mm]{figures/casestudy_pedestrianlightlearned.PNG}
+		}
+		\caption{Learned}	
+	\end{subfigure}
+	\caption{The expected and the learned pedestrian light components}
+	\label{fig_casestudy_pedestrianlightdiff}
 \end{figure}
+
+The behavior of the controller component can be learned similarly. The expected and the synthesized models can be seen on Figure \ref{fig_casestudy_controllerdiff}. Note, that in addition to '{\fontfamily{qcr}\selectfont Police.interrupt}', the component also has an unqualified t input word. This represents a timeout event the engineer must extend the serialized model with -- but acts as a regular input event during the learning. 
 
 \begin{figure}[!ht] 
 	\centering
-	\fbox{
-		\includegraphics[width=130mm, keepaspectratio]{figures/casestudy_controllerexpected.png}
-	}
-	\caption{The expected behavior of the traffic light and the pedestrian light components} 
-	\label{fig_casestudy_expectedcontroller}
+	\begin{subfigure}[b]{0.9\textwidth}
+		\centering
+		\fbox{
+			\includegraphics[width=120mm]{figures/casestudy_controllerexpected.png}
+		}	
+		\caption{Expected}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.9\textwidth}
+		\centering
+		\fbox{
+			\includegraphics[width=120mm]{figures/casestudy_controllerlearned.png}
+		}
+		\caption{Learned [TODO ezt szebbre]}	
+	\end{subfigure}
+	\caption{The expected and the learned controller components}
+	\label{fig_casestudy_controllerdiff}
 \end{figure}
 
-A képeken az látszik, hogy nem pont ugyanazt kaptuk, de a viselkedés megegyezik, mivel nem tudunk hierarchiát yadda yadda....
+After learning every component, the collection of the models is serialized as a Gamma project, with the following files and contents:
+\begin{itemize}
+	\item TrafficLight.gcd (the learned traffic light component)
+	\item PedestrianLight.gcd (the learned pedestrian light component)
+	\item Controller.gcd (the learned controller component)
+	\item CompositeSystem.gcd (connections between the component ports, as illustrated on Figure \ref{fig_casestudy_blockdiagram})
+	\item Interfaces.gcd (the interface definitions based on the ports of the components)
+\end{itemize}
+After extending the controller with statechart-specific elements (namely the timeout event), the engineer can use the Gamma Framework to check the correctness of the system model or even generate implementation code.
 
-A Controller timeoutját a következőképp modelleztük... Időzítést sem tudunk, azonban a usernek lehetősége van kiegészíteni....
-
-Ezek után használhatja a Gamma mindenét a modellekre, etc etc....
 
 [ESETLEG: a teljes rendszert is tanuljuk?]
 

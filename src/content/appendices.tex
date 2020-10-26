@@ -46,40 +46,75 @@
 %----------------------------------------------------------------------------
 \bigskip
 \begin{lstlisting} [language=tex,caption=A possible run of the learning process,label=lst_examplelearning]
-	Unknown output for input sequence: [trafficControl_interrupt]
+	Unknown output for input sequence: [control_toggle, control_interrupt]
+	Ambiguous output: [trafficDisplay_blinkingYellow, trafficDisplay_red]
 	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
 	>I
 	Please provide the expected output:
 	>TrafficDisplay.blinkingYellow
-	Unknown output for input sequence: [trafficControl_interrupt, trafficControl_interrupt]
+	
+	Unknown output for input sequence: [control_toggle, control_interrupt, control_interrupt]
+	Ambiguous output: [trafficDisplay_blinkingYellow, trafficDisplay_red]
+	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
+	>I
+	Please provide the expected output:
+	>TrafficDisplay.red
+	
+	Unknown output for input sequence: [control_toggle, control_toggle, control_interrupt]
+	Ambiguous output: [trafficDisplay_blinkingYellow, trafficDisplay_red]
+	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
+	>I
+	Please provide the expected output:
+	>TrafficDisplay.blinkingYellow
+	
+	Unknown output for input sequence: [control_toggle, control_toggle, control_interrupt, control_interrupt]
+	Ambiguous output: [trafficDisplay_blinkingYellow, trafficDisplay_red]
+	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
+	>I
+	Please provide the expected output:
+	>TrafficDisplay.red
+	
+	Unknown output for input sequence: [control_toggle, control_toggle, control_toggle, control_interrupt]
+	Ambiguous output: [trafficDisplay_blinkingYellow, trafficDisplay_red]
+	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
+	>I
+	Please provide the expected output:
+	>TrafficDisplay.blinkingYellow
+	
+	Equivalence Query. Please provide a counterexamle:
+	Control.interrupt Control.interrupt
+	
+	Unknown output for input sequence: [control_interrupt, control_interrupt, control_interrupt]
+	Ambiguous output: [trafficDisplay_blinkingYellow, trafficDisplay_red]
 	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
 	>V
 	Please provide a valid trace:
-	>TrafficControl.interrupt/trafficDisplay.blinkingYellow TrafficControl.interrupt/TrafficDisplay.red TrafficControl.interrupt/TrafficDisplay.blinkingYellow TrafficControl.interrupt/TrafficDisplay.red
-	Unknown output for input sequence: [trafficControl_toggle, trafficControl_interrupt]
+	>Control.interrupt/TrafficDisplay.blinkingYellow Control.interrupt/TrafficDisplay.red Control.interrupt/TrafficDisplay.blinkingYellow Control.interrupt/TrafficDisplay.red
+	
+	Unknown output for input sequence: [control_interrupt, control_interrupt, control_toggle]
+	Ambiguous output: [trafficDisplay_blinkingYellow, trafficDisplay_red, trafficDisplay_yellow, trafficDisplay_green]
 	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
 	>I
 	Please provide the expected output:
-	>TrafficDisplay.blinkingYellow
-	Unknown output for input sequence: [trafficControl_toggle, trafficControl_interrupt, trafficControl_interrupt]
-	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
-	>I
-	Please provide the expected output:
-	>TrafficDisplay.red
-	Unknown output for input sequence: [trafficControl_toggle, trafficControl_toggle, trafficControl_interrupt]
-	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
-	>I
-	Please provide the expected output:
-	>TrafficDisplay.blinkingYellow
-	Unknown output for input sequence: [trafficControl_toggle, trafficControl_toggle, trafficControl_interrupt, trafficControl_interrupt]
+	>TrafficDisplay.green
+	
+	Unknown output for input sequence: [control_interrupt, control_toggle, control_interrupt]
+	Ambiguous output: [trafficDisplay_blinkingYellow, trafficDisplay_red] 
 	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
 	>I
 	Please provide the expected output:
 	>TrafficDisplay.red
-	Unknown output for input sequence: [trafficControl_toggle, trafficControl_toggle, trafficControl_toggle, trafficControl_interrupt]
-	Would you like to specify the output through an (I)O pair, an (L)TL expression, a (V)alid Trace or an I(N)valid Trace?
-	>I
-	Please provide the expected output:
-	>TrafficDisplay.blinkingYellow
-	Equivalence Query. Please provide a counterexample if exists.
+	
+	Equivalence Query. Please provide a counterexamle:
+	>
 \end{lstlisting}
+
+\bigskip
+\begin{figure}[!ht] 
+	\centering
+	\fbox{
+		\includegraphics[width=130mm, keepaspectratio]{figures/casestudy_trafficlightinclomplete.PNG}
+	}
+	\caption{Equivalence query of the incomplete traffic light component} 
+	\label{fig_trafficlightincomplete}
+\end{figure}

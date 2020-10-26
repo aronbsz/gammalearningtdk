@@ -247,18 +247,36 @@ The architecture of the ILE consists of two main components: the learning algori
 \begin{figure}[!ht] 
 	\centering
 	\fbox{
-		\includegraphics[width=150mm, keepaspectratio]{figures/architecture_informaloverview.png}
+		\includegraphics[width=140mm, keepaspectratio]{figures/architecture_informaloverview.png}
 	}
 	\caption{High-level architecture of the components of the ILE} 
 	\label{fig_architcture_informaloverview}
 \end{figure}
 
- In the case of the learning algorithm, active automata learning algorithms were chosen as a design direction. Active automata learning enables complete separation of the learner algorithm and the system under learning through a teacher component - enabling the system under learning to be made from multiple, separate requirement-models provided by the user. Since active automata learning works through queries, the query can go through arbitrary layers of logic - allowing the proposed oracle-based interactive learning. 
+ In the case of the learning algorithm, active automata learning algorithms were chosen as a design direction. Active automata learning enables complete separation of the learner algorithm and the system under learning through a teacher component -- enabling the system under learning to be made from multiple, separate requirement-models provided by the user. Since active automata learning works through queries, the query can go through arbitrary layers of logic -- allowing the proposed oracle-based interactive learning.
+ 
+ \smallskip
+ %TODO: Ez a bekezdés, hogy minden nyílról legyen szó
+ As discussed in [TODO: ref to background], active automata learning algorithms work through a teacher and a learner component. While traditionally, the queries asked through the teacher are automated - by known or derived information and equivalence algorithms - in order to achieve an interactive algorithm, we created a new approach. Figure \ref{fig_architcture_ileoverview} shows an Adaptive Learner delegating its queries through the teacher  component to an interactive oracle, which delegates the relevant questions to the user. While the abstract approach presented in Figure \ref{fig_architcture_ileoverview} does enable interactive learning, but implementing it using traditional approaches (by delegating every single query to the user), proves to be infeasible in practical use cases simply because of the amount of queries needed to learn a model. In order to overcome this boundary, optimizations were made to automate a subset of queries, and a new active automaton learning approach was designed to heuristically control the design space.
 
 %---------------------------------------------------------------
-\subsection{Automata Learning in the Framework} \label{subs_automatalearningintheframework}
+\subsection{The Cost of Interaction} \label{subs_commandhandling}
 %---------------------------------------------------------------
-As discussed in [TODO: ref to background], active automaton learning algorithms work through a teacher and a learner component. While traditionally, the queries asked through the teacher are automated - by known or derived information and equivalence algorithms - in order to achieve an interactive algorithm, we created a new approach. Figure \ref{fig_architcture_ileoverview} shows an Adaptive Learner delegating its queries through the teacher  component to an interactive oracle, which delegates the relevant questions to the user. While the abstract approach presented in Figure \ref{fig_architcture_ileoverview} does enable interactive learning, but implementing it using traditional approaches (by delegating every single query to the user), proves to be infeasible in practical use cases simply because of the amount of queries needed to learn a model. In order to overcome this boundary, optimizations were made to automate a subset of queries, and a new active automaton learning approach was designed to heuristically control the design space.
+
+As discussed in the previous subsection, one of the most important cost metrics of the presented interactive learning architecture is the number of questions that reach the user. In order to minimize this, we propose a heuristic by which a decision can be made regarding which queries provide valuable information - based on the current requirements - and which might not. Since active automaton learning algorithms aren't designed to utilize such an \textit{adaptive learning}, a new approach was necessary. 
+
+Active learning algorithms, and specifically in this case, the Direct Hypothesis Construction algorithm assume that the information they require are readily available, and thus follow a "greedy" approach of querying. While this is appropriate for automated solutions, greedily exploring the design space can result in several magnitudes larger amount of new, previously unexplored queries, which do not necessarily provide new information. The result of this is longer learning rounds (with more membership queries) exploring a larger amount of the behavior, and conversely less equivalence queries. To allow the designing engineer to more frequently validate the hypothesized model, and the control of which unexplored behavior should be explored, a less greedy approach would be necessary.
+
+To solve the above issue, we introduce the concept of adaptive active automata learning, which uses behavioral types - as illustrated in Figure \ref{fig_architcture_commandhandling} - as a heuristic to adaptively decide if and where a greedy approach should be taken. Already explored behaviors (e.g. previously queried, cached) as well as behaviors contained in the model can be answered in an automated way, allowing greediness. On the other hand, not modeled behaviors should be explored in a more reserved manner, controlled by the user - not the automaton learning algorithm. The thus created overview of the framework can be seen in Figure \ref{fig_architcture_informaloverview_complete}
+
+\begin{figure}[!ht] 
+	\centering
+	\fbox{
+		\includegraphics[width=150mm, keepaspectratio]{figures/architecture_commandhandling.png}
+	}
+	\caption{Types of behavior during the learning process} 
+	\label{fig_architcture_commandhandling}
+\end{figure} 
 
 %---------------------------------------------------------------
 \subsection{The Oracle} \label{subs_oracle}
@@ -390,30 +408,13 @@ In case of the user providing conflicting requirements, as proposed in Subsectio
 \begin{figure}[!ht] 
 	\centering
 	\fbox{
-		\includegraphics[width=150mm,keepaspectratio]{figures/architecture_informaloverview_cache.png}
+		\includegraphics[width=100mm,keepaspectratio]{figures/architecture_informaloverview_cache.png}
 	}
 	\caption{Overview of cache reset logic} 
 	\label{fig_architcture_ileoverview_cache}
 \end{figure}
 
-%---------------------------------------------------------------
-\subsection{The Cost of Interaction} \label{subs_commandhandling}
-%---------------------------------------------------------------
 
-As seen in the previously presented subsections, one of the most important cost metrics of the presented interactive learning architecture is the number of questions that reach the user. In order to minimize this, we propose a heuristic by which a decision can be made regarding which queries provide valuable information - based on the current requirements - and which might not. Since active automaton learning algorithms aren't designed to utilize such an \textit{adaptive learning}, a new approach was necessary. 
-
-Active learning algorithms, and specifically in this case, the Direct Hypothesis Construction algorithm assume that the information they require are readily available, and thus follow a "greedy" approach of querying. While this is appropriate for automated solutions, greedily exploring the design space can result in several magnitudes larger amount of new, previously unexplored queries, which do not necessarily provide new information. The result of this is longer learning rounds (with more membership queries) exploring a larger amount of the behavior, and conversely less equivalence queries. To allow the designing engineer to more frequently validate the hypothesized model, and the control of which unexplored behavior should be explored, a less greedy approach would be necessary.
-
-To solve the above issue, we introduce the concept of adaptive active automata learning, which uses behavioral types - as illustrated in Figure \ref{fig_architcture_commandhandling} - as a heuristic to adaptively decide if and where a greedy approach should be taken. Already explored behaviors (e.g. previously queried, cached) as well as behaviors contained in the model can be answered in an automated way, allowing greediness. On the other hand, not modeled behaviors should be explored in a more reserved manner, controlled by the user - not the automaton learning algorithm. The thus created overview of the framework can be seen in Figure \ref{fig_architcture_informaloverview_complete}
-
-\begin{figure}[!ht] 
-	\centering
-	\fbox{
-	\includegraphics[width=150mm, keepaspectratio]{figures/architecture_commandhandling.png}
-	}
-	\caption{Types of behavior during the learning process} 
-	\label{fig_architcture_commandhandling}
-\end{figure} 
 
 \begin{figure}[!ht] 
 	\centering

@@ -240,7 +240,23 @@ After extending the controller with statechart-specific elements (namely the tim
 \subsection{The Oracle} \label{subs_evaloracle}
 %---------------------------------------------------------------
 %TODO: Optimistic vs Pessimistic, formalizmusok
+The main metric of the oracle is the number of questions the engineer has to answer during the course of the model synthesis. This is really difficult to measure, as the exact number of these questions depends on multiple parameters: the complexity of the desired model, as well as the order, formalism, complexity and skillful construction of the requirements formulated by the designing engineer. Some of these parameters is difficult to measure in itself, thus, the following measurement is rather an illustration of the capabilities of the framework through a realistic example. 
 
+For this, the traffic light component from the case study in Section \ref{sec_casestudy} is going to be used. We assume, that the user only adds requirements he perceives conducive to the model synthesis and tries to formulate realistic -- not unnecessarily complex -- requirements. 
+
+The baseline of this experiment is the number of questions the user has to answer by only providing the corresponding outputs to the questions of the ILE. Then, we are going to examine the cases when valid traces are also allowed, then add LTL expressions and finally invalid traces. Sequence diagrams are excluded from these measurements. The results can be seen on Figure \ref{fig_eval_trafficlightformalisms}.
+
+\begin{figure}[!ht] 
+	\centering
+	%\fbox{
+	\includegraphics[width=130mm, keepaspectratio]{figures/evaluation_trafficlightformalism.png}
+	%}
+	\caption{Components of the modeled system and their connections} 
+	\label{fig_eval_trafficlightformalisms}
+\end{figure}
+
+The requirements used in this experiment -- apart from the corresponding outputs answering the questions of the ILE directly -- can be seen in [TODO appendix]. The smallest number of queries was measured when both valid traces and LTL expressions were used. The addition of invalid traces resulted in a slightly higher number, demonstrating that this formalism is difficult to apply and useful mostly for its other benefits.  
+ 
 %---------------------------------------------------------------
 \subsection{The Learning Algorithm} \label{subs_evallearningalgo}
 %---------------------------------------------------------------

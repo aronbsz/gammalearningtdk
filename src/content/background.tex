@@ -2,7 +2,7 @@
 \chapter{Background}
 %----------------------------------------------------------------------------
 %TODO general chapter intro
-
+TODO: general intro
 %----------------------------------------------------------------------------
 \section{Model-Based Engineering} \label{sec_backgrmbe}
 %----------------------------------------------------------------------------
@@ -41,7 +41,7 @@ There are also two important factors to consider when designing a model transfor
 	\item \textit{Traceability}: the images of the original elements of the source model can be traced back to the original elements, from which they were generated.
 \end{itemize}
 
-\textbf{Model-based systems engineering (MBSE)} is the formalized application of modeling to support system requirements, design, analysis, verification and validation activities beginning in the conceptual design phase and continuing throughout development and later life cycle phases \cite{mbse}. This concept can also be applied to software engineering. Note, that the models may be the primary artifact of the development process, in which case formal models are required -- as described above.
+\textbf{Model-based systems engineering (MBSE)} is the formalized application of modeling to support system requirements, design, analysis, verification and validation activities beginning in the conceptual design phase and continuing throughout development and later life cycle phases \cite{mbse}. This concept can also be applied to software engineering. Note, that the models may be the primary artifact of the development process, in which case formal models are required.
 
 %----------------------------------------------------------------------------
 \section{Foundations of Automata Theory} \label{sec_backgrmodeling}
@@ -58,7 +58,7 @@ There are also two important factors to consider when designing a model transfor
 
 %TODO Logics (esp LTL) -> ezt külön kiszedjük vagy ide be?
 
-In order to provide the theoretical background of this thesis, this section discusses the necessary basics of formal language and automaton theory.
+In order to provide the theoretical background of behavioral modeling, this section discusses the necessary basics of formal language and automaton theory.
 
 
 First, we introduce the fundamentals of formal language theory, on which automaton theory is based on. 
@@ -164,6 +164,14 @@ The semantics of automata are defined via runs. A run of an automaton is to test
 	\caption{The transition function of the automaton seen in Figure \ref{fig:dfaexample}}
 	\label{tab:dfaexampledelta}
 \end{table}
+
+TODO: DFA -> LTS átvezetés
+
+\begin{definition}[LTS: TODO]
+
+\end{definition}
+
+TODO: LTS -> Mealy átvezetés
 
 DFAs are useful to model system behavior based on inputs, but in order to work with reactive systems, we also need to handle outputs. Mealy machines are automata designed to communicate with output symbols instead of accepting and rejecting states.
 
@@ -397,7 +405,8 @@ Active automaton learning follows the MAT, or the Minimally Adequate Teacher mod
 
 \noindent The learner component uses membership queries to construct a hypothesis automaton, then refines this hypothesis by the counterexamples provided by equivalence queries. Once counterexamples can not be found this way, the learners hypothesis is behaviorally equivalent to the SUL. The learning can terminate and the output of the learning is the current hypothesis.
 
-\begin{figure}[H]
+%TODO: diagram legyen korrekt uml
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=1.0\linewidth]{figures/flowchartlearning}
 	\caption{Active automaton learning}
@@ -472,11 +481,14 @@ The Direct Hypothesis Construction algorithm, which hypothesis construction can 
 
 After the execution of the Hypothesis construction seen in Algorithm \ref{algo:dhc}, the output automaton H is used in an equivalence query $eq(H) = c$, to find if a counterexample $c$ exists. If no counteraxamle can be found, the learning terminates, $H$ is the learned automaton. Else, if a counterexample $c$ is found, for which $\lambda_H(s_0,c) \neq mq(c)$, $c$ is used to enlarge the suffixes in D and a new iteration of Algorithm \ref{algo:dhc} begins, using the now extended set D and all the access sequences found in the previous iteration (the current spanning tree $S_p$).
 
-While the DHC algorithm is a straightforward implementation of active automata learning, it struggles with time complexity. It terminates after at most $n^3mk+n^2k^2$ membership queries, and $n$ equivalence queries, where $n$ is the number of states in the final hypothesis, $k$ is the longest set of inputs, and $m$ is the length of the longest counterexample. This renders the DHC algorithm inefficient in practical applications. The next subsection deals with an optimized algorithm, the TTT algorithm.
+The DHC algorithm is a straightforward implementation of active automata learning. It terminates after at most $n^3mk+n^2k^2$ membership queries, and $n$ equivalence queries, where $n$ is the number of states in the final hypothesis, $k$ is the longest set of inputs, and $m$ is the length of the longest counterexample\cite{10.1007/978-3-642-34781-8_19}.
 
+\clearpage
 %----------------------------------------------------------------------------
 \section{Specifying Requirements} \label{sec_backgrspecreq}
 %----------------------------------------------------------------------------
+
+The previous sections introduced different modeling types and techniques. We now discuss the requirements used in model-based engineering which the models need to satisfy.
 
 %----------------------------------------------------------------------------
 \subsection{Requirements} \label{subs_backgrreq}

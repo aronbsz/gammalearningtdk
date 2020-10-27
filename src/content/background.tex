@@ -6,7 +6,42 @@
 %----------------------------------------------------------------------------
 \section{Model-Based Engineering} \label{sec_backgrmbe}
 %----------------------------------------------------------------------------
-%TODO explanation of the title
+Due to the application of the modeling concept in several completely different domains, first of all, we need to define the meaning of \textit{model} in this work.
+\begin{definition}[Model]
+	A model is the simplified image of an element of the real or a hypothetical world (the system), that replaces the the system in certain considerations.
+\end{definition}
+
+For a model to be interpretable, executable or formally verifiable, it must be described according to predefined rules in the given domain. This set of rules is provided by \textit{modeling languages}.
+\begin{definition}[Modeling Language]
+	A modeling language consists of the following elements:
+	\begin{itemize}
+		\item \emph{Metamodel:} a model defining the building blocks of the modeling language as well
+		as their relationships.
+		\item \emph{Concrete syntax:} a set of rules defining a graphical or textual notation for the
+		element and connection types defined in the metamodel.
+		\item \emph{Well-formedness constraints:} a set of constraints that models have to meet in order
+		to be deemed valid in the modeling language.
+		\item \emph{Semantics:} a set of rules that define the meaning of the element and connection
+		types defined in the metamodel. Semantics can be either \textit{operational} (what should happen during execution) or \textit{denotational} (given by translating concepts in a modeling language to another modeling language with well-defined semantics).
+	\end{itemize}
+\end{definition}
+
+Models can grasp various aspects of a system. Structural models describe the structure of the system, representing knowledge regarding the parts of the system and the properties and connections of these parts. This means that the model describes static knowledge and not temporal change. On the other hand, behavioral models describe the change of the system over time through its changing of states and execution of processes. These categories do not cover every aspect of a system, and usually cannot be separated this well in practical applications. For instance, action languages of state-based models describe the behavior of the system in a procedural way. There are several possible formalisms for both kinds of models, some of which are discussed in Section \ref{sec_backgrmodeling}.
+
+The process of deriving design artifacts is called \textit{model transformation}.
+\begin{definition}[Model Transformation]
+	Model transformation is the process of generating the target model from the source model. This process is described by by a transformation definition consisting of transformation rules, and a transformation tool that executes them. A transformation rule is the mapping of elements of the source model to the elements of the target model. \cite{ModelTransformation}
+\end{definition}
+
+Model transformations can be categorized based on the types of the source and target models: model-to-model (M2M), model-to-text (M2T), text-to-model (T2M) and text-to-text (T2T). These categories fundamentally define the tools required and usable for handling the different models.
+
+There are also two important factors to consider when designing a model transformation: 
+\begin{itemize}
+	\item \textit{Consistency}: the same structure or behavior is described by the source and the target models (in their respective domains).
+	\item \textit{Traceability}: the images of the original elements of the source model can be traced back to the original elements, from which they were generated.
+\end{itemize}
+
+[TODO explain MBE]
 
 %----------------------------------------------------------------------------
 \section{Foundations of Automata Theory} \label{sec_backgrmodeling}

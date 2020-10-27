@@ -118,3 +118,60 @@
 	\caption{Equivalence query of the incomplete traffic light component} 
 	\label{fig_trafficlightincomplete}
 \end{figure}
+\clearpage
+%----------------------------------------------------------------------------
+\chapter{Formalisms of the framework}
+%----------------------------------------------------------------------------
+
+\begin{figure}[!ht] 
+	\centering
+	\fbox{
+		\includegraphics[width=130mm, keepaspectratio]{figures/appendix_mealymodel.jpg}
+	}
+	\caption{Ecore metamodel describing Mealy machines} 
+	\label{fig_appendix_mealyecor}
+\end{figure}
+
+\begin{lstlisting}[caption=Xtext grammar describing Mealy machines.,label=li:appendix_xtext,float,floatplacement=H]
+MealyMachine returns MealyMachine:
+'MealyMachine'
+'{'
+'initialState' initialState=State
+'states' '{' states+=State ( "," states+=State)* '}' 
+'inputAlphabet' inputAlphabet=Alphabet
+'outputAlphabet' outputAlphabet=Alphabet
+'transitions' '{' transitions+=Transition ( "," transitions+=Transition)* '}' 
+'}';
+
+State returns State:
+{State}
+'State'
+name=EString;
+
+Alphabet returns Alphabet:
+'Alphabet'
+'{'
+'characters' '{' characters+=EString ( "," characters+=EString)* '}' 
+'}';
+
+Transition returns Transition:
+'Transition'
+'{'
+'input' input=EString
+'output' output=EString
+'sourceState' sourceState=[State|EString]
+'targetState' targetState=[State|EString]
+'}';
+
+EString returns ecore::EString:
+STRING | ID;
+\end{lstlisting}
+
+\begin{figure}[!ht] 
+	\centering
+	\fbox{
+		\includegraphics[width=130mm, keepaspectratio]{figures/alternatingbit.pdf}
+	}
+	\caption{Mealy machine describing the behavior of the alternating bit protocol} 
+	\label{fig_alternatingbit}
+\end{figure}

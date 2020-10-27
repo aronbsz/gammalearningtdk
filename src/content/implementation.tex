@@ -102,6 +102,8 @@ The \textbf{Adaptive Learning Algorithm} is an extension of an active automaton 
 
 The \textbf{Teacher} and \textbf{Adapter} components were only extended so they can handle not only outputs, but adaption commands as well, allowing the formalism-agnostic interchange of information between the Oracle and the Learning Algorithm.
 
+The current implementation of the \textit{Adaptive Learning Algorithm} infers a Mealy machine as the Hypothesized model, utilizing an Ecore metamodel of Mealy machines shown in Figure \ref{fig_appendix_mealyecor} and the Xtext grammar shown in in Listing \ref{li:appendix_xtext}.
+
 
 
 %----------------------------------------------------------------------------
@@ -109,4 +111,13 @@ The \textbf{Teacher} and \textbf{Adapter} components were only extended so they 
 %----------------------------------------------------------------------------
 %TODO: memoizinglearnable
 
-The \textbf{Memoizing Learnable} is such a \textit{Learnable}, that wraps around another \textit{Learnable} and memoizes its behavior. The caching is done via a radix tree. The \textit{Memoizing Learnable} monitors the adaption command given by the \textit{Interactive Learnable}, and on $RESET$ deletes the current cache, re-iterates every query to the oracle - except for the one causing the $RESET$ -- re-building the radix tree so no conflicting information remains. It passes every command it receives through the Adapter (and the Teacher) to the learning algorithm.
+The \textbf{Memoizing Learnable} is such a \textit{Learnable}, that wraps around another \textit{Learnable} and memoizes its behavior. The caching is done via a radix tree, an example of which is shown on Figure \ref{fig_impl_radix_example}. The \textit{Memoizing Learnable} monitors the adaption command given by the \textit{Interactive Learnable}, and on $RESET$ deletes the current cache, re-iterates every query to the oracle -- except for the one causing the $RESET$ -- re-building the radix tree so no conflicting information remains. It passes every command it receives through the \textit{Adapter} (and the \textit{Teacher}) component to the \textit{Learning Algorithm}.
+
+\begin{figure}[!ht] 
+	\centering
+	%\fbox{
+	\includegraphics[width=120mm, keepaspectratio]{figures/impl_radix_example.png}
+	%}
+	\caption{Radix tree containing the input/output sequences of the Mealy machine shown in Figure \ref{fig_alternatingbit}.} 
+	\label{fig_impl_radix_example}
+\end{figure}

@@ -83,11 +83,28 @@ To achieve our goal, we designed and implemented extensions to the previously pr
 %----------------------------------------------------------------------------
 \subsection{The Oracle} \label{subsec_oracleimpl}
 %----------------------------------------------------------------------------
-The \textbf{interactive learnable} is the main part of the oracle component, responsible for storing models created from the provided reqirements and answering questions of the learning algorithm. In case of adaptive learning algorithms, it also provides information about its ability to automatically explore the design space, thus enabling the optimization of the number of questions the user has to answer. The current implementation provides three commands: \textit{optimistic}, \textit{pessimistic} and \textit{reset}.
+The \textbf{interactive learnable} is the main part of the oracle component, responsible for storing models created from the provided reqirements and answering questions of the learning algorithm. In case of adaptive learning algorithms, it also provides information about its ability to automatically explore the design space, thus enabling the optimization of the number of questions the user has to answer. 
 
-[TODO jelenlegi impl heurisztikák]
+The current implementation provides three commands: \textit{optimistic}, \textit{pessimistic} and \textit{reset}. In the current implementation, reset command is only given, when a partial model (or the corresponding requirement) is removed from the oracle. The current heuristics for the optimistic and pessimistic commands are summarized in Table \ref{tab_implementedheuristics}, with the oracle issuing the \textit{OPTIMISTIC} command if and only if at least one partial model returns optimistic, otherwise it returns \textit{PESSIMISTIC}.
 
-The \textbf{LTL parser} is a simple parser implemented using the Xtext framework and an Ecore metamodel. It is responsible for the introduction of the event semantics into the provided expressions, as described in Subsection \ref{subs_reqtypes}. It is also able to serialize these expressions to different formats.
+\begin{table}[ht]
+	\footnotesize
+	\centering
+	\begin{tabular}{ l l }
+		\toprule
+		Partial Model Type & Applied Heuristics \\
+		\midrule
+		I/O Pair & Always \textit{PESSIMISTIC}, as per its definition it \\ &  cannot contain more information than the current answer. \\
+		Valid Trace & \textit{OPTIMISTIC} whenever the input in question is is \\ & applicable and the trace is longer than the given input.  \\
+		Invalid Trace & Always \textit{PESSIMISTIC}, as this kind of model (in general) \\ & carries no exact information \\
+%		LTL Expression ( & Always PESSIMISTIC, as the information content of \\ & Büchi-automata is a non-trivial question. \\
+		\bottomrule
+	\end{tabular}
+	\caption{The current heuristics of the individual partial models for the \textit{OPTIMISTIC} and \textit{PESSIMISTIC} adaption commands}
+	\label{tab_implementedheuristics}
+\end{table}
+
+The \textbf{LTL parser} is a simple parser implemented using the Xtext framework and an Ecore metamodel. It is responsible for the introduction of the event semantics into the provided expressions, as described in Subsection \ref{subs_reqtypes}. It is also able to serialize these expressions to different formats using Xtend-based M2T transformations for reasons such as possible feedback to the user -- especially operator precedence clarification -- and operator reordering -- for compatibility with other LTL variants, especially that of Owl \cite{Owl}.  
 
 %----------------------------------------------------------------------------
 \subsection{The Learning Algorithm} \label{subsec_adaptivedhc}

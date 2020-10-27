@@ -170,8 +170,8 @@ A slightly different formalism can be defined for cases where the acceptance of 
 \begin{definition}[Labeled Transition System]
 	A Labeled Transition System is a Tuple $LTS=(S, Act, \rightarrow)$, where:
 	\begin{itemize}
-		\item $S={s_1, s_2, ..., s_n}$ the finite, non-empty set of states, $s_1$ being the initial state,
-		\item $Act = {a, b, c, ...}$ the set of actions,
+		\item $S={q_0, q_1, ..., q_n}$ the finite, non-empty set of states, $q_0$ being the initial state,
+		\item $Act = {a, b, c, ...}$ the finite set of actions,
 		\item $\rightarrow \subseteq S \times Act \times S$ the labeled transitions between the states.
 	\end{itemize}
 	In the beginning, the initial state is active. The active state may change after each transition.
@@ -179,16 +179,16 @@ A slightly different formalism can be defined for cases where the acceptance of 
 
 \begin{example}
 	\label{ex:ltsexample}
-	See Figure \ref{fig:ltsexample}. This example has three states, $S = \{s_1, s_2, s_4\}$ (hence $|S| = 3$). The initial state is $s_1$, also marked by the start arrow. The set of actions is $Act = \{money, coffee, tea\}$. Transitions are visualized as $s_1$ $\xrightarrow[]{\text{money}}$ $s_2$ given by the transition (in this example) $(s_1, money, s_2)$. The set of transitions ($\rightarrow$) also contains $(s_2, coffee, s_3)$ and $(s_2, tea, s_4)$.
+	See Figure \ref{fig:ltsexample}. This example has three states, $S = \{q_0, q_1, q_2\}$ (hence $|S| = 3$). The initial state is $q_0$, also marked by the start arrow. The set of actions is $Act = \{money, coffee, tea\}$. Transitions are visualized as $q_0$ $\xrightarrow[]{\text{money}}$ $q_1$ given by the transition (in this example) $(q_0, money, q_1)$. The set of transitions ($\rightarrow$) also contains $(q_1, coffee, q_2)$ and $(q_1, tea, q_3)$.
 \end{example}
 
 \begin{figure}[!ht]
 	\centering
 	\begin{tikzpicture}[shorten >=1pt,node distance=3cm,on grid,auto] 
-		\node[state, initial] (s_1)   {$s_1$}; 
-		\node[state] (s_2) [below=of s_1] {$s_2$}; 
-		\node[state] (s_3) [left=of s_2] {$s_3$}; 
-		\node[state](s_4) [right=of s_2] {$s_4$};
+		\node[state, initial] (s_1)   {$q_0$}; 
+		\node[state] (s_2) [below=of s_1] {$q_1$}; 
+		\node[state] (s_3) [left=of s_2] {$q_2$}; 
+		\node[state](s_4) [right=of s_2] {$q_3$};
 		\path[->] 
 		(s_1) edge  node {money} (s_2)
 		(s_2) edge  node[pos=0.62]  {coffee} (s_3)
@@ -540,4 +540,166 @@ The rationale behind the formalization of requirements is the wide range of auto
 %----------------------------------------------------------------------------
 \subsection{Linear-Time Temporal Logic} \label{subs_backgrltl}
 %----------------------------------------------------------------------------
+Linear-Time Temporal Logic (LTL), also called Propositional Linear-Time Temporal Logic (PLTL) is the extension of propositional logic with temporal connectives over \textit{paths} of a \textit{base model}, e.g. an LTS. There exist also definitions using Kripke-structures [TODO cite] as base models.The syntax of LTL expressions over paths of LTSs is defined as follows:
 
+\begin{definition}[Syntax of LTL Expressions \cite{majzikform}]
+	Let $\pi = (s_0, a_1, s_1, a_2, ... )$ be a path over an LTS. Then the valid LTL expressions can be derived using the following production rules:
+	\begin{itemize}
+		\item $L_1$: if $a \in Act$, then $(a)$ is an LTL expression. 
+		\item $L_2$: if $p$ and $q$ are LTL expressions, then $p \land q$ and $\neg p$ are LTL expressions.
+		\item $L_3$: if $p$ and $q$ are LTL expressions, then $p U q$ and $X p$ are LTL expressions.
+	\end{itemize}
+	With the operator precedence: $\leftrightarrow  <  \rightarrow  < \land  <  \neg  <  X, U$
+\end{definition}
+
+Additional operators can also be defined using the already defined ones:
+\begin{itemize}
+	\setlength\itemsep{0.2em}
+	\item $true$ holds for every state,
+	\item $false$ does not hold for any state,  
+	\item $p \lor q$ as $\neg((\neg p) \land (\neg q))$,
+	\item $p \rightarrow q$ as $(\neg p) \lor q$,
+	\item $p \leftrightarrow q$ as $(p \rightarrow q) \land (q \rightarrow p)$,
+	\item $F p$ as $true U p$,
+	\item $G p$ as $\neg F(\neg p)$,
+	\item $p WB q$ as $\neg((\neg p) U q)$,
+	\item $p B q$ as $\neg((\neg p) U q) \land F q$
+\end{itemize}
+
+The corresponding semantics are defined as follows:
+\begin{definition}[Semantics of LTL Expressions\cite{majzikform}]
+	Let $\pi = (s_0, a_1, s_1, a_2, ... )$ be a path over an LTS model M. Then the formal semantics to the LTL expression P is given recursively, with regard to syntactic production rules as:
+	\begin{itemize}
+		\item $L_1$: $M,\pi \vDash (a) \leftrightarrow a_1 = a$ 
+		\item $L_2$: $M,\pi \vDash p \land q$ $\leftrightarrow$  $M,\pi \vDash p$ and  $M,\pi \vDash q$; \\
+					$M,\pi \vDash \neg q$ $\leftrightarrow$ not  $M,\pi \vDash q$
+		\item $L_3$: $M,\pi \vDash (p U q)$ $\leftrightarrow$  $\exists j \geq 0$ : $\pi^j \vDash q$ and $\forall 0 \leq k \leq j : \pi^k \vDash p$; \\
+		$M,\pi \vDash X p$ $\leftrightarrow$ $\pi^1 \vDash p$
+	\end{itemize}
+	Where $\vDash$ is te logical entailment operator, $M,\pi \vDash q$ denoting: in model $M$ over path $\pi$, $q$ holds.
+\end{definition}
+
+Figure \ref{fig:ltlexample} shows examples for the intuitive meanings of different LTL operators.
+
+\begin{figure}[!ht]
+	\centering
+	\begin{subfigure}[b]{0.9\textwidth}
+		\centering
+		\begin{tikzpicture}[shorten >=1pt,node distance=3cm,on grid,auto] 
+			\node[state] (s_1)   {}; 
+			\node[state] (s_2) [right=of s_1] {}; 
+			\node[state] (s_3) [right=of s_2] {}; 
+			\node[state](s_4) [right=of s_3] {};
+			\node[state](s_5) [right=of s_4] {};
+			\path[->] 
+			(s_1) edge  node {} (s_2)
+			(s_2) edge  node {} (s_3)
+			(s_3) edge  node {p} (s_4)
+			(s_4) edge  node {} (s_5);
+		\end{tikzpicture}
+		\caption{$F p$}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.9\textwidth}
+		\centering
+		\begin{tikzpicture}[shorten >=1pt,node distance=3cm,on grid,auto] 
+			\node[state] (s_1)   {}; 
+			\node[state] (s_2) [right=of s_1] {}; 
+			\node[state] (s_3) [right=of s_2] {}; 
+			\node[state](s_4) [right=of s_3] {};
+			\node[state](s_5) [right=of s_4] {};
+			\path[->] 
+			(s_1) edge  node {p} (s_2)
+			(s_2) edge  node {p} (s_3)
+			(s_3) edge  node {p} (s_4)
+			(s_4) edge  node {p} (s_5);
+		\end{tikzpicture}
+		\caption{$G p$}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.9\textwidth}
+		\centering
+		\begin{tikzpicture}[shorten >=1pt,node distance=3cm,on grid,auto] 
+			\node[state] (s_1)   {}; 
+			\node[state] (s_2) [right=of s_1] {}; 
+			\node[state] (s_3) [right=of s_2] {}; 
+			\node[state](s_4) [right=of s_3] {};
+			\node[state](s_5) [right=of s_4] {};
+			\path[->] 
+			(s_1) edge  node {} (s_2)
+			(s_2) edge  node {p} (s_3)
+			(s_3) edge  node {} (s_4)
+			(s_4) edge  node {} (s_5);
+		\end{tikzpicture}
+		\caption{$X p$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.9\textwidth}
+		\centering
+		\begin{tikzpicture}[shorten >=1pt,node distance=3cm,on grid,auto] 
+			\node[state] (s_1)   {}; 
+			\node[state] (s_2) [right=of s_1] {}; 
+			\node[state] (s_3) [right=of s_2] {}; 
+			\node[state](s_4) [right=of s_3] {};
+			\node[state](s_5) [right=of s_4] {};
+			\path[->] 
+			(s_1) edge  node {p} (s_2)
+			(s_2) edge  node {p} (s_3)
+			(s_3) edge  node {q} (s_4)
+			(s_4) edge  node {} (s_5);
+		\end{tikzpicture}
+		\caption{$p U q$}
+	\end{subfigure}
+	
+	\caption{Intuitive examples for the meanings of different LTL operators}
+	\label{fig:ltlexample}
+\end{figure}
+
+LTL expressions can be used to formulate requirements for systems interpretable as LTS models in a formalized way resembling conventional propositional logic -- which is widely used among engineers. For this reason, LTL is a well-researched area of mathematics, and has an extensive tooling available for different purposes. One such application is the transformation to Büchi-automata (or in general $\omega$-automata), which then can be executed parallel with the modeled system to verify its behavior.
+
+Büchi-automata are the nondeterministic extension of the already introduced finite automata to infinite input words, which can be defined in the following way.
+
+\begin{definition}[Büchi-automaton \cite{majzikform}]
+	A Büchi-automaton is a tuple $A=(S, s_0, \Sigma, \delta, F)$, where:
+	\begin{itemize}
+		\item $S$ is a finite, non-empty set containing the states of the automaton, 
+		\item $s_0 \subseteq S$ is the set of initial states,
+		\item $\Sigma$ is a finite alphabet,
+		\item $\rho : S \times \Sigma \rightarrow 2^S$ is the nondeterministic transition function,
+		\item $F \subseteq S$ is a set of the accepting states of the automaton.
+	\end{itemize}
+
+	A run of the Büchi-automaton $A$ is the $r=(s_0,s_1,s_2,...)$ infinite series of states as a result of an $a_0, a_1, a_2, ...$ infinite input (word), where $s_0 \in S_0$ and $\forall s_{i+1}=\rho(s_i, a_i)$. 
+	
+	The characteristic of an infinite run is the set of $s \in S$ states, which occur infinitely many times during the run. Formally: $lim(r) = \{s | \nexists j \geq 0 : \forall k > j : s \neq s_k\}$. 
+	
+	A run of the Büchi-automaton is accepting, if $lim(r) \cap F \neq \emptyset$. A $ w $ infinite word is accepted by the automaton, if there exists a run of the automaton that accepts $w$.
+\end{definition}
+
+\begin{example}
+	\label{ex:buchiexample}
+	Figure \ref{fig:buchiexample} shows a Büchi automaton generated from the expression $(G F a) \rightarrow (G F b)$. Notice the nondeterminism and how the automaton accepts (only) infinite runs which satisfy the original LTL expression. 
+\end{example}
+
+\begin{figure}[!ht]
+	\centering
+	\begin{tikzpicture}[shorten >=1pt,node distance=3cm,on grid,auto] 
+		\node[state, initial] (q_0)   {$q_0$}; 
+		\node[state] (q_1) [right=of q_0] {$q_1$}; 
+		\node[state, accepting] (q_2) [right=of q_1] {$q_2$}; 
+		\node[state, accepting](q_3) [below=of q_0] {$q_3$};
+		\path[->]
+		(q_0) edge node {$true$} (q_1)
+		(q_1) edge node {$\neg a$} (q_2)
+		(q_0) edge [bend left=60] node {$\neg a$} (q_2)
+		(q_0) edge [bend left=60] node {$b$} (q_3)
+		(q_0) edge [bend right=60] node {$\neg b$} (q_3)
+		(q_1) edge [loop below] node {$true$} ()
+		(q_2) edge [loop below] node {$\neg a$} ()
+		(q_3) edge [loop right] node {$b$} ()
+		(q_3) edge [loop left] node {$ \neg b$} ();
+	\end{tikzpicture}
+	\caption{A Büchi automaton for the LTL expression $(G F a) \rightarrow (G F b)$}
+	\label{fig:buchiexample}
+\end{figure}
+
+%(q_0) edge [bend left=60] node {a} (q_1)

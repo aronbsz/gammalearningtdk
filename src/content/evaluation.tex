@@ -158,7 +158,7 @@ Now we can examine any differences between the expected and the learned models. 
 		\caption{Learned}	
 		\label{fig_casestudy_trafficlightlearned}
 	\end{subfigure}
-	\caption{The expected and the learned traffic light components}
+	\caption{The expected and the learned traffic light models}
 	\label{fig_casestudy_trafficlightdiff}
 \end{figure}
 
@@ -190,7 +190,7 @@ The differences between the expected and learned pedestrian light components can
 		}
 		\caption{Learned}	
 	\end{subfigure}
-	\caption{The expected and the learned pedestrian light components}
+	\caption{The expected and the learned pedestrian light models}
 	\label{fig_casestudy_pedestrianlightdiff}
 \end{figure}
 
@@ -211,9 +211,9 @@ The behavior of the controller component can be learned similarly. The expected 
 		\fbox{
 			\includegraphics[width=120mm]{figures/casestudy_controllerlearned.png}
 		}
-		\caption{Learned [TODO ezt szebbre]}	
+		\caption{Learned}	
 	\end{subfigure}
-	\caption{The expected and the learned controller components}
+	\caption{The expected and the learned controller models}
 	\label{fig_casestudy_controllerdiff}
 \end{figure}
 
@@ -240,19 +240,18 @@ After extending the controller with statechart-specific elements (namely the tim
 \subsection{The Oracle} \label{subs_evaloracle}
 %---------------------------------------------------------------
 %TODO: Optimistic vs Pessimistic, formalizmusok
-%TODO review and update figure and its caption
-The main metric of the oracle is the number of questions the engineer has to answer during the course of the model synthesis. This is really difficult to measure, as the exact number of these questions depends on multiple parameters: the complexity of the desired model, as well as the order, formalism, complexity and skillful construction of the requirements formulated by the designing engineer. Some of these parameters is difficult to measure in itself, thus, the following measurement is rather an illustration of the capabilities of the framework through a realistic example. 
+The main metric of the oracle is the number of behavior-related questions the engineer has to answer during the course of the model synthesis (including the offline phase). This is really difficult to measure, as the exact number of these questions depends on several parameters: the complexity of the desired model, as well as the order, formalism, complexity and skillful construction of the requirements formulated by the designing engineer. Some of these parameters is difficult to measure in itself, thus, the following comparison of the supported formalisms is rather an illustration of the capabilities of the framework through a realistic example. 
 
-For this, the traffic light component from the case study in Section \ref{sec_casestudy} is going to be used. We assume, that the user only adds requirements he perceives conducive to the model synthesis and tries to formulate realistic -- not unnecessarily complex -- requirements. 
+For this demonstration, the traffic light component from the case study in Section \ref{sec_casestudy} is going to be used. We assume, that the user only adds requirements he perceives conducive to the model synthesis and tries to formulate realistic -- not unnecessarily complex -- requirements. 
 
-The baseline of this experiment is the number of questions the user has to answer by always providing the corresponding outputs to the questions of the ILE, as higher numbers are the result of unnecessary information. Then, we are going to examine the cases when valid traces are also allowed, then add LTL expressions and finally invalid traces. Sequence diagrams are excluded from these measurements. The results can be seen on Figure \ref{fig_eval_trafficlightformalisms}.
+The baseline of this experiment is the number of questions the user has to answer by always providing the corresponding outputs to the questions of the ILE, as higher numbers are the result of redundant requirements. We examine the cases when valid traces are also allowed, then add LTL expressions and finally invalid traces. Sequence diagrams are excluded from this comparison. The results can be seen on Figure \ref{fig_eval_trafficlightformalisms}.
 
 \begin{figure}[!ht] 
 	\centering
 	%\fbox{
 	\includegraphics[width=130mm, keepaspectratio]{figures/evaluation_trafficlightformalism.png}
 	%}
-	\caption{Components of the modeled system and their connections} 
+	\caption{Number of required interactions for modelling the traffic light component gradually extending the set of allowed formalisms} 
 	\label{fig_eval_trafficlightformalisms}
 \end{figure}
 

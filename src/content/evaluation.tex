@@ -39,4 +39,4 @@ When \textit{PESSIMISTIC} commands are used, the number of equivalence queries g
 %---------------------------------------------------------------
 %TODO: optimisticre mennyit csökkent, RESET
 
-The implemented memoization prevents the redundant queries seen in Section \ref{subs_evallearningalgo} reach the user by caching each new query in a radix tree. If the cache contains the outputs received for $c$ number of input sequences, the cache reset induced by the $RESET$ command creates $c-1$ queries to the oracle (one for every sequence except for the one that induced the $RESET$).
+The implemented memoization prevents the redundant queries seen in Section \ref{subs_evallearningalgo} reach the oracle by caching each new query in a radix tree. If the cache contains the outputs received for $c$ number of input sequences, the cache reset induced by the $RESET$ command creates $c-1$ queries to the oracle (one for every sequence except for the one that induced the $RESET$).

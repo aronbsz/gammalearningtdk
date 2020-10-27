@@ -2,7 +2,7 @@
 \chapter{Implementation}
 %----------------------------------------------------------------------------
 
-In order to validate our approach, an implementation was created. Of the subsequent sections, Section \ref{sec_tooling} discusses the utilized tools, and Section \ref{sec_interactivelearningframework} elaborates on the steps taken to provide a proof of concept implementation of the proposed \textit{Interactive Learning Entity} as an \textit{Interactive Learning Framework}.
+In order to validate our approach, an implementation was created. Of the subsequent sections, Section \ref{sec_tooling} discusses the utilized tools, and Section \ref{sec_interactivelearningframework} elaborates on the steps taken to provide a proof of concept implementation of the proposed \textit{Interactive Learning Entity}.
 %----------------------------------------------------------------------------
 \section{Tooling} \label{sec_tooling}
 %----------------------------------------------------------------------------
@@ -50,7 +50,8 @@ In order to give a foundation to the implementation described in this thesis, a 
 \smallskip
 
 The \textit{Learnable} package contains the input formalisms, and the \textit{Hypothesis} package contains the output formalisms. Both are used by the teacher (\textit{Teacher} package) and the learner (\textit{Algorithm} package). The \textit{Adapter} package is used as an abstraction layer to separate the algorithm and the teacher from the input formalism. Since automaton learning algorithms have no direct access to the system under learning, and generally operate in a black-box way, the adapter package provides flexibility on what inputs can be used. As Figure \ref{fig_automatalearning_packages} illustrates, no such adapter is used on the output layer, since Hypotheses are directly accessed by the learning algorithms, and are constructed during the learning. The relations between the packages (modules) are straightforward.  Composition is used, to indicate, that there is no \textit{Algorithm} (learner) without a \textit{Teacher}, there is no \textit{Teacher} without an \textit{Adapter}, and there is no \textit{Adapter} without an input, a \textit{Learnable}, to adapt. \\
-The advantage of such architecture is that the automaton learning algorithms implemented within can be agnostic to the formalism of the input provided. This results in high re-usability of the core algorithms, while being easily extensible and adaptable to arbitrary systems to infer.  
+The advantage of such architecture is that the automaton learning algorithms implemented within can be agnostic to the formalism of the input provided. This results in high re-usability of the core algorithms, while being easily extensible and adaptable to arbitrary systems to infer.  \\
+The Framework includes multiple supported in- and output formalisms, and has multiple implemented active automaton learning algorithms -- one of which is the Direct Hypothesis Construction algorithm.
 
 \begin{figure}[!ht] 
 	\centering
@@ -64,18 +65,18 @@ The advantage of such architecture is that the automaton learning algorithms imp
 \smallskip
 
 %----------------------------------------------------------------------------
-\section{Interactive Learning Framework} \label{sec_interactivelearningframework}
+\section{Interactive Learning Entity} \label{sec_interactivelearningframework}
 %----------------------------------------------------------------------------
 %TODO: random bevezeto szoveg + fig 4.1 kiterjesztett változata - szagatott részekkel keretezve pl az Oracle
 
-
+To achieve our goal, we designed and implemented extensions to the previously presented Automata Learning Framework resulting in a proof of concept implementation of the proposed Interactive Learning Entity, which utilizes automaton learning algorithms, and is capable of handling a multitude of user-provided requirements as an input formalism. The designed architecture can be seen on Figure \ref{fig_automatonlearning_overview}. Comparing Figure \ref{fig_automatonlearning_overview} with Figure \ref{fig_automatalearning_packages}, it is important to notice the extensions done, while still upholding the behavioral structure of the framework. As illustrated, an Oracle, a Learning Algorithm, and a Cache component outline the architecture of the ILE. The following subsections elaborate upon these components.
 
 \begin{figure}[!ht] 
 	\centering
 	%\fbox{
-	\includegraphics[width=75mm, keepaspectratio]{figures/automatonlearning_overview.png}
+	\includegraphics[width=120mm, keepaspectratio]{figures/automatalearning_overview.png}
 	%}
-	\caption{Structure and relations of the packages comprising the Automata Learning Framework TODO:REF BSC} 
+	\caption{The architecture of the ILE.} 
 	\label{fig_automatonlearning_overview}
 \end{figure}
 
@@ -90,6 +91,35 @@ The advantage of such architecture is that the automaton learning algorithms imp
 \subsection{The Learning Algorithm} \label{subsec_adaptivedhc}
 %----------------------------------------------------------------------------
 %TODO: DHC, adaptive teacher
+
+\begin{algorithm}[H]
+	\SetAlgoLined
+	\DontPrintSemicolon
+	\KwIn{$S_p$: a set of access sequences, D: a set of suffixes, an input alphabet $\Sigma$}
+	\KwOut{A Mealy machine $H=(S, s_0, \Sigma, \Omega, \delta, \lambda)$}
+	initialize hypothesis H, create a state for all elements of $S_p$\;
+	initialize a queue Q with the states of H\;
+	\While{Q is not empty}{
+		s = dequeue state from Q\;
+		u = access sequence from $s_0$ to s\;
+		\For{$d\in D$}{
+			o = mq($u\*d$)\;
+			set $\lambda(s,d) = o$\;
+		}
+		\eIf{exists an $s'\in S$, where the output signature of $s'$ is the same as $s$}{
+			reroute transitions of $s$ to $s'$ in H\;
+			remove $s$ from H\;
+		}{
+			create and enqueue successors of $s$ for every input in $\Sigma$ into Q, if not already in $S_p$\;
+		}
+	}
+	Remove entries of $D\setminus\Sigma$ from $\lambda$\;
+	\Return{H}\;
+	\caption{Hypothesis construction of the Direct Hypothesis Construction algorithm as seen in \cite{Steffen2011}.}
+	\label{algo:dhc}
+\end{algorithm}
+
+
 
 %----------------------------------------------------------------------------
 \subsection{Caching} \label{subsec_memoization}

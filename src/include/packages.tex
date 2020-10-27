@@ -1,10 +1,18 @@
 % thanks to http://tex.stackexchange.com/a/47579/71109
 \usepackage{ifxetex}
 \usepackage{ifluatex}
+\usepackage{marvosym}
+\usepackage{float}
+\newtheorem{prop}{Proposition}
+\usepackage[hang]{caption}
+\usepackage{tabularx}
+\usepackage{subcaption}
 \newif\ifxetexorluatex % a new conditional starts as false
 %\ifnum 0\ifxetex 1\fi\ifluatex 1\fi>0
 %   \xetexorluatextrue
 %\fi
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning}
 
 \ifxetexorluatex
   \usepackage{fontspec}
@@ -20,7 +28,7 @@
 \usepackage{emptypage} % omit page number on empty pages
 
 %\usepackage{cmap}
-\usepackage{amsfonts,amsmath,amssymb} % Mathematical symbols.
+\usepackage{amsfonts,amsmath, wasysym, amssymb, stmaryrd} % Mathematical symbols.
 %\usepackage[ruled,boxed,resetcount,linesnumbered]{algorithm2e} % For pseudocodes. % beware: this is not compatible with LuaLaTeX, see http://tex.stackexchange.com/questions/34814/lualatex-and-algorithm2e
 \usepackage{booktabs} % For publication quality tables for LaTeX
 \usepackage{graphicx}
@@ -38,7 +46,6 @@
 
 \usepackage[amsmath,thmmarks]{ntheorem} % Theorem-like environments.
 
-\usepackage[hang]{caption}
 
 \singlespacing
 

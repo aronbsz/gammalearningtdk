@@ -98,7 +98,9 @@ The \textbf{LTL parser} is a simple parser implemented using the Xtext framework
 %----------------------------------------------------------------------------
 %TODO: DHC, adaptive teacher
 
+The \textbf{Adaptive Learning Algorithm} is an extension of an active automaton learning algorithm with the presented adaption commands. In our implementation, we extended upon the frameworks DHC algorithm (working analogously to TODO ref background DHC), and created the algorithm seen in Algorithm \ref{algo:adaptivedhc}.
 
+The \textbf{Teacher} and \textbf{Adapter} components were only extended so they can handle not only outputs, but adaption commands as well, allowing the formalism-agnostic interchange of information between the Oracle and the Learning Algorithm.
 
 
 
@@ -107,3 +109,4 @@ The \textbf{LTL parser} is a simple parser implemented using the Xtext framework
 %----------------------------------------------------------------------------
 %TODO: memoizinglearnable
 
+The \textbf{Memoizing Learnable} is such a \textit{Learnable}, that wraps around another \textit{Learnable} and memoizes its behavior. The caching is done via a prefix tree. The \textit{Memoizing Learnable} monitors the adaption command given by the \textit{Interactive Learnable}, and on $RESET$ deletes the current cache, re-iterates every query to the oracle - except for the one causing the $RESET$ -- re-building the prefix tree so no conflicting information remains.

@@ -42,6 +42,12 @@ Owl \cite{Owl} is a tool collection for $\omega$-words, $\omega$-automata and li
 Through providing these algorithms, the library supports easy development and fast prototyping in the area of LTL and automata, thus also enabling rapid concept validation.
 
 %----------------------------------------------------------------------------
+\subsection{LearnLib} \label{subsec_learnlib}
+%----------------------------------------------------------------------------
+
+LearnLib\cite{10.1007/978-3-319-21690-4_32} provides a Java framework for active and passive automaton learning, with the versatile AutomataLib framework acting as a backbone of it. Learnlib provides implementations of several automaton learning algorithms, as well as multiple equivalence and counterexample decomposition algorithms.
+
+%----------------------------------------------------------------------------
 \subsection{Automata Learning Framework} \label{subsec_automatonlearning}
 %----------------------------------------------------------------------------
 In order to give a foundation to the implementation described in this thesis, a previously created automata learning framework TODO: ref BSC] was extended upon. Since the framework was implemented using the Java programming language, the high-level view seen in Figure \ref{fig_automatalearning_packages} is represented as an UML class diagram of the packages and the relations between them, essentially being an overview of the modularization of the framework. 
@@ -71,7 +77,7 @@ The Framework includes multiple supported in- and output formalisms, and has mul
 
 To achieve our goal, we designed and implemented extensions to the previously presented Automata Learning Framework resulting in a proof of concept implementation of the proposed Interactive Learning Entity, which utilizes automaton learning algorithms, and is capable of handling a multitude of user-provided requirements as an input formalism. The designed architecture can be seen on Figure \ref{fig_automatonlearning_overview}. It is important to note the extension of components shown in Figure \ref{fig_automatalearning_packages}, while still upholding the behavioral structure of the framework. As illustrated, an Oracle, a Learning Algorithm, and a Cache component outline the architecture of the ILE. The following subsections elaborate upon these components.
 
-\begin{figure}[!ht] 
+\begin{figure}[H] 
 	\centering
 	%\fbox{
 	\includegraphics[width=120mm, keepaspectratio]{figures/automatalearning_overview.png}
@@ -85,7 +91,7 @@ To achieve our goal, we designed and implemented extensions to the previously pr
 %----------------------------------------------------------------------------
 The \textbf{interactive learnable} is the main part of the oracle component, responsible for storing models created from the provided reqirements and answering questions of the learning algorithm. In case of adaptive learning algorithms, it also provides information about its ability to automatically explore the design space, thus enabling the optimization of the number of questions the user has to answer. 
 
-The current implementation provides three commands: \textit{optimistic}, \textit{pessimistic} and \textit{reset}. In the current implementation, reset command is only given, when a partial model (or the corresponding requirement) is removed from the oracle. The current heuristics for the optimistic and pessimistic commands are summarized in Table \ref{tab_implementedheuristics}, with the oracle issuing the \textit{OPTIMISTIC} command if and only if at least one partial model returns optimistic, otherwise it returns \textit{PESSIMISTIC}.
+The current implementation provides three commands: \textit{OPTIMISTIC}, \textit{PESSIMISTIC} and \textit{RESET}. In the current implementation, \textit{RESET} command is only given, when a partial model (or the corresponding requirement) is removed from the oracle. The current heuristics for the \textit{OPTIMISTIC} and \textit{PESSIMISTIC} commands are summarized in Table \ref{tab_implementedheuristics}, with the oracle issuing the \textit{OPTIMISTIC} command if and only if at least one partial model returns \textit{OPTIMISTIC}, otherwise it returns \textit{PESSIMISTIC}.
 
 \begin{table}[ht]
 	\footnotesize
@@ -97,7 +103,7 @@ The current implementation provides three commands: \textit{optimistic}, \textit
 		I/O Pair & Always \textit{PESSIMISTIC}, as per its definition it \\ &  cannot contain more information than the current answer. \\
 		Valid Trace & \textit{OPTIMISTIC} whenever the input in question is is \\ & applicable and the trace is longer than the given input.  \\
 		Invalid Trace & Always \textit{PESSIMISTIC}, as this kind of model (in general) \\ & carries no exact information \\
-%		LTL Expression ( & Always PESSIMISTIC, as the information content of \\ & Büchi-automata is a non-trivial question. \\
+		LTL Expression  & Always PESSIMISTIC, as the information content of \\(Büchi automaton) & Büchi-automata is a non-trivial question. \\
 		\bottomrule
 	\end{tabular}
 	\caption{The current heuristics of the individual partial models for the \textit{OPTIMISTIC} and \textit{PESSIMISTIC} adaption commands}
@@ -111,11 +117,13 @@ The \textbf{LTL parser} is a simple parser implemented using the Xtext framework
 %----------------------------------------------------------------------------
 %TODO: DHC, adaptive teacher
 
-The \textbf{Adaptive Learning Algorithm} is an extension of an active automaton learning algorithm with the presented adaption commands. In our implementation, we extended upon the frameworks DHC algorithm (working analogously to TODO ref background DHC), and created the algorithm seen in Algorithm \ref{algo:adaptivedhc}.
+The \textbf{Adaptive Learning Algorithm} is an extension of an active automaton learning algorithm with the presented adaption commands. In our implementation, we extended upon the frameworks DHC algorithm (working analogously to TODO ref background DHC), and created the algorithm seen in Algorithm \ref{algo:adaptivedhc}. 
 
-The \textbf{Teacher} and \textbf{Adapter} components were only extended so they can handle not only outputs, but adaption commands as well, allowing the formalism-agnostic interchange of information between the Oracle and the Learning Algorithm.
+The \textbf{Teacher} and \textbf{Adapter} components were only extended so they can handle not only outputs and counter examples, but adaption commands as well, allowing the formalism-agnostic interchange of information between the Oracle and the Learning Algorithm.
 
-The current implementation of the \textit{Adaptive Learning Algorithm} infers a Mealy machine as the hypothesized model, utilizing an Ecore metamodel of Mealy machines shown in Figure \ref{fig_appendix_mealyecor} and the Xtext grammar shown in in Listing \ref{li:appendix_xtext}.
+The implemented \textit{Adaptive Learning Algorithm} depends on LearnLib\cite{10.1007/978-3-319-21690-4_32} to decompose the counter examples provided by the \textit{Teacher} component utilizing the approach proposed by Rivest and Schapire in \cite{rivest1993inference}.
+
+The current implementation of the \textit{Adaptive Learning Algorithm} infers a Mealy machine as the hypothesized model, utilizing an Ecore metamodel of Mealy machines shown in Figure \ref{fig_appendix_mealyecor} and the Xtext grammar shown in in Listing \ref{li:appendix_xtext} in the Appendix.
 
 
 
@@ -128,9 +136,9 @@ The \textbf{Memoizing Learnable} is such a \textit{Learnable}, that wraps around
 
 \begin{figure}[!ht] 
 	\centering
-	%\fbox{
+	\fbox{
 	\includegraphics[width=120mm, keepaspectratio]{figures/impl_radix_example.png}
-	%}
-	\caption{Radix tree containing the input/output sequences of the Mealy machine shown in Figure \ref{fig_alternatingbit}.} 
+	}
+	\caption{Radix tree containing the input/output sequences of the Mealy machine shown in Figure \ref{fig_alternatingbit} in the Appendix.} 
 	\label{fig_impl_radix_example}
 \end{figure}

@@ -13,7 +13,7 @@ For this demonstration, the traffic light component from the case study in Secti
 
 The baseline of this experiment is the number of questions the user has to answer by always providing the corresponding outputs to the questions of the ILE, as higher numbers are the result of redundant requirements. We examine the cases when valid traces are also allowed, then add LTL expressions and finally invalid traces. Sequence diagrams are excluded from this comparison. The results can be seen on Figure \ref{fig_eval_trafficlightformalisms}.
 
-\begin{figure}[!ht] 
+\begin{figure}[H] 
 	\centering
 	%\fbox{
 	\includegraphics[width=130mm, keepaspectratio]{figures/evaluation_trafficlightformalism.png}
@@ -28,10 +28,14 @@ The requirements used in this experiment -- apart from the corresponding outputs
 \section{The Learning Algorithm} \label{subs_evallearningalgo}
 %---------------------------------------------------------------
 %TODO: Optimistic vs Pessimistic, minimization
+The runtime of the \textit{Adaptive Learning Algorithm} depends on the adaption commands provided. 
 
+If every provided command is \textit{OPTIMISTIC}, the runtime complexity of the current implementation is equivalent to that of the Direct Hypothesis Construction algorithm, which, as theorized and proved in \cite{Steffen2011} and \cite{10.1007/978-3-642-34781-8_19}, terminates after at most $n^3mk+n^2k^2$ membership, and $n$ equivalence queries, where $n$ is the number of states of the canonical acceptor of the system under learning, $k$ is the size of the input alphabet and $m$ is the longest counterexample. The utilized suffix handling proposed by Rivest and Schapir\cite{rivest1993inference}, adds only one suffix to the set of suffixes in each learning round, so $m=1$\cite{Steffen2011}. As opposed to the traditional DHC, the Adaptive DHC can have more than $n$ learning rounds (but not more than $n$ equivalence queries) as a result of the $RESET$ command. Let $r$ be the total number of reset commands the algorithm receives. As seen in \cite{Steffen2011}, the set of suffixes is bound by $k+mn$, or in this case, $k+1*(n+r)$. Since the number of transitions needed to consider never exceed $nk$\cite{Steffen2011}, and the maximum number of equivalence queries is $n$, the maximum number of membership queries of the \textit{Adaptive Learning Algorithm} is $(k+n+r)*nk*n = $\textbf{$ n^2k^2+n^3k+n^2kr$}.
+
+If every provided command is \textit{PESSIMISTIC}, the ultimate number of equivalence queries remain $n$, as concluded in Chapter \ref{background}, but in actuality, not only the worst, but every case will result in exactly $n$ equivalence queries.
 %---------------------------------------------------------------
 \section{Caching} \label{subs_evalcaching}
 %---------------------------------------------------------------
 %TODO: optimisticre mennyit csökkent, RESET
 
-The implemented memoization, which utilizes a radix tree, has many advantages in both run- and space complexity.
+The implemented memoization, which utilizes a radix tree, has many advantages in both run- and space complexity. TODO

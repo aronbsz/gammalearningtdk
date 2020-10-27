@@ -98,32 +98,7 @@ The \textbf{LTL parser} is a simple parser implemented using the Xtext framework
 %----------------------------------------------------------------------------
 %TODO: DHC, adaptive teacher
 
-\begin{algorithm}[H]
-	\SetAlgoLined
-	\DontPrintSemicolon
-	\KwIn{$S_p$: a set of access sequences, D: a set of suffixes, an input alphabet $\Sigma$}
-	\KwOut{A Mealy machine $H=(S, s_0, \Sigma, \Omega, \delta, \lambda)$}
-	initialize hypothesis H, create a state for all elements of $S_p$\;
-	initialize a queue Q with the states of H\;
-	\While{Q is not empty}{
-		s = dequeue state from Q\;
-		u = access sequence from $s_0$ to s\;
-		\For{$d\in D$}{
-			o = mq($u\*d$)\;
-			set $\lambda(s,d) = o$\;
-		}
-		\eIf{exists an $s'\in S$, where the output signature of $s'$ is the same as $s$}{
-			reroute transitions of $s$ to $s'$ in H\;
-			remove $s$ from H\;
-		}{
-			create and enqueue successors of $s$ for every input in $\Sigma$ into Q, if not already in $S_p$\;
-		}
-	}
-	Remove entries of $D\setminus\Sigma$ from $\lambda$\;
-	\Return{H}\;
-	\caption{Hypothesis construction of the Direct Hypothesis Construction algorithm as seen in \cite{Steffen2011}.}
-	\label{algo:dhc}
-\end{algorithm}
+
 
 
 

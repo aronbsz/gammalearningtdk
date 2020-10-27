@@ -267,7 +267,13 @@ As discussed in the previous subsection, one of the most important cost metrics 
 
 Active learning algorithms, and specifically in this case, the Direct Hypothesis Construction algorithm assume that the information they require are readily available, and thus follow a "greedy" approach of querying. While this is appropriate for fully automated solutions, greedily exploring the design space can result in several magnitudes larger amount of previously unexplored queries, which do not necessarily provide new information, resulting in longer learning rounds (with more membership queries) exploring a larger amount of the behavior, and conversely less equivalence queries. To allow the designing engineer to validate the hypothesized model more frequently, and control of which unexplored behavior should be explored, a less greedy approach is required.
 
-To solve the above issue, we introduce the concept of adaptive active automata learning, which uses behavioral types - as illustrated in Figure \ref{fig_architcture_commandhandling} - as a heuristic to adaptively decide if and where a greedy approach should be taken. Already explored behaviors (e.g. previously queried, cached) as well as behaviors contained in the model can be answered in an automated way, allowing greediness. On the other hand, not modeled behaviors should be explored in a more reserved manner, controlled by the user - not the automaton learning algorithm. 
+To solve the above issue, we introduce the concept of adaptive active automata learning, which uses behavioral types - as illustrated in Figure \ref{fig_architcture_commandhandling} - as a heuristic to adaptively decide if and where a greedy approach should be taken. Already explored behaviors (e.g. previously queried, cached) as well as behaviors contained in the model can be answered in an automated way, allowing greediness. On the other hand, not modeled behaviors should be explored in a more reserved manner, controlled by the user - not the automaton learning algorithm. Based on the requirements outlined above, we designed three commands to control the adaption of such an algorithm.
+
+\begin{itemize}
+	\item $OPTIMISTIC$ (greedy) heuristic is used if the algorithm should follow a greedy approach in the next steps.
+	\item $PESSIMISTIC$ (reserved) heuristic is used if the algorithm should not query the investigated behavior further.
+	\item $RESET$ is used to re-start the learning if some behavioral change makes it necessary.
+\end{itemize}
 
 \begin{figure}[!ht] 
 	\centering
@@ -277,6 +283,8 @@ To solve the above issue, we introduce the concept of adaptive active automata l
 	\caption{Types of behavior during the learning process} 
 	\label{fig_architcture_commandhandling}
 \end{figure} 
+
+
 
 %---------------------------------------------------------------
 \subsection{The Oracle} \label{subs_oracle}
@@ -312,9 +320,9 @@ Partial models have two responsibilities: providing the set of possible outputs 
 
 Telling whether partial models contain additional information enables the interactive learnable to track the easly explorable parts of the design space, thus facilitating significant optimization opportunities for the entire workflow. For instance, when a given valid trace is queried for an output somewhere in the middle of its contained sequence, the exploration of the rest of its contained behaviors can be automatically queried without requiring the input of the user. This information is attached to the answer to the individual queries.
 
-Preserving the requirments in separate partial models has several advantages. First of all, it ensures the traceability between the user input and the learning algorithm, which is essential, as the user may not understand notifications or questions about information derived from their input. Also, translating each requirement to a common formalism and merging these models might be possible, but the addition and removal of models - which is a frequent operation in the workflow - would be severely ineffective. Additionally, in this manner the exploration of the individual models may be adjusted to their own internal logic.
+Preserving the requirements in separate partial models has several advantages. First of all, it ensures the traceability between the user input and the learning algorithm, which is essential, as the user may not understand notifications or questions about information derived from their input. Also, translating each requirement to a common formalism and merging these models might be possible, but the addition and removal of models - which is a frequent operation in the workflow - would be severely ineffective. Additionally, in this manner the exploration of the individual models may be adjusted to their own internal logic.
 
-Supporting model conflict handling -- as proposed in Subsection \ref{subs_conf} -- introduces two serious problems: models have to be able to be removed just as easily as they can be added, and handling model inconsistency when removing a model. The first problem is solved by our partial model pattern, but the other one requires further consideration. Model inconsistency arises, when a model has been used to answer behavior-related queries, then it is removed. In this case, the already extracted information remains in the system, but its source disappears. Our solution to this problem, is to restart the automata learning -- retaining the models already provided by the user, thus hiding this restart -- by attaching a reset command to the answer to the queries of the adaptive learning algorithm (similarly to informing it about any additional contained information).
+Supporting model conflict handling -- as proposed in Subsection \ref{subs_conf} -- introduces two serious problems: models have to be able to be removed just as easily as they can be added, and handling model inconsistency when removing a model. The first problem is solved by our partial model pattern, but the other one requires further consideration. Model inconsistency arises, when a model has been used to answer behavior-related queries, then it is removed. In this case, the already extracted information remains in the system, but its source disappears. Our solution to this problem, is to restart the automata learning -- retaining the models already provided by the user, thus hiding this restart -- by attaching a $RESET$ command to the answer to the queries of the adaptive learning algorithm (similarly to informing it about any additional contained information).
 
 Currently, there are two main types of partial models - corresponding to the two main types of requirements: trace-based moodels, which store valid or invalid scenarios for an execution of a model, and LTL models, containing high-level behavioral properties which must be fulfilled by the resulting model. The following two subsections elaborate on these models. 
 
@@ -390,7 +398,7 @@ There are a variety of approaches to active automaton learning, differing in the
 	\item to be easily extensible and open for modification, such that the adaptive consideration of explorable and inferable behaviors - enabled through the proposed interactive learnable - can be utilized.
 \end{itemize}
 
-To support the above requirements, we built upon and designed a variant of the Direct Hypothesis Construction algorithm. The DHC algorithm learns through rounds of hypothesis creation, in which every round starts from the ground-up. This approach has the benefit of allowing the system under learning to behaviorally change through the run of the algorithm, and - in the case of interactive learning - allows the designing engineer(s) to add, remove and modify requirements during the online phase of the workflow. The Direct Hypothesis Construction algorithm is also a straightforward and easily modifiable algorithm, making the adaption to specific heuristics simple to design and implement. In order to make adaption possible, the teacher component of automaton learning needs to handle not only the output of a query, but also the adaption heuristic the algorithm should adapt to. This enables an adaptive learning algorithm, which receives both the desired output and the learning heuristic to utilize from its teacher component - keeping an identical, but extended automaton learning architecture, as shown in Figure \ref{fig_architcture_learningalgo}.
+To support the above requirements, we built upon and designed a variant of the Direct Hypothesis Construction algorithm. The DHC algorithm learns through rounds of hypothesis creation, in which every round starts from the ground-up. This approach has the benefit of allowing the system under learning to behaviorally change through the run of the algorithm, and - in the case of interactive learning - allows the designing engineer(s) to add, remove and modify requirements during the online phase of the workflow. The Direct Hypothesis Construction algorithm is also a straightforward and easily modifiable algorithm, making the adaption to specific heuristics simple to design and implement. In order to make adaption possible, the teacher component of automaton learning needs to handle not only the output of a query, but also the adaption heuristic the algorithm should adapt to. This enables an adaptive learning algorithm, which receives both the desired output and the learning heuristic to utilize from its teacher component - keeping an identical, but extended automaton learning architecture, as shown in Figure \ref{fig_architcture_learningalgo}. The resulting algorithm cam be seen in Algorithm \ref{algo:adaptivedhc}. As \textit{line 7} shows, the membership query returns both the output and the adaption heuristic. If the adaption command is $RESET$, the learning round begins again while keeping the current inputs. The enqueueing of successors is only possible, if the received heuristic is $OPTIMISTIC$, allowing the fine-tuning of exactly which states to explore greedily.
 
 \begin{figure}[!ht] 
 	\centering
@@ -400,6 +408,34 @@ To support the above requirements, we built upon and designed a variant of the D
 	\caption{Architecture of the Learning Algorithm} 
 	\label{fig_architcture_learningalgo}
 \end{figure}
+
+\begin{algorithm}[H]
+	\SetAlgoLined
+	\DontPrintSemicolon
+	\KwIn{$S_p$: a set of access sequences, D: a set of suffixes, an input alphabet $\Sigma$}
+	\KwOut{A Mealy machine $H=(S, s_0, \Sigma, \Omega, \delta, \lambda)$}
+	initialize hypothesis H, create a state for all elements of $S_p$\;
+	initialize a queue Q with the states of H\;
+	\While{Q is not empty}{
+		s = dequeue state from Q\;
+		u = access sequence from $s_0$ to s\;
+		\For{$d\in D$}{
+			output, adaptionCommand = mq($u\*d$)\;
+			\If{adaptionCommand is $RESET$}{Go to 1}
+			set $\lambda(s,d) = output$\;
+		}
+		\eIf{exists an $s'\in S$, where the output signature of $s'$ is the same as $s$}{
+			reroute transitions of $s$ to $s'$ in H\;
+			remove $s$ from H\;
+		}{
+			\If{adaptionCommand is $OPTIMISTIC$}{create and enqueue successors of $s$ for every input in $\Sigma$ into Q, if not already in $S_p$\;}
+		}
+	}
+	Remove entries of $D\setminus\Sigma$ from $\lambda$\;
+	\Return{H}\;
+	\caption{Adaptive Direct Hypothesis Construction algorithm}
+	\label{algo:adaptivedhc}
+\end{algorithm}
 %---------------------------------------------------------------
 \subsection{Caching} \label{subs_cachingintheframework}
 %---------------------------------------------------------------

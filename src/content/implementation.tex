@@ -83,10 +83,16 @@ To achieve our goal, we designed and implemented extensions to the previously pr
 %----------------------------------------------------------------------------
 \subsection{The Oracle} \label{subsec_oracleimpl}
 %----------------------------------------------------------------------------
-%TODO: interactive learnable -> LTLparser -> LTLEcoreMetaModel etc.
-%TODO: interactiveLearnable Commandok
-%TODO: parser - event semantic serializer
-%TODO: Ecore ???
+The \textbf{interactive learnable} is the main part of the oracle component, responsible for storing models created from the provided reqirements and answering questions of the learning algorithm. In case of adaptive learning algorithms, it also provides information about its ability to automatically explore the design space, thus enabling the optimization of the number of questions the user has to answer. The current implementation provides three commands: \textit{optimistic}, \textit{pessimistic} and \textit{reset}.
+
+The optimistic command represents the partial models containing more information around the given input sequence. This means, that a longer input sequence with the current one as its prefix could be answered too. 
+
+The pessimistic command represents the partial modens not containing information around the given input sequence. Pessimistic commands are given when the optimistic command is not appropriate.
+
+The reset command represents partial model inconsistency. This is necessary, as the user may freely add and remove requirements -- thus models -- which may be contradicting each other. In case such an inconsistency is detected, the user removes a model, which may remove previously collected information. Thus, the learning must be restarted with the remaining models. Other components -- like the cache -- are also affected by the reset command.
+
+The \textbf{LTL parser} is a simple parser implemented using the Xtext framework. It creates a DOM from the LTL expression provided by the user based on the corresponding Ecore metamodel, which then can be used by the other components. It is responsible for the introduction of the event semantics into the provided expressions, as described in Subsection \ref{subs_reqtypes}. It is also able to serialize the expressions to different formats.
+
 %----------------------------------------------------------------------------
 \subsection{The Learning Algorithm} \label{subsec_adaptivedhc}
 %----------------------------------------------------------------------------

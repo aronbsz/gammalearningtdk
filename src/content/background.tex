@@ -165,15 +165,40 @@ The semantics of automata are defined via runs. A run of an automaton is to test
 	\label{tab:dfaexampledelta}
 \end{table}
 
-TODO: DFA -> LTS átvezetés
+A slightly different formalism can be defined for cases where the acceptance of the input (word) is not necessary to consider, called Labeled Transition System.
 
-\begin{definition}[LTS: TODO]
-
+\begin{definition}[Labeled Transition System]
+	A Labeled Transition System is a Tuple $LTS=(S, Act, \rightarrow)$, where:
+	\begin{itemize}
+		\item $S={s_1, s_2, ..., s_n}$ the finite, non-empty set of states, $s_1$ being the initial state,
+		\item $Act = {a, b, c, ...}$ the set of actions,
+		\item $\rightarrow \subseteq S \times Act \times S$ the labeled transitions between the states.
+	\end{itemize}
+	In the beginning, the initial state is active. The active state may change after each transition.
 \end{definition}
 
-TODO: LTS -> Mealy átvezetés
+\begin{example}
+	\label{ex:ltsexample}
+	See Figure \ref{fig:ltsexample}. This example has three states, $S = \{s_1, s_2, s_4\}$ (hence $|S| = 3$). The initial state is $s_1$, also marked by the start arrow. The set of actions is $Act = \{money, coffee, tea\}$. Transitions are visualized as $s_1$ $\xrightarrow[]{\text{money}}$ $s_2$ given by the transition (in this example) $(s_1, money, s_2)$. The set of transitions ($\rightarrow$) also contains $(s_2, coffee, s_3)$ and $(s_2, tea, s_4)$.
+\end{example}
 
-DFAs are useful to model system behavior based on inputs, but in order to work with reactive systems, we also need to handle outputs. Mealy machines are automata designed to communicate with output symbols instead of accepting and rejecting states.
+\begin{figure}[!ht]
+	\centering
+	\begin{tikzpicture}[shorten >=1pt,node distance=3cm,on grid,auto] 
+		\node[state, initial] (s_1)   {$s_1$}; 
+		\node[state] (s_2) [below=of s_1] {$s_2$}; 
+		\node[state] (s_3) [left=of s_2] {$s_3$}; 
+		\node[state](s_4) [right=of s_2] {$s_4$};
+		\path[->] 
+		(s_1) edge  node {money} (s_2)
+		(s_2) edge  node[pos=0.62]  {coffee} (s_3)
+		(s_2) edge  node [swap] {tea} (s_4) ;
+	\end{tikzpicture}
+	\caption{A simple LTS}
+	\label{fig:ltsexample}
+\end{figure}
+
+DFAs and LTSs are useful to model system behavior based on inputs, but in order to work with reactive systems, we also need to handle outputs. Mealy machines are automata designed to communicate with output symbols instead of accepting and rejecting states.
 
 
 \begin{definition}[Mealy machine]

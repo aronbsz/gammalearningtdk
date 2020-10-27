@@ -175,6 +175,8 @@ A slightly different formalism can be defined for cases where the acceptance of 
 		\item $\rightarrow \subseteq S \times Act \times S$ the labeled transitions between the states.
 	\end{itemize}
 	In the beginning, the initial state is active. The active state may change after each transition.
+	
+	The \textit{path} of an LTS is the $\pi = (q_0, a_1, q_1, a_2, ...)$ alternating sequence of states and actions, where $q_0$ is the initial state and the subsequent states are the results of the transitions labeled with the actions of the same index. 
 \end{definition}
 
 \begin{example}
@@ -543,7 +545,7 @@ The rationale behind the formalization of requirements is the wide range of auto
 Linear-Time Temporal Logic (LTL), also called Propositional Linear-Time Temporal Logic (PLTL) is the extension of propositional logic with temporal connectives over \textit{paths} of a \textit{base model}, e.g. an LTS. There exist also definitions using Kripke-structures [TODO cite] as base models.The syntax of LTL expressions over paths of LTSs is defined as follows:
 
 \begin{definition}[Syntax of LTL Expressions \cite{majzikform}]
-	Let $\pi = (s_0, a_1, s_1, a_2, ... )$ be a path over an LTS. Then the valid LTL expressions can be derived using the following production rules:
+	Let $\pi = (s_0, a_1, s_1, a_2, ... )$ be a path of an LTS. Then the valid LTL expressions can be derived using the following production rules:
 	\begin{itemize}
 		\item $L_1$: if $a \in Act$, then $(a)$ is an LTL expression. 
 		\item $L_2$: if $p$ and $q$ are LTL expressions, then $p \land q$ and $\neg p$ are LTL expressions.
@@ -566,9 +568,9 @@ Additional operators can also be defined using the already defined ones:
 	\item $p B q$ as $\neg((\neg p) U q) \land F q$
 \end{itemize}
 
-The corresponding semantics are defined as follows:
+The semantics of LTL expressions are defined as follows:
 \begin{definition}[Semantics of LTL Expressions\cite{majzikform}]
-	Let $\pi = (s_0, a_1, s_1, a_2, ... )$ be a path over an LTS model M. Then the formal semantics to the LTL expression P is given recursively, with regard to syntactic production rules as:
+	Let $\pi = (s_0, a_1, s_1, a_2, ... )$ be a path of an LTS model M. Then the formal semantics to the LTL expression P is given recursively, with regard to syntactic production rules as:
 	\begin{itemize}
 		\item $L_1$: $M,\pi \vDash (a) \leftrightarrow a_1 = a$ 
 		\item $L_2$: $M,\pi \vDash p \land q$ $\leftrightarrow$  $M,\pi \vDash p$ and  $M,\pi \vDash q$; \\
@@ -576,7 +578,7 @@ The corresponding semantics are defined as follows:
 		\item $L_3$: $M,\pi \vDash (p U q)$ $\leftrightarrow$  $\exists j \geq 0$ : $\pi^j \vDash q$ and $\forall 0 \leq k \leq j : \pi^k \vDash p$; \\
 		$M,\pi \vDash X p$ $\leftrightarrow$ $\pi^1 \vDash p$
 	\end{itemize}
-	Where $\vDash$ is te logical entailment operator, $M,\pi \vDash q$ denoting: in model $M$ over path $\pi$, $q$ holds.
+	Where $\vDash$ is te logical entailment operator, $M,\pi \vDash q$ denoting: for path $\pi$ of model $M$, $q$ holds.
 \end{definition}
 
 Figure \ref{fig:ltlexample} shows examples for the intuitive meanings of different LTL operators.
@@ -654,7 +656,7 @@ Figure \ref{fig:ltlexample} shows examples for the intuitive meanings of differe
 	\label{fig:ltlexample}
 \end{figure}
 
-LTL expressions can be used to formulate requirements for systems interpretable as LTS models in a formalized way resembling conventional propositional logic -- which is widely used among engineers. For this reason, LTL is a well-researched area of mathematics, and has an extensive tooling available for different purposes. One such application is the transformation to Büchi-automata (or in general $\omega$-automata), which then can be executed parallel with the modeled system to verify its behavior.
+LTL expressions over paths of LTS models can be used to formulate requirements for systems interpretable as LTSs in a formalized way resembling conventional propositional logic -- which is widely used among engineers. For this reason, LTL is a well-researched area of mathematics, and has an extensive tooling available for different purposes. One such application is the transformation to Büchi-automata (or in general $\omega$-automata), which then can be executed parallel with the modeled system to verify its behavior.
 
 Büchi-automata are the nondeterministic extension of the already introduced finite automata to infinite input words, which can be defined in the following way.
 
@@ -701,5 +703,3 @@ Büchi-automata are the nondeterministic extension of the already introduced fin
 	\caption{A Büchi automaton for the LTL expression $(G F a) \rightarrow (G F b)$}
 	\label{fig:buchiexample}
 \end{figure}
-
-%(q_0) edge [bend left=60] node {a} (q_1)

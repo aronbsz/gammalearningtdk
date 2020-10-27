@@ -253,11 +253,11 @@ The architecture of the ILE consists of two main components: the learning algori
 	\label{fig_architcture_informaloverview}
 \end{figure}
 
- In the case of the learning algorithm, active automata learning algorithms were chosen as a design direction. Active automata learning enables complete separation of the learner algorithm and the system under learning through a teacher component -- enabling the system under learning to be made from multiple, separate requirement-models provided by the user. Since active automata learning works through queries, the query can go through arbitrary layers of logic -- allowing the proposed oracle-based interactive learning. Figure \ref{fig_architcture_informaloverview}
+ In the case of the learning algorithm, active automata learning algorithms were chosen as a design direction. Active automata learning enables complete separation of the learner algorithm and the system under learning through a teacher component -- enabling the system under learning to be made from multiple, separate requirement-models provided by the user. Since active automata learning works through queries, the query can go through arbitrary layers of logic -- allowing the proposed oracle-based interactive learning.
  
  \smallskip
- %TODO: Ez a bekezdés, hogy minden nyílról legyen szó
- As discussed in [TODO: ref to background], active automata learning algorithms work through a teacher and a learner component. While traditionally, the queries asked through the teacher are automated - by known or derived information and equivalence algorithms - in order to achieve an interactive algorithm, we created a new approach. Figure \ref{fig_architcture_ileoverview} shows an Adaptive Learner delegating its queries through the teacher  component to an interactive oracle, which delegates the relevant questions to the user. While the abstract approach presented in Figure \ref{fig_architcture_ileoverview} does enable interactive learning, but implementing it using traditional approaches (by delegating every single query to the user), proves to be infeasible in practical use cases simply because of the amount of queries needed to learn a model. In order to overcome this boundary, optimizations were made to automate a subset of queries, and a new active automaton learning approach was designed to heuristically control the design space.
+
+ As discussed in [TODO: ref to background], active automata learning algorithms work through a teacher and a learner component. While traditionally, the queries asked through the teacher are automated - by known or derived information and equivalence algorithms - in order to achieve an interactive algorithm, we created a new approach. Figure \ref{fig_architcture_informaloverview} shows the Learning Algorithm delegating its queries through the an oracle, which delegates the questions to the user. The abstract approach presented in Figure \ref{fig_architcture_informaloverview} does enable interactive learning, but implementing it using traditional approaches (by delegating every single query to the user), proves to be infeasible in practical use cases because of the overwhelming amount of queries needed to learn a model. In order to overcome this boundary, we made optimizations to the ILE to automate a subset of queries, and we designed a new active automata learning approach to heuristically control the design space.
 
 %---------------------------------------------------------------
 \subsection{The Cost of Interaction} \label{subs_commandhandling}
@@ -295,9 +295,9 @@ The architecture of the oracle component can be seen on Figure \ref{fig_architct
 
 The oracle is responsible for interacting with the user, managing the provided requirements and extracting information based on the queries posed by the learning algorithm. It consists of two main components: the parser and the interactive learnable.
 
-\textbf{The parser} is responsible for handling the input of the user and transforming it to a formalism interpretable by the interactive learnable. This is required for reasons such as enabling event semantics in requirements, separating the input formalism from that of the possible dependencies, and enabling feedback on the input of the user. This can be realized through the conventional architecture of compilers: creating a language for the requirements, generating a parser which creates an abstract syntax tree, then a DOM from the input and provides feedback, and defining model transformations to the desired formalisms.
+\textbf{The parser} is responsible for handling the input of the user and transforming it to a formalism interpretable by the interactive learnable. This is necessary for enabling event semantics in requirements, separating the input formalism from that of the possible dependencies, and enabling feedback on the input of the user. This is implemented through the conventional architecture of compilers: creating a language for the requirements, generating a parser which creates an abstract syntax tree, then a DOM (Document Object Model TODO: ref talán) from the input and provides feedback, and defining model transformations to the desired formalisms.
 
-\textbf{The interactive learnable} stores the requirements it receives from the parser in the form of \textit{partial models} and answers the queries of the learning algorithm based on them, as illustrated on Figure \ref{fig_architcture_interactivelearnable}.
+\textbf{The interactive learnable} stores the requirements received from the parser in the form of \textit{partial models} and answers the queries of the learning algorithm. The architecture of of the interactive learnable can be seen on Figure \ref{fig_architcture_interactivelearnable}.
 
 \begin{figure}[!ht] 
 	\centering
@@ -308,11 +308,11 @@ The oracle is responsible for interacting with the user, managing the provided r
 	\label{fig_architcture_interactivelearnable}
 \end{figure}
 
-Partial models have two responsibilities: providing the set of possible outputs to the given input sequences based on the information contained within them, and telling whether they also contain information about the proximity of the input sequence. The intersection of these possible outputs provides the output based on the given requirements, and also reveals conflicting requirements without additional overhead. In the current approach, the inconclusive outputs are delegated to the user, creating the loop on Figure \ref{fig_providerequirementsworkflow}.
+Partial models have two responsibilities: providing the set of possible outputs to the given input sequences based on the information contained within, and providing information about the proximity of the input sequence. The intersection of these possible outputs provides the output based on the given requirements, and also reveals conflicting requirements without additional overhead. In the current approach, the inconclusive outputs are delegated to the user, creating the loop on Figure \ref{fig_providerequirementsworkflow}.
 
-Telling whether partial models contain additional information in any given 'direction' enables the interactive learnable to track the easly explorable parts of the design space, thus facilitating significant optimization opportunities for the entire workflow.
+Telling whether partial models contain additional information enables the interactive learnable to track the easly explorable parts of the design space, thus facilitating significant optimization opportunities for the entire workflow.
 
-Preserving the requirments in separate partial models has several advantages. First of all, it makes the traceability between the user input and the learning algorithm possible, which is essential, as the user may not understand notifications or questions about information derived from their input. Also, translating each requirement to a common formalism and merging these models might be possible, but the addition and removal of models - which is a frequent operation in the workflow - would be severely ineffective. In addition, in this manner the exploration of the individual models may be adjusted to their own internal logic.
+Preserving the requirments in separate partial models has several advantages. First of all, it ensures the traceability between the user input and the learning algorithm, which is essential, as the user may not understand notifications or questions about information derived from their input. Also, translating each requirement to a common formalism and merging these models might be possible, but the addition and removal of models - which is a frequent operation in the workflow - would be severely ineffective. Additionally, in this manner the exploration of the individual models may be adjusted to their own internal logic.
 
 Currently, there are two main types of partial models - corresponding to the two main types of requirements: trace-based moodels, which store valid or invalid scenarios for an execution of a model, and LTL models, containing high-level behavioral properties which must be fulfilled by the resulting model. The following two subsections elaborate on these models. 
 
@@ -324,7 +324,7 @@ Currently, there are two main types of partial models - corresponding to the two
 
 The common property of these models is that they can be represented via conventional incomplete finite automata. The automata contain information about a given input sequence if they reach an accepting state at the end of the word. They contain more information when other accepting states are reachable from that point.
 
-Each of the trace-based requirement types are be mapped to a specific kind of partial model representing the corresponding automaton. Although each of these automata are finite automata, they vary greatly in their complexity of execution, thus the complexity of their provided behavior. In this case, this shall not be neglected, as the number of these models can be huge with very frequent execution.
+Each trace-based requirement types are mapped to a specific kind of partial model representing the corresponding automaton. Although each automata are finite automata, they vary greatly in their complexity of execution, thus the complexity of their provided behavior. The number of these models can be huge with very frequent execution.
 
 For instance, in case of IOPairModels (corresponding output-type requirements), it is enough to check if the accepting state can be reached and they surely contain no additional information. However, sequence diagrams can contain branching and loops in the behavior, thus require more complex algorithms.
 
@@ -347,7 +347,7 @@ For instance, in case of IOPairModels (corresponding output-type requirements), 
 %\subsection{LTL Models} \label{subs_ltlintheframework}
 %---------------------------------------------------------------
 
-\textbf{LTL models} correspond to LTL requirements, a kind of program logic based requirements that describe the behavior for infinite input/output sequences.%: $\omega$-regular languages.
+\textbf{LTL models} on the other hand correspond to LTL requirements: a program logic based requirements that describe the behavior for infinite input/output sequences.%: $\omega$-regular languages.
 
 They correspond to nondeterministic $\omega$-automata. As the acceptance condition of Büchi-automata [TODO ref backgr] is closest to that of finite automata, we chose them for the target of the mapping of the corresponding requirements. It should be noted, that any of the automata classes recognizing the $\omega$-regular languages could have been chosen with an appropriate interpretation.
 
@@ -355,7 +355,7 @@ As Büchi automata accept only infinitely long words over the given input alphab
 
 In our interpretation, a Büchi automaton has information about a given finite input sequence, if at the end of the input the automaton reaches an accepting state. Then the possible outputs are the elements of the output alphabet on the last edge taken. As the automaton is nondeterministic (and cannot be determinized), there may be multiple accepting states, thus multiple edges, and even one edge might contain multiple possible outputs. In this case the conjunction of the possible outputs on the corresponding edges is the possible output of the automaton.  
 
-There may be other interpretations of Büchi automata in this context. For instance, it would be enough for an input sequence to reach a state from which an accepting state is reachable. This would provide an answer in more cases, than our interpretation, but also introduce faulty behavior, the handling of which should first be ensured in the workflow. Also, it would be possible to track impossible outputs when no accepting state can be reached.
+There may be other interpretations of Büchi automata in this context. For instance, it would be enough for an input sequence to reach a state from which an accepting state is reachable. This would provide an answer in more cases, than our interpretation, but also introduce faulty behavior which would have to be handled in the workflow. Also, it would be possible to track impossible outputs when no accepting state can be reached.
 
 A summarizing example of the different automaton types can be seen on figure \ref{fig_architecture_buchiexample}.
 

@@ -133,15 +133,14 @@ UML-like sequence diagrams are trace-based models that can contain multiple trac
 
 Sequence diagrams can also be used to model arbitrarily long, possibly looping behavior, thereby containing plenty of information, which results in possibly answering \textit{numerous} questions formulated by the ILE.
 
-%TODO
-An example for the application of sequence diagrams can be seen on Figure \ref{fig_sequencediagram}
+We introduce our own sequence diagram formalism specifically designed to model system components. An example for their syntax can be seen on Figure \ref{fig_sequencediagram}. The '\textit{systemComponent}' is the component the behavior of which is being modeled, the '\textit{inputComponent}' and '\textit{outputComponent}' are symbolizing the sources and targets of the inputs and outputs. The textboxes marked with stars are the port qualifications.
 
 \begin{figure}[!ht] 
 	\centering
 	%\fbox{
 	\includegraphics[width=130mm, keepaspectratio]{figures/sequencediagram.png}
 	%}
-	\caption{The supported requirement types}
+	\caption{Example for the syntax of the sequence diagrams}
 	\label{fig_sequencediagram}
 \end{figure}
 
@@ -152,15 +151,15 @@ It is important to note, that the specification and integration of sequence diag
 %TODO ref backgr LTL
 %TODO ref backgr LTS
 
-LTL expressions are able to contain infinitely many traces through program logic-based requirement specification: they can be used to formulate propositional logic expressions with temporal connectives over \textit{paths} of a \textit{base model}, as described in [TODO ref backgr]. 
+LTL expressions are able to contain infinitely many traces through program logic-based requirement specification: they can be used to formulate propositional logic expressions with temporal connectives over \textit{paths} of a \textit{base model}, as described in Subsection \ref{subs_backgrltl}. 
 
 They can be used to formulate requirements that must hold for the whole component, during the whole execution. Thus -- depending on their interpretation -- they contain lots of information, which may result in answering \textit{numerous} questions posed by the ILE.
 
 For our application, we introduce our own LTL expression language with its own syntax and semantics - although attempting to keep it similar to other generally known variants, especially that of SPOT \cite{Spot}. The full syntax of the LTL expressions -- also determining the operator precedence -- can be seen in Listing \ref{lst_ltlfullsyntax} in the Appendix.
 
-The base model of the LTL expressions is the LTS [TODO ref backgr] interpretation of the component under learning. This means, that the set of atomic propositions that can be used in these expressions are the possible labels of the transitions, which are the elements of the input and the output alphabets of the component. The model synthesis takes place assuming event semantics -- exactly one input and one output event happening at any given step during the execution of the system. We introduced these semantics to the LTL expressions: the conjunction of exactly one input and one output character must hold at any given point for it to be considered correct -- and every other character must be negated at the same point. This also entails, that given another character not explicitly negated at that point, it is automatically negated, and in case that no proposition is declared explicitly, either one of the non-explicitly negated characters hold. 
+The base model of the LTL expressions is the LTS interpretation of the component under learning. This means, that the set of atomic propositions that can be used in these expressions are the possible labels of the transitions, which are the elements of the input and the output alphabets of the component. The model synthesis takes place assuming \textit{event semantics} -- exactly one input and one output event happening at any given step during the execution of the system. We introduced these semantics to the LTL expressions: the conjunction of exactly one input and one output character must hold at any given point for it to be considered correct -- and every other character must be negated at the same point. This also entails, that given another character not explicitly negated at that point, it is automatically negated, and in case that no proposition is declared explicitly, either one of the non-explicitly negated characters hold. 
 
-The semantics of the supported temporal connectives, and other aspects of the LTL semantics in general, are similar to those described in [TODO ref backgr] %TODO
+The semantics of the supported temporal connectives, and other aspects of the LTL semantics in general, are similar to those described in Subsection \ref{subs_backgrltl}.
 
 Examples for LTL expressions can be seen in Listing \ref{lst_ltlex}.
 
@@ -175,7 +174,7 @@ Examples for LTL expressions can be seen in Listing \ref{lst_ltlex}.
 	// choosing the type of the requirement omitted
 	>F(TrafficControl.interrupt -> X(G(TrafficControl.toggle) -> G(TrafficDisplay.blinkingYellow)))
 	
-	Equivalent as a result of the event semantics (omitting ports for simplicity):
+	Equivalent as a result of the event semantics (omitting port qualifications for simplicity):
 	>F(interrupt&!toggle -> X(G(toggle&!interrupt) -> G(blinkingYellow&!red&!green&!yellow)))
 \end{lstlisting}
 
@@ -232,6 +231,7 @@ Examples of models offered in equivalence queries can be seen on Figure \ref{fig
 	\label{fig_methodology_eqex}
 \end{figure}
 
+\clearpage
 %---------------------------------------------------------------
 \subsection{The Resulting System Model} \label{subs_resultingmodel}
 %---------------------------------------------------------------

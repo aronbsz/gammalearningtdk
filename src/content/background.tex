@@ -2,11 +2,11 @@
 \chapter{Background} \label{background}
 %----------------------------------------------------------------------------
 %TODO general chapter intro
-This chapter provides the necessary theoretical background of the thesis. First, we introduce Model-Based Engineering, then discuss the Foundations of Automata Theory and Automata learning, finally we elaborate upon Specifying Requirements.
+This chapter provides the necessary theoretical background of the thesis. First, we introduce model-based engineering, then discuss the foundations of automata theory and automata learning, finally we elaborate upon specifying requirements.
 %----------------------------------------------------------------------------
 \section{Model-Based Engineering} \label{sec_backgrmbe}
 %----------------------------------------------------------------------------
-Due to the application of the modeling concept in several completely different domains, first of all, we need to define the meaning of \textit{model} in this work.
+Due to the application of the modeling concept in several completely different domains, first of all, we need to define the meaning of \textit{model}.
 \begin{definition}[Model]
 	A model is the simplified image of an element of the real or a hypothetical world (the system), that replaces the the system in certain considerations.
 \end{definition}
@@ -41,7 +41,7 @@ There are also two important factors to consider when designing a model transfor
 	\item \textit{Traceability}: the images of the original elements of the source model can be traced back to the original elements, from which they were generated.
 \end{itemize}
 
-\textbf{Model-Based Systems Engineering (MBSE)} is the formalized application of modeling to support system requirements, design, analysis, verification and validation activities beginning in the conceptual design phase and continuing throughout development and later life cycle phases \cite{mbse}. This concept can also be applied to software engineering. Note, that the models may be the primary artifact of the development process, in which case precisely defined formal models are required. In case the models are the primary artifacts, the process is called \textit{Model-Driven Engineering}.
+\textbf{Model-Based Systems Engineering (MBSE)} is the formalized application of modeling to support system requirements, design, analysis, verification and validation activities beginning in the conceptual design phase and continuing throughout development and later life cycle phases\cite{mbse}. This concept can also be applied to software engineering. Note, that the models may be the primary artifact of the development process, in which case precisely defined formal models are required. When the models are the primary artifacts, the process is called \textit{Model-Driven Engineering}.
 
 %----------------------------------------------------------------------------
 \section{Foundations of Automata Theory} \label{sec_backgrmodeling}
@@ -58,10 +58,10 @@ There are also two important factors to consider when designing a model transfor
 
 %TODO Logics (esp LTL) -> ezt külön kiszedjük vagy ide be?
 
-In order to provide the theoretical background of behavioral modeling, this section discusses the necessary basics of formal language and automaton theory.
+In order to provide the theoretical background of behavioral modeling, this section discusses the necessary basics of formal language and automata theory.
 
 
-First, we introduce the fundamentals of formal language theory, on which automaton theory is based on. 
+First, we introduce the fundamentals of formal language theory, on which automaton theory is based. 
 
 \subsection{Fundamentals of Formal Language Theory}
 Atomic elements of formal languages are alphabets, characters and words.
@@ -102,7 +102,7 @@ Formal language theory is closely linked with automata theory, which we will int
 Informally, automata are mathematical constructs which read characters from an input and classify them into "accepted" and "rejected" categories. A bit more precisely, automata consist of states, one of which is always active. Starting from an initial state, based on the inputs received, the automaton changes, transitions between states. Essentially, for each of the inputs, the automaton determines whether to keep, or change its current state. In order to determine if an input sequence should be accepted or not, some states are distinguished, accepting states. If after processing a sequence of inputs, the final state of the automaton is an accepting state, the input sequence is accepted. If not, the input is rejected.
 
 
-One of the most simple automata is the Deterministic Finite Automaton.
+One of the simplest automata is the Deterministic Finite Automaton.
 
 \begin{definition}[Deterministic Finite Automaton]
 	A Deterministic Finite Automaton is a Tuple of $ DFA=(S,s_{0},\Sigma,\delta,F) $, where: 
@@ -176,7 +176,7 @@ A slightly different formalism can be defined for cases where the acceptance of 
 	\end{itemize}
 	In the beginning, the initial state is active. The active state may change after each transition.
 	
-	The \textit{path} of an LTS is the $\pi = (q_0, a_1, q_1, a_2, ...)$ alternating sequence of states and actions, where $q_0$ is the initial state and the subsequent states are the results of the transitions labeled with the actions of the same index. 
+	The \textit{path} of an LTS is the $\pi = (q_0, a_1, q_1, a_2, ...)$ alternating sequence of states and actions, where $q_0$ is the initial state and the subsequent states are the results of the transitions labeled with the actions of the same index, starting from the state with the previous index. 
 \end{definition}
 
 \begin{example}

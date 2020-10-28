@@ -20,8 +20,8 @@ The Eclipse Modeling Framework is an Eclipse-based modeling framework and code g
 %----------------------------------------------------------------------------
 \subsection{Xtext Framework} \label{subsec_xtext}
 %----------------------------------------------------------------------------
-Xtext is an open-source framework for developing (mostly) domain-specific languages (DSLs). It has its own syntax for the definition of textual languages, resembling a context-free grammar extended with mappings to the in-memory representations. Unlike standard parser generators, it generates not only a parser, but also the abstract syntax tree (AST) of the grammar, and also support several other features, such as validation rules and editing support. This is because Xtext is based on the EMF project -- the metamodels of the defined languages are Ecore models --, and it is integrated into the Eclipse environment.
-
+Xtext is an open-source framework for developing (mostly) domain-specific languages (DSLs). It has its own syntax for the definition of textual languages, resembling a context-free grammar extended with mappings to the in-memory representations. Unlike standard parser generators, it generates not only a parser, but also the abstract syntax tree (AST) of the grammar, and also supports several other features, such as validation rules and editing support. This is because Xtext is based on the EMF project -- the metamodels of the defined languages are Ecore models --, and it is integrated into the Eclipse environment.
+\clearpage
 \textbf{Xtend}
 
 Xtend is a general-purpose, high-level programming language based on Java. It is statically typed, object-oriented and uses the type system of Java. Xtend programs are compiled to Java code, thus allowing seamless integration with existing Java libraries. It provides numerous convenient extensions to Java, such as dispatch methods, type inference, operator overloading and extension methods.
@@ -45,26 +45,26 @@ Through providing these algorithms, the library supports easy development and fa
 \subsection{LearnLib} \label{subsec_learnlib}
 %----------------------------------------------------------------------------
 
-LearnLib\cite{10.1007/978-3-319-21690-4_32} provides a Java framework for active and passive automaton learning, with the versatile AutomataLib framework acting as a backbone of it. Learnlib provides implementations of several automaton learning algorithms, as well as multiple equivalence and counterexample decomposition algorithms.
+LearnLib\cite{10.1007/978-3-319-21690-4_32} provides a Java framework for active and passive automata learning, with the versatile AutomataLib framework acting as a backbone of it. Learnlib provides implementations of several automata learning algorithms, as well as multiple equivalence and counterexample decomposition algorithms.
 
 %----------------------------------------------------------------------------
 \subsection{Automata Learning Framework} \label{subsec_automatonlearning}
 %----------------------------------------------------------------------------
-In order to give a foundation to the implementation described in this thesis, a previously created automata learning framework TODO: ref BSC] was extended upon. Since the framework was implemented using the Java programming language, the high-level view seen in Figure \ref{fig_automatalearning_packages} is represented as an UML class diagram of the packages and the relations between them, essentially being an overview of the modularization of the framework. 
+In order to give a foundation to the implementation described in this thesis, a previously created automata learning framework in \cite{Barcsa-Szabo2019} was extended upon. Since the framework was implemented using the Java programming language, the high-level view seen in Figure \ref{fig_automatalearning_packages} is represented as an UML class diagram of the packages and the relations between them, essentially being an overview of the modularization of the framework. 
 
 
 \smallskip
 
-The \textit{Learnable} package contains the input formalisms, and the \textit{Hypothesis} package contains the output formalisms. Both are used by the teacher (\textit{Teacher} package) and the learner (\textit{Algorithm} package). The \textit{Adapter} package is used as an abstraction layer to separate the algorithm and the teacher from the input formalism. Since automaton learning algorithms have no direct access to the system under learning, and generally operate in a black-box way, the adapter package provides flexibility on what inputs can be used. As Figure \ref{fig_automatalearning_packages} illustrates, no such adapter is used on the output layer, since Hypotheses are directly accessed by the learning algorithms, and are constructed during the learning. The relations between the packages (modules) are straightforward.  Composition is used, to indicate, that there is no \textit{Algorithm} (learner) without a \textit{Teacher}, there is no \textit{Teacher} without an \textit{Adapter}, and there is no \textit{Adapter} without an input, a \textit{Learnable}, to adapt. \\
-The advantage of such architecture is that the automaton learning algorithms implemented within can be agnostic to the formalism of the input provided. This results in high re-usability of the core algorithms, while being easily extensible and adaptable to arbitrary systems to infer.  \\
-The Framework includes multiple supported in- and output formalisms, and has multiple implemented active automaton learning algorithms -- one of which is the Direct Hypothesis Construction algorithm.
+The \textit{Learnable} package contains the input formalisms, and the \textit{Hypothesis} package contains the output formalisms. Both are used by the teacher (\textit{Teacher} package) and the learner (\textit{Algorithm} package). The \textit{Adapter} package is used as an abstraction layer to separate the algorithm and the teacher from the input formalism. Since automata learning algorithms have no direct access to the system under learning, and generally operate in a black-box way, the adapter package provides flexibility on what inputs can be used. As Figure \ref{fig_automatalearning_packages} illustrates, no such adapter is used on the output layer, since Hypotheses are directly accessed by the learning algorithms, and are constructed during the learning. The relations between the packages (modules) are straightforward.  Composition is used, to indicate, that there is no \textit{Algorithm} (learner) without a \textit{Teacher}, there is no \textit{Teacher} without an \textit{Adapter}, and there is no \textit{Adapter} without an input, a \textit{Learnable}, to adapt. \\
+The advantage of such architecture is that the automata learning algorithms implemented within can be agnostic to the formalism of the input provided. This results in high re-usability of the core algorithms, while being easily extensible and adaptable to arbitrary systems to infer.  \\
+The Framework includes multiple supported in- and output formalisms, and has multiple implemented active automata learning algorithms -- one of which is the Direct Hypothesis Construction algorithm.
 
 \begin{figure}[!ht] 
 	\centering
 	%\fbox{
 	\includegraphics[width=75mm, keepaspectratio]{figures/automatalearning_packages.png}
 	%}
-	\caption{Structure and relations of the packages comprising the Automata Learning Framework TODO:REF BSC} 
+	\caption{Structure and relations of the packages comprising the Automata Learning Framework\cite{Barcsa-Szabo2019}} 
 	\label{fig_automatalearning_packages}
 \end{figure}
 
@@ -75,7 +75,7 @@ The Framework includes multiple supported in- and output formalisms, and has mul
 %----------------------------------------------------------------------------
 %TODO: random bevezeto szoveg + fig 4.1 kiterjesztett változata - szagatott részekkel keretezve pl az Oracle
 
-To achieve our goal, we designed and implemented extensions to the previously presented Automata Learning Framework resulting in a proof of concept implementation of the proposed Interactive Learning Entity, which utilizes automaton learning algorithms, and is capable of handling a multitude of user-provided requirements as an input formalism. The designed architecture can be seen on Figure \ref{fig_automatonlearning_overview}. It is important to note the extension of components shown in Figure \ref{fig_automatalearning_packages}, while still upholding the behavioral structure of the framework. As illustrated, an Oracle, a Learning Algorithm, and a Cache component outline the architecture of the ILE. The following subsections elaborate upon these components.
+To achieve our goal, we designed and implemented extensions to the previously presented Automata Learning Framework resulting in a proof of concept implementation of the proposed Interactive Learning Entity, which utilizes automata learning algorithms, and is capable of handling a multitude of user-provided requirements as an input formalism. The designed architecture can be seen on Figure \ref{fig_automatonlearning_overview}. It is important to note the extension of components shown in Figure \ref{fig_automatalearning_packages}, while still upholding the behavioral structure of the framework. As illustrated, an Oracle, a Learning Algorithm, and a Cache component outline the architecture of the ILE. The following subsections elaborate upon these components.
 
 \begin{figure}[H] 
 	\centering
@@ -91,7 +91,7 @@ To achieve our goal, we designed and implemented extensions to the previously pr
 %----------------------------------------------------------------------------
 The \textbf{interactive learnable} is the main part of the oracle component, responsible for storing models created from the provided reqirements and answering questions of the learning algorithm. In case of adaptive learning algorithms, it also provides information about its ability to automatically explore the design space, thus enabling the optimization of the number of questions the user has to answer. 
 
-The current implementation provides three commands: \textit{OPTIMISTIC}, \textit{PESSIMISTIC} and \textit{RESET}. In the current implementation, \textit{RESET} command is only given, when a partial model (or the corresponding requirement) is removed from the oracle. The current heuristics for the \textit{OPTIMISTIC} and \textit{PESSIMISTIC} commands are summarized in Table \ref{tab_implementedheuristics}, with the oracle issuing the \textit{OPTIMISTIC} command if and only if at least one partial model returns \textit{OPTIMISTIC}, otherwise it returns \textit{PESSIMISTIC}.
+The current implementation provides three commands: \textit{OPTIMISTIC}, \textit{PESSIMISTIC} and \textit{RESET}. In the current implementation, \textit{RESET} command is only given, when a partial model (or the corresponding requirement) is removed from the oracle. The current heuristics for the individual partial model types are summarized in Table \ref{tab_implementedheuristics}, with the oracle issuing the \textit{OPTIMISTIC} command if and only if at least one partial model returns \textit{OPTIMISTIC}, otherwise it returns \textit{PESSIMISTIC}.
 
 \begin{table}[ht]
 	\footnotesize
@@ -117,9 +117,9 @@ The \textbf{LTL parser} is a simple parser implemented using the Xtext framework
 %----------------------------------------------------------------------------
 %TODO: DHC, adaptive teacher
 
-The \textbf{Adaptive Learning Algorithm} is an extension of an active automaton learning algorithm with the presented adaption commands. In our implementation, we extended upon the frameworks DHC algorithm (working analogously to TODO ref background DHC), and created the algorithm seen in Algorithm \ref{algo:adaptivedhc}. 
+The \textbf{Adaptive Learning Algorithm} is an extension of an active automata learning algorithm with the presented adaption commands. In our implementation, we extended upon the framework's DHC algorithm (working analogously to the one presented in Chapter \ref{background}), and created the algorithm seen in Algorithm \ref{algo:adaptivedhc}. 
 
-The \textbf{Teacher} and \textbf{Adapter} components were only extended so they can handle not only outputs and counter examples, but adaption commands as well, allowing the formalism-agnostic interchange of information between the Oracle and the Learning Algorithm.
+The \textbf{Teacher} and \textbf{Adapter} components were only extended so they can handle not only outputs and counterexamples, but adaption commands as well, allowing the formalism-agnostic interchange of information between the Oracle and the Learning Algorithm.
 
 The implemented \textit{Adaptive Learning Algorithm} depends on LearnLib\cite{10.1007/978-3-319-21690-4_32} to decompose the counter examples provided by the \textit{Teacher} component utilizing the approach proposed by Rivest and Schapire in \cite{rivest1993inference}.
 

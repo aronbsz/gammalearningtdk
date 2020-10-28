@@ -5,38 +5,37 @@ This chapter provides concluding remarks and possibilities for further improveme
 
 \section{Contribution}
 
-In this thesis we achieved the following results.
+The achieved results of this thesis can be seen in the following.
 
 \begin{itemize}
-	\item Designed a new, semi-automated methodology to support system design
+	\item We designed a new, semi-automated methodology to support system design.
 	\begin{itemize}
-		\item Defined a multi-phase workflow to implement this methodology.
-		\item Defined formalisms for declarative requirement types for corresponding outputs, valid and invalid traces, sequence diagrams and LTL expressions.
-		\item Enabled refinement-based requirement specification by introducing conflict handling among conflicting requirements.
-		\item Proposed solution to the infeasibility of equivalence validation.
+		\item We defined a multi-phase workflow to implement this methodology.
+		\item We defined formalisms for declarative requirement types: corresponding outputs, valid and invalid traces, sequence diagrams and LTL expressions.
+		\item We enabled refinement-based requirement specification by introducing conflict handling among conflicting requirements.
+		\item We proposed a solution to the infeasibility of equivalence validation.
 	\end{itemize}
-	\item Designed an architecture to support the proposed methodology
+	\item We designed an architecture to support the proposed methodology.
 	\begin{itemize}
-		\item Created the approach of adaptive learning using heuristics to determine inferable information.
-		\item Reconciled different modeling formalisms using an automata theory based approach.
-		\item Designed an adaptive variant of the Direct Hypothesis Construction algorithm.
-		\item Introduced caching to tackle the ineffectiveness of automatized information extraction.
+		\item We created the approach of adaptive learning using heuristics to determine inferable information.
+		\item We reconciled different modeling formalisms using an automata theory based approach.
+		\item We designed an adaptive variant of the Direct Hypothesis Construction algorithm.
+		\item We introduced caching to tackle the ineffectiveness of automatized information extraction.
 	\end{itemize}
-	\item Created a proof of concept implementation of the proposed architecture in order to validate our approach.
-	\item Demonstrated the capabilities and limitations of the implementation and the approach through a case study.
-	\item Evaluated the components of the implementation.
+	\item We created a proof of concept implementation of the proposed architecture in order to validate our approach.
+	\item We demonstrated the capabilities and limitations of the implementation and the approach through a case study.
+	\item We evaluated the components of the implementation.
 \end{itemize}
 \clearpage
 \section{Future Work}
-The possible future work opportunities are listed in the following.
+The possible future work opportunities are discussed in the following.
 
-\begin{itemize}
-	\item Analyse the proposed interactive learning approach through the implemented proof of concept in practical model-driven applications.
-	\item Onboarding further requirement formalisms to the framework, such as CTL expressions, Invalid Corresponding Outputs for extended flexibility in design.
-	\item Introduce high-level statechart elements, such as timeout events, hierarchical states etc. into the learning.
-	\item Allow the specification of initial models and patterns to guide the result of the model synthesis.
-	\item Add priorities and scopes to requirements to facilitate refinement-based modeling.
-	\item Introduce extensions to the LTL formalism in order to support model quality optimization as seen in \cite{kupferman}.
-	\item Re-design different automata learning algorithms, such as L*\cite{ANGLUIN198787} and TTT\cite{10.1007/978-3-319-11164-3_26} to support adaption.
-	\item Implement a graphical user interface to enable the convenient design of systems and system components.
-\end{itemize}
+
+
+The proposed interactive learning approach and its proof of concept implementation requires further analysis in practical model-driven applications. To support further analysis a graphical user interface could also be implemented to enable the convenient design of systems and system components.
+
+Additional features can be introduced to the model synthesis, such as onboarding further requirement formalisms to the framework, such as CTL expressions and invalid corresponding outputs for extended flexibility in design, introducing high-level statechart elements, such as timeout events, hierarchical states etc. into the learning, allowing the specification of initial models and patterns to guide the result of the model synthesis and adding priorities and scopes to requirements to facilitate refinement-based modeling.
+
+New model synthesis approaches can be integrated through introducing extensions to the LTL formalism in order to support model quality optimization as seen in \cite{kupferman}.
+
+To optimize the learning and to evaluate different approaches, different automata learning algorithms, such as L*\cite{ANGLUIN198787} and TTT\cite{10.1007/978-3-319-11164-3_26} could be re-designed to support adaption.

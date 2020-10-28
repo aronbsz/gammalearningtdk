@@ -2,7 +2,7 @@
 \chapter{Case Study: Pedestrian Crossing} \label{casestudy}
 %----------------------------------------------------------------------------
 
-This section demonstrates the capabilities and limitations of the framework. It presents a problem commonly modeled using state-based models, which is complex enough to demonstrate all aspects of the designed Interactive Learning Entity, but also simple enough to solve - thus verify - only using some background knowledge and common sense. [TODO ref gamma tutorial?]
+This section demonstrates the capabilities and limitations of the framework. It presents a problem commonly modeled using state-based models, which is complex enough to demonstrate all aspects of the designed Interactive Learning Entity, but also simple enough to solve - thus verify - only using some background knowledge and common sense. The case study was inspired by the example seen in \cite{molnar2018gamma}.
 
 %---------------------------------------------------------------
 \section{Introduction} \label{subs_casestudyintro}
@@ -136,7 +136,7 @@ The same learning process can be seen on Listing \ref{lst_examplelearning} in th
 
 Now we can examine any differences between the expected and the learned models. Figure \ref{fig_casestudy_trafficlightdiff} presents the expected and the synthesized traffic light models.
 
-\begin{figure}[!ht] 
+\begin{figure}[H] 
 	\centering
 	\begin{subfigure}[b]{0.9\textwidth}
 		\centering
@@ -221,7 +221,6 @@ After learning every component, the collection of the models is serialized as a 
 	\item CompositeSystem.gcd (connections between the component ports, as illustrated on Figure \ref{fig_casestudy_blockdiagram})
 	\item Interfaces.gcd (the interface definitions based on the ports of the components)
 \end{itemize}
-After extending the controller with statechart-specific elements (namely the timeout event), the engineer can use the Gamma Framework to check the correctness of the system model or even generate implementation code.
+After extending the controller with statechart-specific elements (namely the timeout event), the engineer can use the Gamma Framework\cite{DBLP:conf/icse/MolnarGVMV18} to check the correctness of the system model or even generate implementation code.
 
 
-[TODO ESETLEG: a teljes rendszert is tanuljuk?]

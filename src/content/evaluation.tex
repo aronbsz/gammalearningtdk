@@ -1,15 +1,15 @@
 %----------------------------------------------------------------------------
 \chapter{Evaluation} \label{evaluation}
 %----------------------------------------------------------------------------
-This chapter presents the applicability of the designed framework, evaluates its current capabilities and points out improvement possibilities. The main evaluation metric is the number of queries each component makes - and how much of these reaches the user.
+This chapter presents the applicability of the designed framework, evaluates its current capabilities and points out improvement possibilities. The main evaluation metric is the number of queries each component makes - and how many of these reaches the user.
 
 %---------------------------------------------------------------
 \section{The Oracle} \label{subs_evaloracle}
 %---------------------------------------------------------------
 %TODO: Optimistic vs Pessimistic, formalizmusok
-The main metric of the oracle is the number of behavior-related questions the engineer has to answer during the course of the model synthesis (including the offline phase). This is really difficult to measure, as the exact number of these questions depends on several parameters: the complexity of the desired model, as well as the order, formalism, complexity and skillful construction of the requirements formulated by the designing engineer. Some of these parameters are difficult to measure by themselves, thus, the following comparison of the supported formalisms is rather an illustration of the capabilities of the supported formalisms of the framework through a realistic example. 
+The main metric of the oracle is the number of behavior-related questions the engineer has to answer during the course of the model synthesis (including the offline phase). This is really difficult to measure, as the exact number of these questions depends on several parameters: the complexity of the desired model, as well as the order, formalism, complexity and skillful construction of the requirements formulated by the designing engineer. Some of these parameters are difficult to measure by themselves, thus, the following comparison of the supported formalisms is rather an illustration of the current capabilities of the framework through a realistic example. 
 
-For this demonstration, the traffic light component from the case study in Chapter \ref{sec_casestudy} is going to be used. We assume, that the user only adds requirements he perceives conducive to the model synthesis and tries to formulate realistic -- not unnecessarily complex -- requirements. We also assume, that the requirements the user provides cannot be conflicting.
+For this demonstration, the traffic light component from the case study in Chapter \ref{casestudy} is going to be used. We assume, that the user only adds requirements he perceives conducive to the model synthesis and tries to formulate realistic -- not unnecessarily complex -- requirements. We also assume, that the requirements the user provides cannot be conflicting.
 
 The baseline of this experiment is the number of questions the user has to answer by always providing the corresponding outputs to the questions of the ILE, as higher numbers are the result of redundant requirements. We examine the cases when valid traces are also allowed (and at least one must be used), then add (and require the use of) LTL expressions and finally invalid traces. Sequence diagrams are excluded from this comparison. The results can be seen on Figure \ref{fig_eval_trafficlightformalisms}.
 
@@ -22,7 +22,7 @@ The baseline of this experiment is the number of questions the user has to answe
 	\label{fig_eval_trafficlightformalisms}
 \end{figure}
 
-The requirements used in this experiment -- apart from the corresponding outputs answering the questions of the ILE directly -- can be seen in [TODO appendix]. The smallest number of queries was measured when both valid traces and LTL expressions were used. The addition of invalid traces resulted in a slightly higher number, demonstrating that this formalism is difficult to apply and useful mostly for its other benefits.  
+The smallest number of queries was measured when both valid traces and LTL expressions were used. The addition of invalid traces resulted in a slightly higher number, demonstrating that this formalism is difficult to apply and useful mostly for its other benefits.  
  
 %---------------------------------------------------------------
 \section{The Learning Algorithm} \label{subs_evallearningalgo}
@@ -38,4 +38,4 @@ When \textit{PESSIMISTIC} commands are used, the number of equivalence queries g
 %---------------------------------------------------------------
 %TODO: optimisticre mennyit csökkent, RESET
 
-The implemented memoization prevents the redundant queries seen in Section \ref{subs_evallearningalgo} reach the oracle by caching each new query in a radix tree. If the cache contains the outputs received for $c$ number of input sequences, the cache reset induced by the $RESET$ command creates $c-1$ queries to the oracle (one for every sequence except for the one that induced the $RESET$).
+The implemented memoization prevents the redundant queries -- seen in Section \ref{subs_evallearningalgo} -- reach the oracle by caching each new query in a radix tree. If the cache contains the outputs received for $c$ number of input sequences, the cache reset induced by the $RESET$ command creates $c-1$ queries to the oracle (one for every sequence except for the one that induced the $RESET$).

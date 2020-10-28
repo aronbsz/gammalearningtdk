@@ -34,7 +34,7 @@ The input formalisms of individual steps in both the offline and the online phas
 %---------------------------------------------------------------
 The first step of the workflow is the definition of the system components. This happens in the offline phase, as the determination of the system components, their exact boundaries and interfaces is part of the architecture, not the behavior. The engineer must provide the names of the system components, along with their interfaces -- in other words their input- and output alphabets -- before the workflow can proceed to the next step.
 
-Users are encouraged to specify input and output characters qualified with interface names in the format '{\fontfamily{qcr}\selectfont Port.character}', as this supplies the subsequent steps with essential information about the connections of the individual system components.
+Users are encouraged to specify input and output characters qualified with port names in the format '{\fontfamily{qcr}\selectfont Port.character}', as this supplies the subsequent steps with essential information about the connections of the individual system components.
 
 The components are handled as independent systems in every other aspect. This results - among others - in the arbitrary ordering of the online behavior-learning phases, and the behavioral faults being limited to their components of origin (although this does not limit the propagation of errors through messages resulting from incorrect behavior).
 The syntax of component and interface declarations is quite simple, as illustrated in Listing \ref{lst_compdef}.
@@ -54,7 +54,7 @@ The syntax of component and interface declarations is quite simple, as illustrat
 %---------------------------------------------------------------
 During the workflow, the engineers can provide requirements in both phases. These requirements can vary greatly in their scope -- from being specific to individual runs to being generally valid for the whole component -- in addition to the differences in the formalism the user defines them through. 
 
-In the offline phase, this means that the user add requirements they have formulated in advance. This is useful for more general requirements, with the scope of the whole component, easily formulated by program logic expressions, or long and complex traces.
+In the offline phase, this means that the users add requirements they have formulated in advance. This is useful for more general requirements, with the scope of the whole component, easily formulated as program logic expressions, or long and complex traces.
 
 In the online phase, adding requirements means answering the questions formulated by the algorithm about a yet unspecified behavior at a specific place in the trace currently being examined. This too can be answered through program logic - e.g. when the engineer realizes a general property during the model construction - but also through traces and through giving the corresponding output directly.
 
@@ -129,7 +129,7 @@ Examples for invalid traces can be seen in Listing \ref{lst_invalidtrace}. Notic
 \textbf{Sequence Diagram}
 %TODO ref backgr UML
 
-UML-like sequence diagrams - the ones introduced in [TODO ref backgr] - are trace-based models that can contain multiple traces, due to them having various combined fragments for branching the behavior - like \textit{alt} and \textit{opt} - and for referencing behaviors specified elsewhere - like \textit{ref}.
+UML-like sequence diagrams are trace-based models that can contain multiple traces, due to them having various combined fragments for branching the behavior - like \textit{alt} and \textit{opt} - and for referencing behaviors specified elsewhere - like \textit{ref}.
 
 Sequence diagrams can also be used to model arbitrarily long, possibly looping behavior, thereby containing plenty of information, which results in possibly answering \textit{numerous} questions formulated by the ILE.
 

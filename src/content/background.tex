@@ -63,7 +63,7 @@ In order to provide the theoretical background of behavioral modeling, this sect
 
 First, we introduce the fundamentals of formal language theory, on which automaton theory is based on. 
 
-\subsection{Fundamentals of formal language theory}
+\subsection{Fundamentals of Formal Language Theory}
 Atomic elements of formal languages are alphabets, characters and words.
 
 \begin{definition}[Alphabet]
@@ -97,7 +97,7 @@ Using these atomic elements of formal language theory, formal languages can be d
 
 Formal language theory is closely linked with automata theory, which we will introduce in the following subsection.
 
-\subsection{Properties of deterministic automata}
+\subsection{Properties of Deterministic Automata}
 
 Informally, automata are mathematical constructs which read characters from an input and classify them into "accepted" and "rejected" categories. A bit more precisely, automata consist of states, one of which is always active. Starting from an initial state, based on the inputs received, the automaton changes, transitions between states. Essentially, for each of the inputs, the automaton determines whether to keep, or change its current state. In order to determine if an input sequence should be accepted or not, some states are distinguished, accepting states. If after processing a sequence of inputs, the final state of the automaton is an accepting state, the input sequence is accepted. If not, the input is rejected.
 
@@ -240,7 +240,7 @@ An example of a deterministic Mealy machine can be seen in Example \ref{ex:coffe
 
 Since automaton-based formalisms deal with alphabets, formal language theory is essential not only to define them, but to construct them in a way that is efficient in practical applications. Often automata are used to design and analyze real-life systems. Naturally, questions of efficiency and correctness arise, which is why the relations of automatons and formal languages are discussed more in-depth in the following subsection.
 
-\subsection{Relations of formal languages and automata}
+\subsection{Relations of Formal Languages and Automata}
 
 \begin{definition}[Recognized language of automata]
 	The language $L\subseteq\Sigma$ containing all the accepted words by an automaton M is called the recognized language of the automaton. It is denoted by L(M) = L.
@@ -414,13 +414,13 @@ Active automaton learning algorithms operate in a similar way, but they do not h
 
 %TODO DHC
 
-\paragraph{Automaton learning}  is a way of modeling a system without having specific knowledge of its internal behavior. To accomplish this, the external behavior of the system needs to be observed. This learned model is, as the name suggests, an automaton. 
+\paragraph{Automata Learning}  is a way of modeling a system without having specific knowledge of its internal behavior. To accomplish this, the external behavior of the system needs to be observed. This learned model is, as the name suggests, an automaton. 
 \\Formally: Automata  learning is  concerned  with  the  problem  of  inferring  an automaton model for an unknown formal language $L$ over some alphabet $\Sigma$\cite{Howar2018}.
 \\\\In order to monitor a system, access to its behavioral information is required. There are two approaches, which separate the two types of automaton learning.
 
-\paragraph{Passive automaton learning} In case of passive automaton learning, the gathering of information is not part of the learning process, but rather a prerequisite to it. The learning is performed on a pre-gathered positive an/or negative example set of the systems behavior. In passive automaton learning, the success of the process is determined not only by the efficiency of the algorithm, but the methodology and time used to gather the data.
+\paragraph{Passive Automata Learning} In case of passive automaton learning, the gathering of information is not part of the learning process, but rather a prerequisite to it. The learning is performed on a pre-gathered positive an/or negative example set of the systems behavior. In passive automaton learning, the success of the process is determined not only by the efficiency of the algorithm, but the methodology and time used to gather the data.
 
-\paragraph{Active automaton learning} In case of active automaton learning, the behavioral infromation is gathered by the learning algorithm via queries. In order to accomplish this, learning is separated to two components: the learner, which learns, and the teacher, which can answer questions about the system under learning.
+\paragraph{Active Automata Learning} In case of active automaton learning, the behavioral infromation is gathered by the learning algorithm via queries. In order to accomplish this, learning is separated to two components: the learner, which learns, and the teacher, which can answer questions about the system under learning.
 
 
 Active automaton learning follows the MAT, or the Minimally Adequate Teacher model proposed by Dana Angluin\cite{ANGLUIN198787}. It defines the separation of the algorithm to a teacher and a learner component in a way, where the teacher can only answer the minimally adequate questions needed to learn the system. These two questions, or queries are are follows:

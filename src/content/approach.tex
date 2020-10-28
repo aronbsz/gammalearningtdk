@@ -27,7 +27,6 @@ The input formalisms of individual steps in both the offline and the online phas
 	\caption{The Proposed Workflow}
 	\label{fig_methodology_workflow}
 \end{figure}
-%TODO fork a komponenseknek
 
 %---------------------------------------------------------------
 \subsection{Component and Interface Definition} \label{subs_compdef}
@@ -70,7 +69,6 @@ The currently supported requirement types can be seen on Figure \ref{fig_require
 \end{figure}
 
 \textbf{Corresponding Output}
-% TODO ref background: trace(-based)
 
 This is the simplest way of specifying the behavior of the system, also containing the least amount of information among the different model types. To put simply, this means giving the output for a given input sequence, without any additional information. This supposedly answers the question of the ILE at \textit{one} given point, and that is the end of its scope.
 
@@ -127,7 +125,6 @@ Examples for invalid traces can be seen in Listing \ref{lst_invalidtrace}. Notic
 \end{lstlisting}
 
 \textbf{Sequence Diagram}
-%TODO ref backgr UML
 
 UML-like sequence diagrams are trace-based models that can contain multiple traces, due to them having various combined fragments for branching the behavior - like \textit{alt} and \textit{opt} - and for referencing behaviors specified elsewhere - like \textit{ref}.
 
@@ -148,8 +145,6 @@ We introduce our own sequence diagram formalism specifically designed to model s
 It is important to note, that the specification and integration of sequence diagrams into this framework is not yet complete. 
 
 \textbf{LTL Expression}
-%TODO ref backgr LTL
-%TODO ref backgr LTS
 
 LTL expressions are able to contain infinitely many traces through program logic-based requirement specification: they can be used to formulate propositional logic expressions with temporal connectives over \textit{paths} of a \textit{base model}, as described in Subsection \ref{subs_backgrltl}. 
 
@@ -185,9 +180,9 @@ It is important to note, that the specification of our LTL variant is not yet fi
 %---------------------------------------------------------------
 The requirements provided by the designing engineer to the ILE may easily be conflicting, especially in case of LTL expressions and invalid traces that describe arbitrarily long sets of behaviors. This is expected, as during system design, when the engineer refines the models and reaches lower levels of abstraction, certain scenarios may conflict with some oversimplified conditions. At that point, those too must be refined, thus replaced. This is why it is essential for the system to provide some kind of conflict handling within the practical boundaries of the available resources. 
 
-This problem is a difficult and resource intensive task for algorithmic reasons elaborated later. Consequently, the ILE only guarantees to handle the conflict, when it also interferes with the model synthesis, in which case, the user is asked to remove one of the conflicting models, before the analysis of the behavior can proceed.
+This problem is a difficult and resource intensive task for algorithmic reasons elaborated later. Consequently, the ILE only guarantees to handle the conflict, when it also interferes with the model synthesis, in which case, the user is asked to remove one of the conflicting models, before the analysis of the behavior can proceed -- as shown on Figure \ref{fig_providerequirementsworkflow}.
 
-\begin{figure}[!ht] 
+\begin{figure}[H] 
 	\centering
 	%\fbox{
 		\includegraphics[width=130mm, keepaspectratio]{figures/methodology_providerequirementsworkflow.png}
@@ -205,7 +200,7 @@ As conflicts only become apparent during the online phase of the workflow, that 
 	Models 1) IO Pair Model: [TraffiControl.interrupt]/TrafficDisplay.red and 0) Invalid Trace Model: TrafficControl.interrupt/TrafficDisplay.red are conflicting.
 	Please choose which model to remove: 
 	>1			//this removes the I/O pair model
-\end{lstlisting}%TODO
+\end{lstlisting}
 \end{minipage}
 
 %---------------------------------------------------------------
@@ -219,7 +214,7 @@ If the model is accepted, the design phase is complete and the model is serializ
 
 Examples of models offered in equivalence queries can be seen on Figure \ref{fig_methodology_eqex}.
 
-\begin{figure}[!ht] 
+\begin{figure}[H] 
 	\centering
 	\fbox{
 		\includegraphics[height=50mm, keepaspectratio]{figures/methodology_eqex1.png}
@@ -231,20 +226,15 @@ Examples of models offered in equivalence queries can be seen on Figure \ref{fig
 	\label{fig_methodology_eqex}
 \end{figure}
 
-\clearpage
 %---------------------------------------------------------------
 \subsection{The Resulting System Model} \label{subs_resultingmodel}
 %---------------------------------------------------------------
-When each of the component models declared during the first step of the workflow are completed, the resulting system model can be serialized and handed over to the engineer for further extensions or usage e.g. for code generation. The serialization can happen in various formalisms.
+When each of the component models declared during the first step of the workflow are completed, the resulting system model can be serialized and handed over to the engineer for further extensions or usage, e.g. for code generation. The serialization can happen in various formalisms.
 
-%TODO ref 
-A possible formalism is the Gamma statechart, introduced in [TODO ref backgr]. Gamma statecharts are high-level state-based models, to which every functionality offered by the Gamma Statechart Composition Framework can be applied. Our framework offers full-scale Gamma serialization: when choosing this formalism, a whole project will be created, along with interface definitions, component definitions - for each of the previously declared components, with the synthesized behavior - and a composite system definition, connecting the components based on the names of their interfaces.
+A possible formalism is the Gamma statechart, introduced in \cite{DBLP:conf/icse/MolnarGVMV18}. Gamma statecharts are high-level state-based models, to which every functionality offered by the Gamma Statechart Composition Framework can be applied. Our framework offers full-scale Gamma serialization: when choosing this formalism, a whole project will be created, along with interface definitions, component definitions - for each of the previously declared components, with the synthesized behavior - and a composite system definition, connecting the components based on the names of their ports.
 
-%TODO ref
 Another possibility is the serialization to the Mealy machine formalism of the framework - as presented when checking the correctness of the model. This results in a lower-level set of independent models, with a completely different set of applications.
 
-%TODO interface definitions vs component diagram
-[TODO figure comes here: [comps\&interfaces | resulting structure]]
 \clearpage
 %----------------------------------------------------------------------------
 \section{Overview of the Architecture} \label{sec_architecture}

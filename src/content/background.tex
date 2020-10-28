@@ -398,7 +398,7 @@ The process explained in Example \ref{ex:partitionrefinement} is partition refin
 Let us define one last relation which will be useful in the next section to compare automata minimization and automata learning.
 
 \begin{definition}[k-epimorphisms]
-	Let $M=(S,s_{0},\Sigma,\Omega,\delta,\lambda)$ and $M=(S',s_{0}',\Sigma,\Omega,\delta',\lambda')$ be two Mealy machines with shared alphabets. We call a surjective function $f_k: S \to S'$ existential k-epimorphism between $M$ and $M'$, if for all $s'\in S', s\in S$ where $f_k(s) = s'$ and with any $\alpha\in\Sigma$, we have: $f_k(\delta(s,\alpha)) = \delta'(s',\alpha)$, and all states, that are mapped by $f_k$ to the same state of $M'$ are not k-distinguishable.
+	Let $M=(S,s_{0},\Sigma,\Omega,\delta,\lambda)$ and $M'=(S',s_{0}',\Sigma,\Omega,\delta',\lambda')$ be two Mealy machines with shared alphabets. We call a surjective function $f_k: S \to S'$ existential k-epimorphism between $M$ and $M'$, if for all $s'\in S', s\in S$ where $f_k(s) = s'$ and with any $\alpha\in\Sigma$, we have: $f_k(\delta(s,\alpha)) = \delta'(s',\alpha)$, and all states, that are mapped by $f_k$ to the same state of $M'$ are not k-distinguishable.
 \end{definition}
 
 It is straightforward to establish that all intermediate models arising during the partition refinement process are images of the considered Mealy machine under a k-epimorphism, where k is the number of times all transitions have been investigated.\cite{Steffen2011} Essentially this establishes $P_1$ and $P_2$ from Example \ref*{ex:partitionrefinement} as images of the Mealy machine seen in Figure \ref{ex:coffeemealy} under k-epimorphisms where k=1 and k=2 respectively.
@@ -420,7 +420,7 @@ Active automata learning algorithms operate in a similar way, but they do not ha
 
 \paragraph{Passive Automata Learning} In case of passive automata learning, the gathering of information is not part of the learning process, but rather a prerequisite to it. The learning is performed on a pre-gathered positive an/or negative example set of the systems behavior. In passive automata learning, the success of the process is determined not only by the efficiency of the algorithm, but the methodology and time used to gather the data.
 
-\paragraph{Active Automata Learning} In case of active automata learning, the behavioral infromation is gathered by the learning algorithm via queries. In order to accomplish this, learning is separated to two components: the learner, which learns, and the teacher, which can answer questions about the system under learning.
+\paragraph{Active Automata Learning} In case of active automata learning, the behavioral information is gathered by the learning algorithm via queries. In order to accomplish this, learning is separated to two components: the learner, which learns, and the teacher, which can answer questions about the system under learning.
 
 
 Active automata learning follows the MAT, or the Minimally Adequate Teacher model proposed by Dana Angluin\cite{ANGLUIN198787}. It defines the separation of the algorithm to a teacher and a learner component in a way, where the teacher can only answer the minimally adequate questions needed to learn the system. These two questions, or queries are are follows:

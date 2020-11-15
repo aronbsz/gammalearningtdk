@@ -1,6 +1,6 @@
 Interactive Learning for Model-based Software Engineering
 =====================
-[PDF of the thesis can be found here](pdf/thesis.pdf).
+[PDF of the thesis can be found here](https://github.com/aronbsz/gammalearningtdk/raw/main/pdf/thesis.pdf).
 
 
 <h3>Abstract:</h3>

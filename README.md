@@ -3,7 +3,8 @@ Interactive Learning for Model-based Software Engineering
 [PDF of the thesis can be found here](pdf/thesis.pdf).
 
 
-Abstract:
+<h3>Abstract:</h3>
+
 Model-based technologies improve the efficiency of designing and developing IT systems by making it possible to automate verification, code generation and system analysis based on a formal model. A simple way of describing the behavior of systems is state-based modeling, which - due to the advancements of formal analysis techniques in recent years - can be widely and effectively utilized when analyzing systems. A possible way of synthesizing such models is to apply active automata learning algorithms.
 
 Acquiring a correct formal model of a system can be challenging. On one hand, it is difficult for the designing engineer to keep every property of the envisioned system in mind at a given time, partly because of the complexity of the system, and because of possible hidden implications and contradictions. On the other hand, there are fully automated solutions, for instance, active automata learning, where the model construction is characterised by a teacher component - which is familiar with the extensive behavior of the system under learning - and a learner component - which synthesises the model via queries to the teacher component. However, such solutions have practical boundaries when validating the inferred behavior of the system. We propose a semi-automated solution, that applies automata learning to provide an interactive environment for model development.

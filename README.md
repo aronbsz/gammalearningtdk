@@ -1,3 +1,3 @@
 Interactive Learning for Model-based Software Engineering
 =====================
-TODO fill in the details
+[PDF of the thesis can be found here](pdf/thesis.pdf).
